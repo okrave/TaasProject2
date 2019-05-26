@@ -1,5 +1,6 @@
 package com.example.togroup5.demo.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +16,10 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @Configuration
 @EnableWebSecurity
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+
     /**
      * Utilizzata dall'implementazione di default di authenticationManager() per ottenere un
      * AuthenticationManager, In-Memory is the easiest way to implement authentication in Spring Security,
@@ -33,11 +38,11 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
          *
          * */
         auth.inMemoryAuthentication()
-                .withUser("user1").password(passwordEncoder().encode("user1Pass")).roles("USER")
+                .withUser("user").password(passwordEncoder().encode("password")).roles("USER")
                 .and()
-                .withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("USER")
+                .withUser("user1").password(passwordEncoder().encode("password")).roles("USER")
                 .and()
-                .withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
+                .withUser("admin").password(passwordEncoder().encode("password")).roles("ADMIN");
     }
 
 
@@ -64,15 +69,26 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccessHandler());*/
         http
                 .authorizeRequests()
-                .antMatchers("/", "/home").permitAll()
-                .anyRequest().authenticated()
-                .and()
+                    .antMatchers(
+                        "/js/**",
+                        "/css/**",
+                        "/img/**",
+                        "/webjars/**").permitAll()
+                    .antMatchers("/", "/home","/login").permitAll()
+                    .antMatchers("/admin").hasAnyRole("ADMIN")
+                    .antMatchers("/user/**").hasAnyRole("USER")
+                    .anyRequest().authenticated()
+                    .and()
                 .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
+                    .loginPage("/login")
+                    //.failureUrl("/login-error").permitAll()
+                    .and()
                 .logout()
-                .permitAll();
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .permitAll()
+                .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
     }
 
