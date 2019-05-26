@@ -1,19 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:utext="${title}"></title>
+    <title>Access Denied</title>
 </head>
+
 <body>
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h2>Admin Page</h2>
-<h3>Welcome :
-    <span th:utext="${#request.userPrincipal.name}"></span>
-</h3>
-<b>This is protected page!</b>
-
-<br/><br/>
+<h3 th:if="${message != null}" th:utext="${message}" style="color: red;"></h3>
 
 <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
 
