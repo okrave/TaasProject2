@@ -106,7 +106,6 @@ public class HomeController {
     public String createUser(ModelAndView modelAndView, @Valid AppUserRegistration user, BindingResult bindingResult, HttpServletRequest request){
         //AppUser existUser = userService.findByUsername(user.getUserName());
         System.out.println("Dentro registration: "+ user);
-        AppUser userService
 
         return "login";
     }
