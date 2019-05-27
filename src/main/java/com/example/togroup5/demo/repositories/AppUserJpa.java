@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AppUserJpa extends JpaRepository<AppUser,Long>{
     AppUser findAppUserByUserName(String userName);
 
+
 }

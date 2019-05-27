@@ -5,7 +5,10 @@ package com.example.togroup5.demo.repositories;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
+import com.example.togroup5.demo.entities.AppRole;
 import com.example.togroup5.demo.entities.AppUser;
+import com.example.togroup5.demo.entities.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class AppUserRepository {
 
     @Autowired
-    AppUserJpa appUserJpa;
+    private AppUserJpa appUserJpa;
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private AppUserRoleRepository appUserRoleRepository;
+
 
     public AppUser findUserAccount(String userName) {
         try {
@@ -40,8 +47,14 @@ public class AppUserRepository {
         }
     }
 
+    /**
+     * Di default aggiungo un user con Role = ROLE_USER
+     * Role = 1 -> ROLE_ADMIN , Role = 2 -> ROLE_USER
+    */
     public void save(AppUser user){
-        appUserJpa.save(user);
+        AppUser supportUser = appUserJpa.save(user);
+        UserRole userRole = new UserRole(supportUser,new AppRole(new Long(2)));
+        appUserRoleRepository.save(userRole);
     }
 
     AppUser findAppUserByUserName(String userName){

@@ -1,6 +1,8 @@
 package com.example.togroup5.demo.entities;
 
 
+import org.springframework.security.core.userdetails.User;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +31,13 @@ public class UserRole {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Role_Id", nullable = false)
     private AppRole appRole;
+
+    public UserRole(){}
+
+    public UserRole(AppUser user, AppRole role){
+        this.appUser = user;
+        this.appRole = role;
+    }
 
     public Long getId() {
         return id;
