@@ -70,7 +70,19 @@ public class AppUser {
         this.enabled = enabled;
     }
 
+    public String getUserEmail() {
+        return UserEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        UserEmail = userEmail;
+    }
+
+    public Integer getEnabled() {
+        return enabled;
+    }
+
     public String toString(){
-        return "{userName:"+ this.userName+ ", password: "+ this.encrytedPassword  +"}";
+        return "{userName:"+ this.UserEmail+ ", password: "+ this.encrytedPassword  +"}";
     }
 }

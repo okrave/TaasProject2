@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 /**
  * E' la repository custom quindi qui dobbiamo mettere tutti i metodi che sfrutteranno query
@@ -57,8 +59,12 @@ public class AppUserRepository {
         appUserRoleRepository.save(userRole);
     }
 
-    AppUser findAppUserByUserName(String userName){
+    public AppUser findAppUserByUserName(String userName){
         return appUserJpa.findAppUserByUserName(userName);
+    }
+
+    public List<AppUser> findAll(){
+        return appUserJpa.findAll();
     }
 
 

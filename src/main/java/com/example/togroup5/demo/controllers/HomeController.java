@@ -18,12 +18,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class HomeController {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @GetMapping(value="/")
     public String index(Model model){
@@ -110,7 +111,7 @@ public class HomeController {
         if(supportUser != null){
             System.out.println("Ho trovato l'utente: "+ supportUser);
             modelAndView.addObject("Error", "Utente già presente");
-            
+
             return "login";
         }
 
@@ -118,6 +119,13 @@ public class HomeController {
         supportUser = new AppUser(user.getUserName(),user.getPassword(),user.getEmail(),true);
         userService.save(supportUser);
         return "index";
+    }
+
+    @GetMapping(value= "/userList")
+    public String userList(Model model){
+        List<AppUser> allUser = userService.findAll();
+        model.addAttribute("members",allUser);
+        return "listaUsers";
     }
 
 
