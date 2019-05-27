@@ -10,9 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+
+/**
+ * E' la repository custom quindi qui dobbiamo mettere tutti i metodi che sfrutteranno query
+ *
+ * */
+@Repository("AppUserRepository")
 @Transactional
+
 public class AppUserRepository {
+
+    @Autowired
+    AppUserJpa appUserJpa;
 
     @Autowired
     private EntityManager entityManager;
@@ -30,5 +39,16 @@ public class AppUserRepository {
             return null;
         }
     }
+
+    public void save(AppUser user){
+        appUserJpa.save(user);
+    }
+
+    /*public AppUser findByUsername(String userName){
+        return appUserJpa.findByUsername(userName);
+    }*/
+
+
+
 
 }

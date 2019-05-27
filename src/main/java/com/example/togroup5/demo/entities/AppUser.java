@@ -21,6 +21,9 @@ public class AppUser {
     @Column(name = "Encryted_Password", length = 128, nullable = false)
     private String encrytedPassword;
 
+    @Column(name = "User_Email", nullable = false)
+    private String UserEmail;
+
     @Column(name = "Enabled", length = 1, nullable = false)
     private boolean enabled;
 
@@ -54,5 +57,9 @@ public class AppUser {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String toString(){
+        return "{userName:"+ this.userName+ ", password: "+ this.encrytedPassword  +"}";
     }
 }

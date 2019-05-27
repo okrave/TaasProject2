@@ -24,9 +24,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private AppRoleRepository appRoleRepository;
 
+
+
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException{
         AppUser appUser  = this.appUserRepository.findUserAccount(userName);
-
+        System.out.println("Utente: "+ appUser);
         if(appUser == null){
             System.out.println("User not found! "+ userName);
             throw new UsernameNotFoundException("User " + userName + " was not found in the database");

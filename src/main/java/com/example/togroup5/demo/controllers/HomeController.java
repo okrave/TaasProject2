@@ -1,16 +1,25 @@
 package com.example.togroup5.demo.controllers;
 
+import com.example.togroup5.demo.entities.AppUser;
+import com.example.togroup5.demo.servicies.UserService;
 import com.example.togroup5.demo.utils.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.context.request.WebRequest;
 
 import java.security.Principal;
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value="/")
     public String index(Model model){
@@ -58,11 +67,12 @@ public class HomeController {
         return "login";
 
     }
-    @GetMapping(value = "/logoutSuccessful")
+
+    /*@GetMapping(value = "/logout")
     public String logoutSuccessfulPage(Model model) {
         model.addAttribute("title", "Logout");
         return "logoutSuccessfulPage";
-    }
+    }*/
 
     @GetMapping(value = "/userInfo")
     public String userInfo(Model model, Principal principal) {
@@ -79,6 +89,22 @@ public class HomeController {
 
         return "userInfoPage";
     }
+
+    //Funzione get registration
+    @GetMapping(value = "/registration")
+    public String registration(WebRequest request, Model model){
+        AppUser newUser = new AppUser();
+        model.addAttribute("user",newUser);
+        return "registration";
+
+    }
+
+    @PostMapping (value = "/registation")
+    public String createUser(AppUser user, BindingResult bindingResult){
+        //AppUser existUser = userService.findByUsername(user.getUserName());
+        return "xxx";
+    }
+
 
     @GetMapping(value = "/403")
     public String accessDenied(Model model, Principal principal) {

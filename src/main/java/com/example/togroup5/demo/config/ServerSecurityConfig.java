@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -15,6 +16,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -30,6 +32,9 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AccessDeniedHandler accessDeniedHandler;
+
+    //@Autowired
+    //private AppOAuth2UserService appOAuth2UserService;
 
     /**
      * Utilizzata dall'implementazione di default di authenticationManager() per ottenere un
@@ -83,13 +88,16 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()
+                    .antMatchers("/registration").permitAll()
                     .antMatchers("/", "/home","/login","/logout").permitAll()
                     .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/user/**").hasAnyRole("USER")
                     .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-
                     .anyRequest().authenticated()
                     .and()
+                    //.oauth2Login()
+
+
                 .formLogin()
                     .loginProcessingUrl("/j_spring_security_check")
                     .loginPage("/login")
@@ -98,11 +106,18 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                     .usernameParameter("username")//
                     .passwordParameter("password")
                     .and()
-                .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/logoutSuccessful")
-                    .invalidateHttpSession(true)
-                    .clearAuthentication(true)
+
+
+
+
+
+                /*
+                * These two advanced attributes (delete cookies and invalidate http session) control the session invalidation as well as a list of cookies to be deleted when the user logs out.
+                * As such, invalidateHttpSession allows the session to be set up so that it’s not invalidated when logout occurs (it’s true by default).
+                * The deleteCookies method is simple as well:
+                * */
+
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()
@@ -116,6 +131,13 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         * The Token is an encrypted string that contains necessary information  for the  Spring to automatically log in when the user visits the website next time.
         * */
 
+
+        //Gestione della sessione utente
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .maximumSessions(1);
+
+
     }
 
 
@@ -127,6 +149,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         return db;
     }
 
+    /*Authentificazione per capire se un utente è nel db o no*/
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         //Setting service to find User in database, and setting passwordEncoder
