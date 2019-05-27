@@ -5,8 +5,24 @@
     <title>Title</title>
 </head>
 <body>
-<h1 th:text="#{label.form.title}">form</h1>
-REGISTRATION
+
+<form th:action="@{/registration}" th:object="${userRegistration}" method = "post" role="form">
+    <input type="text" th:field="*{userName}"
+           placeholder="User Name" class="form-control" required />
+    <span >UserName</span>
+    <input type="text" th:field="*{email}"
+           placeholder="Email" class="form-control" required />
+    <span >email</span>
+    <input type="text" th:field="*{password}"
+           placeholder="Password" class="form-control" required />
+    <span >Password</span>
+    <input type="text" th:field="*{repeatPassword}"
+           placeholder="password" class="form-control" required />
+    <span >Repeat password</span>
+    <button type="submit">Register</button>
+
+
+</form>
 
 </body>
 </html>

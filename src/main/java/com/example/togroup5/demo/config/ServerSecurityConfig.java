@@ -88,7 +88,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()
-                    .antMatchers("/registration").permitAll()
+                    .antMatchers("/registration","/resthome").permitAll()
                     .antMatchers("/", "/home","/login","/logout").permitAll()
                     .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/user/**").hasAnyRole("USER")
@@ -101,7 +101,6 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginProcessingUrl("/j_spring_security_check")
                     .loginPage("/login")
-                    .defaultSuccessUrl("/userAccountInfo")//
                     .failureUrl("/login?error=true")
                     .usernameParameter("username")//
                     .passwordParameter("password")

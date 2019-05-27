@@ -1,6 +1,7 @@
 package com.example.togroup5.demo.controllers;
 
 import com.example.togroup5.demo.entities.AppUser;
+import com.example.togroup5.demo.entities.AppUserRegistration;
 import com.example.togroup5.demo.servicies.UserService;
 import com.example.togroup5.demo.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -83,7 +87,7 @@ public class HomeController {
         System.out.println("User Name: " + userName);
 
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
+        System.out.println("loginUser:"+ loginedUser);
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
 
@@ -92,17 +96,19 @@ public class HomeController {
 
     //Funzione get registration
     @GetMapping(value = "/registration")
-    public String registration(WebRequest request, Model model){
-        AppUser newUser = new AppUser();
-        model.addAttribute("user",newUser);
-        return "registration";
-
+    public ModelAndView showRegistrationPage(ModelAndView modelAndView, AppUserRegistration user){
+        modelAndView.addObject("userRegistration",user);
+        modelAndView.setViewName("registration");
+        return modelAndView;
     }
 
-    @PostMapping (value = "/registation")
-    public String createUser(AppUser user, BindingResult bindingResult){
+    @PostMapping (value = "/registration")
+    public String createUser(ModelAndView modelAndView, @Valid AppUserRegistration user, BindingResult bindingResult, HttpServletRequest request){
         //AppUser existUser = userService.findByUsername(user.getUserName());
-        return "xxx";
+        System.out.println("Dentro registration: "+ user);
+        AppUser userService
+
+        return "login";
     }
 
 

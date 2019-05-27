@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 //https://www.baeldung.com/spring-data-derived-queries
 public interface AppUserJpa extends JpaRepository<AppUser,Long>{
     //AppUser findByUsername(String userName);
+
 }
