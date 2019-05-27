@@ -1,8 +1,27 @@
 -- Create table https://o7planning.org/en/11705/create-a-login-application-with-spring-boot-spring-security-jpa
+CREATE EXTENSION postgis;
+-- Enable Topology
+CREATE EXTENSION postgis_topology;
+
+create table APP_GROUP
+(
+    GROUP_ID  BIGINT not null,
+    GROUP_NAME varchar (128),
+    DESCRIPTION VARCHAR(512) not null,
+    DATE DATE not null,
+    CREATOR VARCHAR (36)
+)
+
+create table LOCATION
+(
+    GEOM geometry(Point, 4326) not null,
+    GROUP_ID BIGINT not null
+)
+
 create table APP_USER
 (
   USER_ID           BIGINT not null,
-  USER_NAME         VARCHAR(36) not null,
+  USER_NAME         VARCHAR(36) not null unique,
   ENCRYTED_PASSWORD VARCHAR(128) not null,
   USER_EMAIL        VARCHAR(36) not null,
   ENABLED           Int not null
