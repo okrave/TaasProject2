@@ -18,6 +18,16 @@ spring:
     suffix: .html
     servlet:
       content-type: text/html
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        temp:
+          use_jdbc_metadata_defaults: false
 
 #Configurazione per i social(facebook per ora)
 security:
@@ -33,16 +43,4 @@ security:
     resource:
       userInfoUri: https://graph.facebook.com/me
 
-  jpa:
-    hibernate:
-
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: none
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        temp:
-          use_jdbc_metadata_defaults: false
 

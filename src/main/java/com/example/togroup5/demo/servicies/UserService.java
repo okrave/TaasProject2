@@ -18,15 +18,11 @@ public class UserService {
     private AppRoleRepository appRoleRepository;
 
     public void save(AppUser user){
-        //Si presume che la password e lo username siano gia stati riempiti
-        user.setEnabled(true);
-        //Prendo la password non criptata e la cripto
-        //Bisogna settare i ruoli.
-        user.setEncrytedPassword(user.getEncrytedPassword());
         appUserRepository.save(user);
     }
 
-    /*public AppUser findByUsername(String userName){
-        return appUserRepository.findByUsername(userName);
-    }*/
+    public AppUser findByUsername(String userName){
+        return appUserRepository.findUserAccount(userName);
+
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.togroup5.demo.entities;
 
+import com.example.togroup5.demo.utils.EncryptedPasswordUtils;
+
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
@@ -25,7 +27,16 @@ public class AppUser {
     private String UserEmail;
 
     @Column(name = "Enabled", length = 1, nullable = false)
-    private boolean enabled;
+    private Integer enabled;
+
+    public AppUser (){};
+
+    public AppUser(String userName, String encrytedPassword, String userEmail, boolean enabled) {
+        this.userName = userName;
+        this.encrytedPassword = encrytedPassword;
+        this.UserEmail  = userEmail;
+        this.enabled = enabled?1:0;
+    }
 
     public Long getUserId() {
         return userId;
@@ -51,11 +62,11 @@ public class AppUser {
         this.encrytedPassword = encrytedPassword;
     }
 
-    public boolean isEnabled() {
+    public Integer isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Integer enabled) {
         this.enabled = enabled;
     }
 

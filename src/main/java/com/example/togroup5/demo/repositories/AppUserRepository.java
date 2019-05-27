@@ -44,9 +44,9 @@ public class AppUserRepository {
         appUserJpa.save(user);
     }
 
-    /*public AppUser findByUsername(String userName){
-        return appUserJpa.findByUsername(userName);
-    }*/
+    AppUser findAppUserByUserName(String userName){
+        return appUserJpa.findAppUserByUserName(userName);
+    }
 
 
 

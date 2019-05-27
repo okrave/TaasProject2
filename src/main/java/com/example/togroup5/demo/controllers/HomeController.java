@@ -106,8 +106,17 @@ public class HomeController {
     public String createUser(ModelAndView modelAndView, @Valid AppUserRegistration user, BindingResult bindingResult, HttpServletRequest request){
         //AppUser existUser = userService.findByUsername(user.getUserName());
         System.out.println("Dentro registration: "+ user);
+        AppUser supportUser = userService.findByUsername(user.getUserName());
+        if(supportUser != null){
+            System.out.println("Ho trovato l'utente: "+ supportUser);
+            modelAndView.addObject("Error", "Utente già presente");
+            return "login";
+        }
 
-        return "login";
+        System.out.println("Non ho trovato nessun utente");
+        supportUser = new AppUser(user.getUserName(),user.getPassword(),user.getEmail(),true);
+        userService.save(supportUser);
+        return "index";
     }
 
 
