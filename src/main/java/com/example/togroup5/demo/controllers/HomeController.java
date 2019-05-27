@@ -110,7 +110,7 @@ public class HomeController {
         if(supportUser != null){
             System.out.println("Ho trovato l'utente: "+ supportUser);
             modelAndView.addObject("Error", "Utente già presente");
-            System.out.println("asd");
+            System.out.println("commit inutile");
             return "login";
         }
 
