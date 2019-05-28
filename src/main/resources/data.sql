@@ -14,6 +14,7 @@ create table APP_GROUP
 
 create table LOCATION
 (
+    LOCATION_ID BIGINT not null,
     GEOM geometry(Point, 4326) not null,
     GROUP_ID BIGINT not null
 )
@@ -108,5 +109,13 @@ values (2, 1, 2);
 
 insert into user_role (ID, USER_ID, ROLE_ID)
 values (3, 2, 2);
+
+---
+
+insert  into app_group(GROUP_ID, GROUP_NAME, DESCRIPTION, DATE, CREATOR)
+values (1,'Esperienza cavalli','stupenda esperienza tra i boschi e cavalli','2019-05-28','ciao');
+
+insert into LOCATION(LOCATION_ID,GEOM, GROUP_ID)
+values (1,ST_GeomFromText('POINT(-71.060316 48.432044)', 4326),1);
 
 Commit;

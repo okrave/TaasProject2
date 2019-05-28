@@ -22,6 +22,7 @@
         <th>User Name</th>
         <th>Password criptata</th>
         <th>Email</th>
+        <th>Delete</th>
 
     </tr>
     <tr th:each ="member : ${members}">
@@ -29,6 +30,7 @@
         <td th:utext="${member.userName}">...</td>
         <td th:utext="${member.encrytedPassword}">...</td>
         <td th:utext="${member.UserEmail}">...</td>
+        <td><a th:href="@{/deleteUser}">delete user</a></td>
 
 
     </tr>

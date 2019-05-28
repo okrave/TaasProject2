@@ -111,10 +111,8 @@ public class HomeController {
         if(supportUser != null){
             System.out.println("Ho trovato l'utente: "+ supportUser);
             modelAndView.addObject("Error", "Utente già presente");
-
             return "login";
         }
-
         System.out.println("Non ho trovato nessun utente");
         supportUser = new AppUser(user.getUserName(),user.getPassword(),user.getEmail(),true);
         userService.save(supportUser);
@@ -125,6 +123,11 @@ public class HomeController {
     public String userList(Model model){
         List<AppUser> allUser = userService.findAll();
         model.addAttribute("members",allUser);
+        return "listaUsers";
+    }
+
+    @PostMapping(value= "/deleteUser")
+    public String deleteUser(){
         return "listaUsers";
     }
 
