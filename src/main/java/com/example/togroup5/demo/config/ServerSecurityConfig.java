@@ -88,7 +88,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()
-                    .antMatchers("/registration","/resthome","/userList","/listGroup").permitAll()
+                    .antMatchers("/registration","/resthome","/userList","/listGroup","/listGroupByCreator").permitAll()
                     .antMatchers("/", "/home","/login","/logout").permitAll()
                     .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/user/**").hasAnyRole("USER")

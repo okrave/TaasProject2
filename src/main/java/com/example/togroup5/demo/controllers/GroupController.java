@@ -21,4 +21,11 @@ public class GroupController {
         model.addAttribute("groups",allGroup);
         return "listaGroups";
     }
+
+    @GetMapping(value = "/listGroupByCreator")
+    public String listGroupByCreator(Model model){
+        List<AppGroup> allGroup = groupService.listGroupByCreator();
+        model.addAttribute("groups",allGroup);
+        return "listaGroups";
+    }
 }
