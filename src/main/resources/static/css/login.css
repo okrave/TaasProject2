@@ -1,0 +1,87 @@
+body{background-image: url(https://source.unsplash.com/category/texture);
+    background-size: cover;
+    background-position: center center;
+}
+
+
+.container{
+    padding: 10%;
+    height: 100%;
+
+}
+
+.form-horizontal{
+    width: 500px;
+    height: 500px;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5%;
+    background-color: white;
+    box-shadow: 0 4px 10px #424242;
+
+
+}
+.form-horizontal:hover{
+    box-shadow: 6px 10px 20px #424242,
+    -6px 10px 20px #424242;
+
+
+
+
+}
+
+.checkbox{float: left;padding: 0;}
+.link{display: block;position: relative;}
+
+.btn-login{
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 2px 1px 1px lightgrey,
+    -1px 1px 1px lightgrey;
+
+    background-color: #212121;
+    color: white;
+
+}
+.btn-login:hover{
+    box-shadow: 2px 4px 5px lightgrey,-2px 4px 5px lightgrey;
+
+
+}
+
+.alert-danger{box-shadow: 0 2px 15px #424242;}
+
+
+
+.btn-facebook{
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 2px 1px 1px lightgrey,
+    -1px 1px 1px lightgrey;
+    color: white;
+    background-color: #BDBDBD;
+}
+
+.btn-google{
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 2px 1px 1px lightgrey,
+    -1px 1px 1px lightgrey;
+
+    color: #BDBDBD;
+    background-color: white;
+}
+.btn-facebook:hover{background-color: #3B5998; box-shadow: 2px 4px 5px lightgrey,-2px 4px 5px lightgrey;}
+.btn-google:hover{background-color: #BF360C;color: white;box-shadow: 2px 4px 5px lightgrey,-2px 4px 5px lightgrey;}
+
+/* ICON */
+
+.fa-facebook-f{font-size: 20px;color: white;padding-right: 10px;}
+.fa-google{font-size: 20px;padding-right: 10px;}
