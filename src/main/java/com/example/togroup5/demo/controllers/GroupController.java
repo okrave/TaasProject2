@@ -28,4 +28,5 @@ public class GroupController {
         model.addAttribute("groups",allGroup);
         return "listaGroups";
     }
+
 }
