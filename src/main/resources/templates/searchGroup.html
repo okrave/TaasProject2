@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search Group</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+</head>
+<body>
+
+<div id="appSearch">
+
+    <div v-if="errorMessage !== null">{{errorMessage}}</div>
+
+    <div id="formSearchGroup">
+
+        <div>
+            <input
+                    type="text"
+                    v-model="filterSearch.userCreator"
+                    name="userCreator"
+                    placeholder="User creator, if any">
+        </div>
+
+        <div>
+            <input
+                    type="text"
+                    v-model="filterSearch.title"
+                    name="title"
+                    placeholder="Title of your group/event">
+        </div>
+
+        <div>
+            <input
+                    type="text"
+                    v-model="filterSearch.location"
+                    name="location"
+                    placeholder="Location: a city or a building">
+        </div>
+
+        <div>
+            <input
+                    type="number"
+                    v-model="filterSearch.maxDistance"
+                    name="maxDistance"
+                    placeholder="Maximum distance"
+                    value="0.0">
+        </div>
+
+        <div>
+            <input
+                    type="date"
+                    v-model="filterSearch.date"
+                    name="date"
+                    value="2020-01-01">
+        </div>
+
+        <div>
+            <input
+                    type="text"
+                    v-model="filterSearch.description"
+                    name="description"
+                    placeholder="Description of the group">
+        </div>
+
+        <div>
+            <input
+                    type="text"
+                    v-model="filterSearch.genre"
+                    name="genre"
+                    placeholder="Genre: 'study', 'sport', 'music', 'street art', ...">
+        </div>
+
+        <div id="tagsSection">
+            <input
+                    type="text"
+                    v-model="tag"
+                    name="tag"
+                    placeholder="Tag: 'computer science', 'math', 'football', ...">
+            <button name="addTag" value="Add tag" @click="addTag()">Add Tag</button>
+            <div>
+                <ul id="tags">
+                    <li v-for="tag in filterSearch.tags">
+                        <p>{{tag}}</p><button value="X" @click="removeTag(tag)">X</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <button @click="newGroup">Create Group</button>
+
+    </div>
+
+    <div id="groupsResult">
+        <button @click="listAllGroups()">Get all groups</button>
+        <ul id="groupsList">
+            <li v-for="group in groups">
+                <p>{{group.groupName}}</p>
+                <p>{{group.description}}</p>
+                <p>{{group.groupDate}}</p>
+                <p>{{group.creator}}</p>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<script>
+    /*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+    const APIUrl = "http://localhost:8282";
+    //
+    class ToGroup {
+
+        constructor(url = null) {
+            if (url === null) {
+                url = APIUrl;
+            }
+            this.baseURL = url;
+            this.user = new UserAPI(this.baseURL);
+            this.group = new GroupAPI(this.baseURL);
+        }
+
+        getUserEndpoint() {
+            return this.user;
+        }
+
+        getGroupEndpoint() {
+            return this.group;
+        }
+
+        /**
+         * Returns the status of the API.
+         */
+        status() {
+            return new Promise((resolve, reject) => {
+                fetch(this.baseURL + `/`) //fetch 'e una funzione delle Promise, che mi pare Vue renda disponibile se assente
+        .then(response => response.json())
+        .then(response => {
+                if (response.hasOwnProperty("ErrorDetail")) {
+                reject(response);
+            }
+            resolve(response);
+        });
+        });
+        }
+
+        ping() {
+            return this.status();
+        }
+    }
+
+    /**
+     * Represents the User API methods.
+     */
+    class UserAPI {
+        /**
+         * Creates a new User API instance, connected to the specified base URL.
+         * @param {String|null} url [Optional] The Base URL of the API.
+         */
+        constructor(url = null) {
+            if (url === null)
+                throw new Error("Cannot get base URL of User API");
+            this.baseURL = url + `/User`;
+            //this.alternativeURL = `https://blabla qualcos'altro.com`;
+        }
+
+        getUserInfo(userName) {
+            return new Promise((resolve, reject) => {
+                fetch(this.baseURL + `/Info`, {
+                method: "GET",
+                    credentials: 'include', // serve per mandare i cookie, soprattutto quelli di sessione, del "domain" corrente
+                    data: JSON.stringify({
+                    userName: userName
+                })
+            })
+        .then(response => response.json())
+        .then(response => {
+                if (response.hasOwnProperty("ErrorDetail")) {
+                reject(response);
+            }
+            resolve(response);
+        })
+        .catch(reject);
+        });
+        }
+
+        getAllUsers() {
+            return new Promise((resolve, reject) => {
+                fetch(this.baseURL + `/AllUsers`, {
+                method: "GET"
+            })
+        .then(response => response.json())
+        .then(response => {
+                if (response.hasOwnProperty("ErrorDetail")) {
+                reject(response);
+            }
+            resolve(response);
+        })
+        .catch(reject);
+        });
+        }
+
+        // aggiungere anche login, register, ..
+    }
+
+
+    /**
+     * Represents the Group API methods.
+     */
+    class GroupAPI {
+        /**
+         * Creates a new Group API instance, connected to the specified base URL.
+         * @param {String|null} url [Optional] The Base URL of the API.
+         */
+        constructor(url = null) {
+            if (url === null)
+                throw new Error("Cannot get base URL of Group API");
+            this.baseURL = url + `/Group`;
+            //this.alternativeURL = `https://blabla qualcos'altro.com`;
+        }
+
+        getGroupInfo(groupID) {
+            return new Promise((resolve, reject) => {
+                fetch(this.baseURL + `/info`, {
+                method: "GET",
+                    data: JSON.stringify({
+                    id: id
+                })
+            })
+        .then(response => response.json())
+        .then(response => {
+                if (response.hasOwnProperty("ErrorDetail")) {
+                reject(response);
+            }
+            resolve(response);
+        })
+        .catch(reject);
+        });
+        }
+
+        newGroup(filters /*userCreator, title, date, location, maxDistance, description, genre, tags*/) {
+            return new Promise((resolve, reject) => {
+                fetch(this.baseURL + `/newGroup`, {
+                method: "POST",
+                    body: filters
+                /*{
+                "groupName"		: title,
+                "description"	: description,
+                "groupDate"		: date,
+                "creator"		: userCreator
+
+                // omessi perchè ancora non gestiti lato back-end
+                // , "location"	: location
+                // , "maxDistance": maxDistance
+                // , "genre"	: genre
+                // , "tags"		: tags
+            }
+                */
+            })
+        .then(response => response.json())
+        .then(response => {
+                if (response.hasOwnProperty("ErrorDetail")) {
+                reject(response);
+            }
+            resolve(response);
+        })
+        .catch(reject);
+        });
+        }
+
+        listAllGroups() {
+            return new Promise((resolve, reject) => {
+                fetch(this.baseURL + `/listGroupRest`, {
+                method: "GET"
+            })
+        .then(response => response.json())
+        .then(response => {
+                if (response.hasOwnProperty("ErrorDetail")) {
+                reject(response);
+            }
+            resolve(response);
+        })
+        .catch(reject);
+        });
+        }
+    }
+
+    /** Represents a User */
+    class User {
+//it's the API payload
+        constructor(userID = null, firstName, email) {
+            this.userID = userID;
+            this.firstName = firstName;
+            this.email = email;
+        }
+    }
+
+    /** Represents a Group */
+    class Group {
+//it's the API payload
+        constructor(id = null, groupName, description, groupDate, creator) {
+            this.id = id;
+            this.groupName = groupName;
+            this.description = description;
+            this.groupDate = groupDate;
+            this.creator = creator;
+
+            // omessi perchè ancora non gestiti lato back-end
+            /*
+            this.location = location;
+            this.maxDistance = maxDistance;
+            this.genre = genre;
+            this.tags = tags;
+            */
+        }
+    }
+
+
+    /*
+     @param [string] url : string holding the URL where will be appended the query string compute
+     @param [object|array] queryData: can be both a plain object (map string->value) or a 2D array (array of pair of strings [the key and value, rispectively])
+     @return [URL] url : URL's instance holding the original url with "search" field setted with the query string, as desired
+     */
+    function encodeQueryDataOnURL(url, queryData) {
+        var newUrl;
+        newUrl = new URL(url);
+        newUrl.search = new URLSearchParams(queryData);
+        return newUrl;
+    }
+
+    /*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+    var app;
+
+
+    //----------------------------------------------------------------------------------------------------------------------
+
+    window.onload = _ => {
+        app = new Vue({
+            el: "#appSearch",
+            data: {
+                toGroupAPI: new ToGroup()
+                , filterSearch: {
+                    userCreator	: "",
+                    groupName	: "",
+                    location	: "",
+                    maxDistance	: 0.0,
+                    date		: "2020-01-01",
+                    description	: "",
+                    genre		: "",
+                    tags		: []
+                }
+                , tag : ""
+                , errorMessage: null
+                , groups: []
+            },
+            created(){
+                this.ping();
+            },
+
+            methods: {
+                // utils
+
+                tryParseJSON(aProbablyJSON) {
+                    if ((typeof aProbablyJSON) === 'string') { //it's still a JSON? if yes, parse it
+                        return JSON.parse(aProbablyJSON);
+                    }
+                    return aProbablyJSON;
+                },
+                errorHandling(functionName){
+                    return err => {
+                        console.log("error on " + functionName + ":");
+                        console.log(err);
+                        this.errorMessage = err;
+                    };
+                },
+
+                addTag(){
+                    if(! this.filterSearch.tags.includes(this.tag)){
+                        this.filterSearch.tags.push(this.tag);
+                        this.tag = "";
+                    }
+                },
+                removeTag(tag){
+                    var i, elem;
+                    var t = this.filterSearch.tags;
+                    var len = t.length;
+                    var newTag, t;
+                    if(this.filterSearch.tags.includes(tag)){
+                        newTag = [];
+                        i = -1;
+                        while ( ++i < len) {
+                            elem = t[i];
+                            if(tag !== elem){
+                                newTag.push(elem);
+                            }
+                        }
+                        this.filterSearch.tags = newTag;
+                    }
+                },
+
+                // API
+
+                ping(){
+                    console.log("pinging");
+                    this.toGroupAPI
+                        .ping()
+                        .then(response => {
+                        console.log("connected successfully");
+                    this.errorMessage = null;
+                })
+                .catch(this.errorHandling("ping"));
+                },
+
+                //users
+
+
+                //group
+                listAllGroups(){
+                    this.toGroupAPI
+                        .getGroupEndpoint()
+                        .listAllGroups()
+                        .then(resp => {
+                        console.log("groups arrived");
+                    this.groups = resp
+                })
+                .catch(this.errorHandling("listAllGroups"));
+                },
+
+                newGroup(){
+                    this.toGroupAPI
+                        .getGroupEndpoint()
+                        .newGroup(this.filterSearch)
+                        .then(resp => {
+                        console.log("group created");
+                })
+                .catch(this.errorHandling("newGroup"));
+
+                }
+            }
+        });
+    };
+
+
+</script>
+</body>
+</html>
