@@ -12,6 +12,14 @@ create table APP_GROUP
     CREATOR VARCHAR (36)
 )
 
+alter table APP_GROUP
+  add constraint APP_GROUP_PK primary key (GROUP_ID);
+
+alter table APP_GROUP
+  add constraint APP_GROUP_FK1 foreign key (CREATOR)
+  references APP_USER (USER_NAME);
+
+
 create table LOCATION
 (
     LOCATION_ID BIGINT not null,

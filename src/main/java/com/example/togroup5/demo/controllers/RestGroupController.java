@@ -15,9 +15,10 @@ public class RestGroupController {
     @Autowired
     GroupService groupService;
 
-    @GetMapping(value = "/listGroupRest")
+    @GetMapping(value = "/Group/listGroupRest")
     public List<AppGroup> listGroup(){
         List<AppGroup> allGroup = groupService.listAllGroup();
         return allGroup;
     }
+
 }

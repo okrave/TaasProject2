@@ -41,6 +41,7 @@
                     placeholder="Location: a city or a building">
         </div>
 
+        <!--
         <div>
             <input
                     type="number"
@@ -49,6 +50,7 @@
                     placeholder="Maximum distance"
                     value="0.0">
         </div>
+        -->
 
         <div>
             <input
@@ -280,9 +282,18 @@
                 fetch(this.baseURL + `/listGroupRest`, {
                 method: "GET"
             })
-        .then(response => response.json())
         .then(response => {
-                if (response.hasOwnProperty("ErrorDetail")) {
+                console.log("response on listAllGroup before jsoning: " + (typeof response));
+            console.log(response);
+            console.log("\n---\n");
+            return response.json();
+        })
+        .then(response => {
+                console.log("AH AH i'm on API-listAllGroups with the following response:");
+            console.log(response);
+            console.log("\n-------------\n");
+
+            if (response.hasOwnProperty("ErrorDetail")) {
                 reject(response);
             }
             resolve(response);
@@ -352,12 +363,13 @@
             data: {
                 toGroupAPI: new ToGroup()
                 , filterSearch: {
-                    userCreator	: "",
                     groupName	: "",
-                    location	: "",
-                    maxDistance	: 0.0,
-                    date		: "2020-01-01",
                     description	: "",
+                    groupDate	: "2020-01-01",
+                    creator	    : "",
+                    //le cose sottostanti FORSE sono ignorate lato backand
+                    location	: "",
+                    //maxDistance	: 0.0,
                     genre		: "",
                     tags		: []
                 }
@@ -373,16 +385,19 @@
                 // utils
 
                 tryParseJSON(aProbablyJSON) {
+                    console.log("try parsing:");
+                    console.log(aProbablyJSON);
                     if ((typeof aProbablyJSON) === 'string') { //it's still a JSON? if yes, parse it
                         return JSON.parse(aProbablyJSON);
                     }
                     return aProbablyJSON;
                 },
                 errorHandling(functionName){
+                    var thisVue = this;
                     return err => {
                         console.log("error on " + functionName + ":");
                         console.log(err);
-                        this.errorMessage = err;
+                        thisVue.errorMessage = err;
                     };
                 },
 
