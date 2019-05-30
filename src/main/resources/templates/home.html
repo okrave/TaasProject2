@@ -1,28 +1,118 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Boot Thymeleaf + Spring Security</title>
 
-    <div th:replace="fragments/header :: header-css"/>
+    <title> Home </title>
+    <th:block th:replace="fragments/header :: header" />
+    <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
 
 </head>
+
 <body>
+    <th:block th:replace="fragments/navbar :: navbar" />
 
-<div th:replace="fragments/header :: header"/>
 
-<div class="container">
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">
+    Launch demo modal
+</button>
+    <div id="loginModal" class="modal animated bounceInUp" role="dialog" th:action="@{/j_spring_security_check}">
+        <div class="modal-dialog" id="modal-login">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title scritta-accedi">Accedi</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="username" id="username" class="form-control login-input " placeholder= "Username"/>
+                    <br />
+                    <input type="password" name="password" id="password" class="form-control control login-input " placeholder="Password"/>
+                    <br />
+                    <button type="submit" name="submit" value="submit" class="btn-l">Login</button>
+                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkRegistration" name="registrazione" href="#registrazione" role="button"> Registrati qui </a></h5>
 
-    <div class="starter-template">
-        <h1>Spring Boot Web Thymeleaf + Spring Security</h1>
-        <h2>1. Visit <a th:href="@{/admin}">Admin page (Spring Security protected, Need Admin Role)</a></h2>
-        <h2>2. Visit <a th:href="@{/user}">User page (Spring Security protected, Need User Role)</a></h2>
-        <h2>3. Visit <a th:href="@{/about}">Normal page</a></h2>
+
+
+                </div>
+                <div class="modal-footer">
+                    <h4 style="text-align: center;">Or</h4>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal Registrazione-->
+
+    <div id="registerModal" class="modal  animated bounceInUp" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title scritta-accedi">Registrati</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="name" id="name" class="form-control registration-input " placeholder= "Nome"/>
+                    <br />
+                    <input type="text" name="surname" id="surname" class="form-control registration-input " placeholder= "Cognome"/>
+                    <br />
+                    <input type="email" name="email" id="email" class="form-control control registration-input " placeholder="Indirizzo Email"/>
+                    <br />
+                    <input type="numeroTelefono" name="numeroTelefono" id="numeroTelefono" class="form-control control registration-input " placeholder="Numero di cellulare"/>
+                    <br />
+                    <input type="password" name="password"  class="form-control control registration-input " placeholder="Password"/>
+                    <br />
+                    <input type="password" name="repeatPassword" id="repeatPassword" class="form-control control registration-input " placeholder="Reinserisci la password"/>
+                    <br />
+                    <div class="div_button">
+                        <button type="button" name="login_button" id="login_button" class="btn-l" >Registrati</button>
+                    </div>
+                    <div class="link_registrazione">
+
+                        <h5 >Hai già un account ? <a name="registrazione" id="linkLogin" href="#registrazione" role="button"> Accedi </a></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-</div>
-<!-- /.container -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--<script src="../static/js/bootstrap.js" th:href="@{/js/bootstrap.js}"></script>-->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
-<div th:replace="fragments/footer :: footer"/>
+
+
+
+
+<script type="text/javascript">
+    //jquery function
+    $(document).ready(function(){
+
+        $('#linkLogin').click(function(){
+            $('#registerModal').modal('hide');
+            $('#loginModal').modal('show');
+        });
+
+        $('#linkRegistration').click(function(){
+            $('#loginModal').modal('hide');
+            $('#registerModal').modal('show');
+        });
+
+
+        $('#nav-linkRegister').click(function(){
+            $('#loginModal').modal('show');
+        });
+
+        $('#nav-linkLogin').click(function(){
+            $('#loginModal').modal('show');
+        });
+    });
+</script>
+
 
 </body>
-</html>l>
+</html>
