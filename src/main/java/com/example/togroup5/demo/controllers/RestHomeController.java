@@ -20,5 +20,10 @@ public class RestHomeController{
         return "ciao";
     }
 
+    @GetMapping(value = "/ping")
+    public boolean ping(){
+        return true;
+    }
+
 
 }
