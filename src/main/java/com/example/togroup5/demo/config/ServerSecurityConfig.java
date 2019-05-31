@@ -93,7 +93,8 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/user/**").hasAnyRole("USER")
                     .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-                    .anyRequest().authenticated()*/
+                    .anyRequest().authenticated()
+                    .and()*/
                     .anyRequest().permitAll()
                     .and()
                     //.oauth2Login()
