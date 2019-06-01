@@ -4,6 +4,7 @@ import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.repositories.AppRoleRepository;
 import com.example.togroup5.demo.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Service
 public class UserService {
 
+    private User principal;
     @Autowired
     private AppUserRepository appUserRepository;
 
@@ -29,5 +31,16 @@ public class UserService {
 
     public List<AppUser> findAll(){
         return appUserRepository.findAll();
+    }
+
+    public void setPrincipalUser(User principal){
+        if(this.principal == null)
+            this.principal = new User(principal.getUsername(), principal.getPassword(),principal.getAuthorities());
+    }
+
+    public User getPrincipalUser(){
+        if(this.principal != null)
+            return this.principal;
+        return null;
     }
 }

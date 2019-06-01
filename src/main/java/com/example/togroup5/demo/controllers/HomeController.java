@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,16 +34,15 @@ public class HomeController {
 
     @GetMapping(value="/home")
     public String home(){
+        System.out.println(userService.getPrincipalUser());
         return "home";
     }
 
-    @GetMapping(value="/client_home")
-    public String client_home(){
-        return "client_home";
-    }
 
     @GetMapping(value="/login")
-    public String login(){
+    public String login(Principal principal){
+        User loginedUser = (User)  ((Authentication)principal).getPrincipal();
+        userService.setPrincipalUser(loginedUser);
         return "login";
     }
 
@@ -70,7 +68,6 @@ public class HomeController {
     public String loginError(Model model){
         model.addAttribute("loginError",true);
         return "login";
-
     }
 
     /*@GetMapping(value = "/logout")
