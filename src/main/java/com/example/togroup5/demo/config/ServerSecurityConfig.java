@@ -120,10 +120,10 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
                 .and()
-                .exceptionHandling().accessDeniedPage("/403")
-                .and()
-                .rememberMe().tokenRepository(this.persistentTokenRepository()) // Config Remember me
-                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
+                .exceptionHandling().accessDeniedPage("/403");
+                //.and()
+                //.rememberMe().tokenRepository(this.persistentTokenRepository()) // Config Remember me
+                //.tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
         /*
         * An user accesses a website and logs in. Then he/she turns off the browser and accesses the website at some time (for example, on the next day),
         * and he/she has to log in again, which causes unnecessary trouble.

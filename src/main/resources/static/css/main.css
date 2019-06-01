@@ -13,3 +13,11 @@ footer {
 footer p {
     padding: 15px;
 }
+
+h2{
+    color: aqua;
+}
+
+table th, table td {
+    padding: 10px;
+}
