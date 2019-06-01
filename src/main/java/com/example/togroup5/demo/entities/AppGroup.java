@@ -4,26 +4,22 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name="app_group",
-        uniqueConstraints = { //
-        @UniqueConstraint(name = "APP_GROUP_UK", columnNames = { "GROUP_ID"}) })
+
 public class AppGroup {
 
     @Id
     @GeneratedValue
-    @Column(name = "GROUP_ID", nullable = false)
     private long groupId;
 
-    @Column(name = "GROUP_NAME", nullable = false)
+
     private String groupName;
 
-    @Column(name = "DESCRIPTION")
+
     private String description;
 
-    @Column(name = "DATE")
+
     private java.sql.Date groupDate;
 
-    @JoinColumn(name = "CREATOR", nullable = false)
     private String creator;
 
     public AppGroup() {}
