@@ -31,4 +31,12 @@ public class GroupService {
     public List<AppTag> listAllTag() {
         return appTagRepository.findAll();
     }
+
+    public void saveTag(AppTag newTag) {
+        appTagRepository.save(newTag);
+    }
+
+    public void saveGroup(AppGroup newGroup) {
+        appGroupRepository.save(newGroup);
+    }
 }

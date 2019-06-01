@@ -15,6 +15,10 @@ public class AppTag {
 
     public AppTag(){}
 
+    public AppTag(String name){
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

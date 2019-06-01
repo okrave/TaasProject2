@@ -24,6 +24,13 @@ public class AppGroup {
 
     public AppGroup() {}
 
+    public AppGroup(String groupName, String description, Date groupDate, String creator) {
+        this.groupName = groupName;
+        this.description = description;
+        this.groupDate = groupDate;
+        this.creator = creator;
+    }
+
     public long getGroupId() {
         return groupId;
     }
