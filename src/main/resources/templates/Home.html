@@ -1,10 +1,122 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <title> Home </title>
+    <th:block th:replace="fragments/header :: header" />
+    <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
+
 </head>
+
 <body>
+    <th:block th:replace="fragments/navbar :: navbar" />
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">
+    Launch demo modal
+</button>
+    <form id="loginModal" class="modal animated bounceInUp" role="form" method="POST" th:action="@{/j_spring_security_check}">
+        <div class="modal-dialog" id="modal-login">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title scritta-accedi">Accedi</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="username" id="username" class="form-control login-input " placeholder= "Username"/>
+                    <br />
+                    <input type="password" name="password" id="password" class="form-control control login-input " placeholder="Password"/>
+                    <br />
+                    <button type="submit" name="submit" value="submit" class="btn-l">Login</button>
+                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkRegistration" href="#registrazione" role="button"> Registrati qui </a></h5>
+                   <!-- <div class="alert alert-danger fade in" role="alert">
+                        <h2 class="alert-link">Oh Snap!Login Failed</h2>
+                        <h4>Reason:</h4>
+                        <span th:if="${#session!= null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}"
+                              th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">
+                                Static summary
+                        </span>
+                    </div>-->
+
+
+                </div>
+                <div class="modal-footer">
+                    <h4 style="text-align: center;">Or</h4>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+<!-- Modal Registrazione-->
+
+    <form th:action="@{/registration}" id="registerModal" class="modal  animated bounceInUp" role="form" method="POST" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title scritta-accedi">Registrati</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="username"   class="form-control registration-input " placeholder= "Username" required/>
+                    <br />
+
+                    <input type="email" name="email" class="form-control control registration-input " placeholder="Email" required/>
+                    <br />
+                    <input type="password" name="password"  class="form-control control registration-input " placeholder="Password" required/>
+                    <br />
+                    <input type="password" name="repeatPassword"  id="repeatPassword" class="form-control control registration-input " placeholder="Reinserisci la password" required/>
+                    <br />
+                    <div class="div_button">
+                        <button type="button" name="login_button" id="login_button" class="btn-l" >Registrati</button>
+                    </div>
+                    <div class="link_registrazione">
+
+                        <h5 >Hai già un account ? <a  id="linkLogin" href="#login" role="button"> Accedi </a></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--<script src="../static/js/bootstrap.js" th:href="@{/js/bootstrap.js}"></script>-->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+
+
+
+
+<script type="text/javascript">
+    //jquery function
+    $(document).ready(function(){
+
+        $('#linkLogin').click(function(){
+            $('#registerModal').modal('hide');
+            $('#loginModal').modal('show');
+        });
+
+        $('#linkRegistration').click(function(){
+            $('#loginModal').modal('hide');
+            $('#registerModal').modal('show');
+        });
+
+
+        $('#nav-linkRegister').click(function(){
+            $('#loginModal').modal('show');
+        });
+
+        $('#nav-linkLogin').click(function(){
+            $('#loginModal').modal('show');
+        });
+    });
+</script>
+
 
 </body>
 </html>
