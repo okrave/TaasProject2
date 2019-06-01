@@ -1,11 +1,11 @@
 server:
-  port: 8282
+  port: 8081
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/toGroup
-    username: postgres
-    password: admin
+    url: jdbc:postgresql://localhost:5432/ilmiodb
+    username: ale
+    password: pass
     driver-class-name: org.postgresql.Driver
   thymeleaf:
     cache: false
