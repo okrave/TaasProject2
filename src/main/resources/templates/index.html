@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
     <title th:utext="${title}"></title>
 </head>
@@ -11,5 +11,38 @@
 
 <h2>Message : <span th:utext="${message}"></span></h2>
 
+<div class="Wrapper">
+      <div class="unauthenticated">
+        <a class="btn" href="/login">Login</a>
+      </div>
+      <div class="authenticated" style="display: none">
+        Logged in as: <span id="user"></span>
+        <div><button onClick="logout()" class="btn">Logout</button></div>
+      </div>
+
+</div>
+
 </body>
+<script>
+    // if (window.location.hash == '#_=_'){
+    //       history.replaceState
+    //           ? history.replaceState(null, null, window.location.href.split('#')[0])
+    //           : window.location.hash = '';
+    //   }
+
+    $.get("/user", function(data) {
+        $("#user").html(data.userAuthentication.details.name);
+        $(".unauthenticated").hide();
+        $(".authenticated").show();
+      });
+
+    var logout = function() {
+        $.post("/logout", function() {
+          $("#user").html('');
+          $(".unauthenticated").show();
+          $(".authenticated").hide();
+        });
+        return true;
+      }
+</script>
 </html>
