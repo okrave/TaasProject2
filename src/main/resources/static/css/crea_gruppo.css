@@ -1,0 +1,24 @@
+.navbar-inverse{margin-bottom: 0;}
+
+.gruppo-body{padding-left: 20%;padding-right: 20%;}
+.gruppo-header>h5{padding-left: 47%;}
+
+.gruppo-buttons>button{
+    margin: 10px;
+    border-radius: 20px;
+    border-color: blue;
+    background-color: transparent;
+    color: blue;
+}
+
+.gruppo-buttons>button:hover{
+    background-color: blue;
+    color: white;
+}
+
+.gruppo-buttons>button:focus-within{
+    background-color: blue;
+    color: white;
+}
+
+.gruppo-footer>a{margin-left: 47%;margin-top: 20px;}
