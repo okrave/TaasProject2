@@ -55,8 +55,6 @@ public class AppUserRepository {
     */
     public void save(AppUser user){
         AppUser supportUser = appUserJpa.save(user);
-        UserRole userRole = new UserRole(supportUser,new AppRole(new Long(2)));
-        appUserRoleRepository.save(userRole);
     }
 
     public AppUser findAppUserByUserName(String userName){

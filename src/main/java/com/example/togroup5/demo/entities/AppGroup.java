@@ -4,29 +4,32 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name="app_group",
-        uniqueConstraints = { //
-        @UniqueConstraint(name = "APP_GROUP_UK", columnNames = { "GROUP_ID"}) })
+
 public class AppGroup {
 
     @Id
     @GeneratedValue
-    @Column(name = "GROUP_ID", nullable = false)
     private long groupId;
 
-    @Column(name = "GROUP_NAME", nullable = false)
+    @Column(unique = true)
     private String groupName;
 
-    @Column(name = "DESCRIPTION")
+
     private String description;
 
-    @Column(name = "DATE")
+
     private java.sql.Date groupDate;
 
-    @JoinColumn(name = "CREATOR", nullable = false)
     private String creator;
 
     public AppGroup() {}
+
+    public AppGroup(String groupName, String description, Date groupDate, String creator) {
+        this.groupName = groupName;
+        this.description = description;
+        this.groupDate = groupDate;
+        this.creator = creator;
+    }
 
     public long getGroupId() {
         return groupId;
@@ -68,5 +71,8 @@ public class AppGroup {
         this.groupName = groupName;
     }
 
+    public String toString(){
+        return " "+ this.groupName+" "+ this.description+" " + this.groupDate.toString();
+    }
 
 }

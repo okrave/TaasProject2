@@ -132,6 +132,11 @@ public class HomeController {
     }
 
 
+    @GetMapping(value="/searchGroup")
+    public String searchGroup(){
+        return "searchGroup";
+    }
+
     @GetMapping(value = "/403")
     public String accessDenied(Model model, Principal principal) {
 
