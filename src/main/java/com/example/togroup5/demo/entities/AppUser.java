@@ -14,6 +14,7 @@ public class AppUser {
     @GeneratedValue
     private Long userId;
 
+    @Column(unique = true)
     private String userName;
 
     private String encrytedPassword;

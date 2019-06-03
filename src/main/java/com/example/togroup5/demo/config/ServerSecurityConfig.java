@@ -83,7 +83,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccessHandler());*/
         http
                 .authorizeRequests()
-                    .antMatchers(
+                    /*.antMatchers(
                         "/js/**",
                         "/css/**",
                         "/img/**",
@@ -93,7 +93,8 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/user/**").hasAnyRole("USER")
                     .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-                    .anyRequest().authenticated()
+                    .anyRequest().authenticated()*/
+                    .anyRequest().permitAll()
                     .and()
                     //.oauth2Login()
 
@@ -116,7 +117,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 * The deleteCookies method is simple as well:
                 * */
 
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/home")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()
