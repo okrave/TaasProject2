@@ -33,26 +33,9 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping(value="/crea_gruppo1")
-    public String crea_gruppo1(){
-        return "crea_gruppo1";
-    }
-    @GetMapping(value="/crea_gruppo2")
-    public String crea_gruppo2(){
-        return "crea_gruppo2";
-    }
-    @GetMapping(value="/crea_gruppo3")
-    public String crea_gruppo3(){
-        return "crea_gruppo3";
-    }
-    @GetMapping(value="/crea_gruppo4")
-    public String crea_gruppo4(){
-        return "crea_gruppo4";
-    }
-
-    @GetMapping(value="/Home")
-    public String Home(){
-        return "Home";
+    @GetMapping(value="/home")
+    public String home(){
+        return "home";
     }
 
     @GetMapping(value="/client_home")

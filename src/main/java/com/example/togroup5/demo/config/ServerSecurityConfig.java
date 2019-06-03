@@ -82,17 +82,17 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccessHandler());*/
         http
                 .authorizeRequests()
-                  /*  .antMatchers(
+                    .antMatchers(
                         "/js/**",
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()
                     .antMatchers("/registration","/resthome","/userList","/listGroup").permitAll()
-                    .antMatchers("/","/login","/logout","/Home").permitAll()
+                    .antMatchers("/", "/home","/login","/logout").permitAll()
                     .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/user/**").hasAnyRole("USER")
-                    .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")*/
-                    .anyRequest().permitAll()
+                    .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+                    .anyRequest().authenticated()
                     .and()
                     //.oauth2Login()
 
@@ -115,7 +115,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 * The deleteCookies method is simple as well:
                 * */
 
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/Home")
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()
