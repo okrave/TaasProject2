@@ -111,10 +111,8 @@ public class HomeController {
         if(supportUser != null){
             System.out.println("Ho trovato l'utente: "+ supportUser);
             modelAndView.addObject("Error", "Utente già presente");
-
             return "login";
         }
-
         System.out.println("Non ho trovato nessun utente");
         supportUser = new AppUser(user.getUserName(),user.getPassword(),user.getEmail(),true);
         userService.save(supportUser);
@@ -128,6 +126,16 @@ public class HomeController {
         return "listaUsers";
     }
 
+    @PostMapping(value= "/deleteUser")
+    public String deleteUser(){
+        return "listaUsers";
+    }
+
+
+    @GetMapping(value="/searchGroup")
+    public String searchGroup(){
+        return "searchGroup";
+    }
 
     @GetMapping(value = "/403")
     public String accessDenied(Model model, Principal principal) {
