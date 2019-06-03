@@ -71,5 +71,8 @@ public class AppGroup {
         this.groupName = groupName;
     }
 
+    public String toString(){
+        return " "+ this.groupName+" "+ this.description+" " + this.groupDate.toString();
+    }
 
 }

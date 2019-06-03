@@ -1,12 +1,27 @@
 package com.example.togroup5.demo.controllers;
 
+import com.example.togroup5.demo.entities.AppGroup;
+import com.example.togroup5.demo.repositories.AppGroupRepository;
+import com.example.togroup5.demo.servicies.GroupService;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+
+import org.slf4j.Logger;
+
+import javax.annotation.PostConstruct;
+
+@Component
 public class Bot extends TelegramLongPollingBot {
+
+
     @Override
     public String getBotToken() {
         return "781537653:AAEchX7A3HFBMYicEZrSU57W_lNwr_i-lwU";
@@ -14,12 +29,16 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+
         Message message = update.getMessage();
         if(message != null && message.hasText()){
-            if(message.getText().equals("/help")){
-                sendMsg(message,"Sono a tua disposizione");
-            }else{
-                sendMsg(message,"Benvenuto sono il tuo bot");
+            switch(message.getText()){
+                case ("/help"):
+                    sendMsg(message,"Help page");
+                    break;
+                case ("/list"):
+                    sendMsg(message,"Entrato");
+                    break;
             }
         }
     }
@@ -28,7 +47,6 @@ public class Bot extends TelegramLongPollingBot {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId().toString());
-        sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(s);
         try{
             sendMessage(sendMessage);
@@ -41,4 +59,6 @@ public class Bot extends TelegramLongPollingBot {
     public String getBotUsername() {
         return "groupTaasBot";
     }
+
+
 }
