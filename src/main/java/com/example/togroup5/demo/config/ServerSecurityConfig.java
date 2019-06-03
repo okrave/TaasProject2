@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 import javax.sql.DataSource;
 
 @Configuration
@@ -83,17 +82,18 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccessHandler());*/
         http
                 .authorizeRequests()
-                    .antMatchers(
+                    /*.antMatchers(
                         "/js/**",
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()
-                    .antMatchers("/registration","/resthome","/userList","/listGroup").permitAll()
+                    .antMatchers("/registration","/resthome","/userList","/listGroup",).permitAll()
                     .antMatchers("/", "/home","/login","/logout").permitAll()
                     .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/user/**").hasAnyRole("USER")
                     .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-                    .anyRequest().authenticated()
+                    .anyRequest().authenticated()*/
+                    .anyRequest().permitAll()
                     .and()
                     //.oauth2Login()
 
@@ -116,7 +116,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 * The deleteCookies method is simple as well:
                 * */
 
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/home")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()

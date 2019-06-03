@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" >
+<head>
+
+    <title> Home </title>
+    <th:block th:replace="fragments/header :: header" />
+    <link rel="stylesheet" href="../static/css/crea_gruppo.css" th:href="@{/css/crea_gruppo.css}">
+
+</head>
+
+<body>
+<th:block th:replace="fragments/navbar :: navbar" />
+
+
+
+<!--BARRA AVANZAMENTO-->
+<div class="progress">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+
+    </div>
+</div>
+
+<div class="gruppo-header">
+    <a type="button" class="btn btn-primary" href="crea_gruppo1.html" th:href="@{crea_gruppo1}">Indietro</a>
+    <h5>STEP 2 DI 4</h5>
+</div>
+<div class="gruppo-body">
+    <h1 class="gruppo-titolo">Scegli qualche argomento che descriva gli interessi del tuo gruppo</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+    <input type="text" class="form-control" placeholder="Search">
+    <br />
+    <div class="gruppo-buttons">
+        <button class="btn">Vacanze</button>
+        <button class="btn">Famiglia</button>
+        <button class="btn">Vacanze</button>
+        <button class="btn">Video Digitale</button>
+        <button class="btn">Passeggiate per cani</button>
+        <button class="btn">Cibo</button>
+        <button class="btn">Danza</button>
+        <button class="btn">Studio</button>
+        <button class="btn">Montaggio Video</button>
+        <button class="btn">Serate di Giochi</button>
+        <button class="btn">Happy Hour</button>
+        <button class="btn">Outdor</button>
+        <button class="btn">Investimenti</button>
+        <button class="btn">Sviluppo professionale</button>
+    </div>
+</div>
+<div class="gruppo-footer">
+    <a type="button" class="btn btn-primary" href="crea_gruppo3.html" th:href="@{crea_gruppo3}" >Avanti</a>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--<script src="../static/js/bootstrap.js" th:href="@{/js/bootstrap.js}"></script>-->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+
+
+
+
+
+</body>
+</html>
