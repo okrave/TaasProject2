@@ -1,5 +1,6 @@
 package com.example.togroup5.demo.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ public class AppTag {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     public AppTag(){}

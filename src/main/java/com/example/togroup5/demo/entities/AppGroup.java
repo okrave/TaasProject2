@@ -11,7 +11,7 @@ public class AppGroup {
     @GeneratedValue
     private long groupId;
 
-
+    @Column(unique = true)
     private String groupName;
 
 

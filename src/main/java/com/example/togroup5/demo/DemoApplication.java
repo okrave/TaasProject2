@@ -12,13 +12,13 @@ public class DemoApplication {
 
     public static void main(String[] args) {
         //Per usare il bot telegram ricordarsi di decommentare
-        ApiContextInitializer.init();
+        /*ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi =  new TelegramBotsApi();
         try{
             telegramBotsApi.registerBot(new Bot());
         }catch (TelegramApiException e){
             e.printStackTrace();
-        }
+        }*/
         SpringApplication.run(DemoApplication.class, args);
     }
 
