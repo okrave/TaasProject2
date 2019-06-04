@@ -138,7 +138,8 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .maximumSessions(1);
         http.csrf().disable();
 
-
+        // make me do REST-Post
+        http.csrf().disable();
     }
 
 

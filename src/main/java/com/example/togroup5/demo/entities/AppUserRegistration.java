@@ -1,6 +1,8 @@
 package com.example.togroup5.demo.entities;
 
 import com.example.togroup5.demo.utils.EncryptedPasswordUtils;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AppUserRegistration {
 
@@ -11,13 +13,18 @@ public class AppUserRegistration {
 
     public AppUserRegistration(){}
 
-    public AppUserRegistration(String userName, String password, String repeatPassword, String email) {
+    @JsonCreator
+    public AppUserRegistration(
+            @JsonProperty("userName")       String userName,
+            @JsonProperty("password")       String password,
+            @JsonProperty("passwordRepeat") String repeatPassword,
+            @JsonProperty("email")          String email) {
         if(!password.equals(repeatPassword))
             throw new IllegalArgumentException("Password non combaciano");
 
         this.setUserName(userName);
         this.setPassword(password);
-        this.setRepeatPassword(repeatPassword);
+        this.repeatPassword = this.password; //faster and not-repeating than this.setRepeatPassword(repeatPassword);
         this.setEmail(email);
 
     }
@@ -54,8 +61,12 @@ public class AppUserRegistration {
         this.email = email;
     }
 
+    @Override
     public String toString(){
         return "userName: " + this.userName+ "password: " + this.password + "email: "  + this.email;
+    }
 
+    public AppUser toAppUser(){
+        return new AppUser(userName, password, email, true);
     }
 }
