@@ -4,6 +4,8 @@ import com.example.togroup5.demo.servicies.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -100,12 +102,13 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .formLogin()
-                    .loginProcessingUrl("/j_spring_security_check")
+                    .loginProcessingUrl("/auth/login_check")
                     .loginPage("/login")
                     .failureUrl("/login?error=true")
                     .usernameParameter("username")//
                     .passwordParameter("password")
                     .and()
+                    .logout().logoutSuccessUrl("/home");
 
 
 
@@ -117,12 +120,12 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 * The deleteCookies method is simple as well:
                 * */
 
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/home")
+                /*.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/home")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()
-                .rememberMe().tokenRepository(this.persistentTokenRepository()) // Config Remember me
-                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
+                .rememberMe().tokenRepository(this.persistentTokenRepository()) // Config Remember m
+                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h*/
         /*
         * An user accesses a website and logs in. Then he/she turns off the browser and accesses the website at some time (for example, on the next day),
         * and he/she has to log in again, which causes unnecessary trouble.
@@ -150,13 +153,18 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         return db;
     }
 
-    /*Authentificazione per capire se un utente è nel db o no*/
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        //Setting service to find User in database, and setting passwordEncoder
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth)throws Exception{
+            auth.userDetailsService(userDetailsService);
     }
 
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

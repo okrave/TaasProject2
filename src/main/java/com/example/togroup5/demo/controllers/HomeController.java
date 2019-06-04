@@ -5,8 +5,13 @@ import com.example.togroup5.demo.entities.AppUserRegistration;
 import com.example.togroup5.demo.servicies.UserService;
 import com.example.togroup5.demo.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,12 +21,15 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class HomeController {
+
 
     @Autowired
     UserService userService;
@@ -30,7 +38,7 @@ public class HomeController {
     public String index(Model model){
         model.addAttribute("title","Welcome");
         model.addAttribute("message","This is welcome page!");
-        return "index";
+        return "Home";
     }
 
     @GetMapping(value="/home")
