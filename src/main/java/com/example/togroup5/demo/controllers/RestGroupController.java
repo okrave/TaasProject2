@@ -11,24 +11,25 @@ import java.sql.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "Group")
 public class RestGroupController {
 
     @Autowired
     GroupService groupService;
 
-    @GetMapping(value = "/Group/listGroupRest")
+    @GetMapping(value = "/listGroupRest")
     public List<AppGroup> listGroup(){
         List<AppGroup> allGroup = groupService.listAllGroup();
         return allGroup;
     }
 
-    @GetMapping(value = "/Tag/listTagRest")
+    @GetMapping(value = "/listTagRest")
     public List<AppTag> listTagRest(){
         List<AppTag> allTag = groupService.listAllTag();
         return allTag;
     }
 
-    @GetMapping(value = "/Tag/createAllTag")
+    @GetMapping(value = "/createAllTag")
     public void createAllTag(){
         AppTag newTag = new AppTag("Vacanze");
         groupService.saveTag(newTag);
@@ -46,7 +47,7 @@ public class RestGroupController {
         groupService.saveTag(newTag);
     }
 
-    @GetMapping(value = "/Group/createRandomGroup")
+    @GetMapping(value = "/createRandomGroup")
     public void createAllGroup(){
         //AppGroup(String groupName, String description, Date groupDate, String creator)
         AppGroup newGroup = new AppGroup("Gita a cavallo","incredibile gita a cavallo",new Date(1995,8,7),"Luca");
@@ -56,15 +57,20 @@ public class RestGroupController {
 
     }
 
-    @GetMapping(value="/Group/{groupName}")
+    @GetMapping(value="/{groupName}")
     public List<AppGroup> findGroupByName(@PathVariable String groupName){
         return groupService.findByGroupName(groupName);
     }
 
 
-    @RequestMapping(value = "/Group/createGroup" ,method = RequestMethod.POST)
+    @RequestMapping(value = "/createGroupString" ,method = RequestMethod.POST)
+    public void newGroup(@RequestBody String appGroup){
+        System.out.println(appGroup);
+        //groupService.saveGroup(appGroup);
+    }
+
+    @RequestMapping(value = "/createGroup" ,method = RequestMethod.POST)
     public void newGroup(@RequestBody AppGroup appGroup){
-        System.out.println("asdasd");
         groupService.saveGroup(appGroup);
     }
 

@@ -10,6 +10,24 @@ let app;
 //----------------------------------------------------------------------------------------------------------------------
 
 window.onload = _ => {
+
+    $(document).ready(function(){
+        $('#linkLogin').click(function(){
+            $('#registerModal').modal('hide');
+            $('#loginModal').modal('show');
+        });
+        $('#linkRegistration').click(function(){
+            $('#loginModal').modal('hide');
+            $('#registerModal').modal('show');
+        });
+        $('#nav-linkRegister').click(function(){
+            $('#loginModal').modal('show');
+        });
+        $('#nav-linkLogin').click(function(){
+            $('#loginModal').modal('show');
+        });
+    });
+
     app = new Vue({
         el: "#appLoginRegister",
         data: {
