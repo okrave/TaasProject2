@@ -63,9 +63,14 @@ public class RestGroupController {
     }
 
 
+    @RequestMapping(value = "/createGroupString" ,method = RequestMethod.POST)
+    public void newGroup(@RequestBody String appGroup){
+        System.out.println(appGroup);
+        //groupService.saveGroup(appGroup);
+    }
+
     @RequestMapping(value = "/createGroup" ,method = RequestMethod.POST)
     public void newGroup(@RequestBody AppGroup appGroup){
-        System.out.println("asdasd");
         groupService.saveGroup(appGroup);
     }
 
