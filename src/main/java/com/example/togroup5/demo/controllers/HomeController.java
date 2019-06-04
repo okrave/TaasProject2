@@ -76,7 +76,7 @@ public class HomeController {
     /*@GetMapping(value = "/logout")
     public String logoutSuccessfulPage(Model model) {
         model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
+        return "home";
     }*/
 
     @GetMapping(value = "/userInfo")
