@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface AppGroupRepository extends JpaRepository<AppGroup,Long> {
     List<AppGroup> findDistinctByCreator(String creator);
+
+    List<AppGroup> findDistinctByGroupName(String groupName);
 }

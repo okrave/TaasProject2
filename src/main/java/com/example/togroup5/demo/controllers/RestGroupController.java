@@ -3,9 +3,9 @@ package com.example.togroup5.demo.controllers;
 import com.example.togroup5.demo.entities.AppGroup;
 import com.example.togroup5.demo.entities.AppTag;
 import com.example.togroup5.demo.servicies.GroupService;
+import org.glassfish.jersey.jaxb.internal.XmlJaxbElementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -46,7 +46,7 @@ public class RestGroupController {
         groupService.saveTag(newTag);
     }
 
-    @GetMapping(value = "/Group/createAllGroup")
+    @GetMapping(value = "/Group/createRandomGroup")
     public void createAllGroup(){
         //AppGroup(String groupName, String description, Date groupDate, String creator)
         AppGroup newGroup = new AppGroup("Gita a cavallo","incredibile gita a cavallo",new Date(1995,8,7),"Luca");
@@ -55,6 +55,20 @@ public class RestGroupController {
         groupService.saveGroup(newGroup);
 
     }
+
+    @GetMapping(value="/Group/{groupName}")
+    public List<AppGroup> findGroupByName(@PathVariable String groupName){
+        return groupService.findByGroupName(groupName);
+    }
+
+
+    @RequestMapping(value = "/Group/createGroup" ,method = RequestMethod.POST)
+    public void newGroup(@RequestBody AppGroup appGroup){
+        System.out.println("asdasd");
+        groupService.saveGroup(appGroup);
+    }
+
+
 
 
 }

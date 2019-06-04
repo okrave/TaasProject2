@@ -1,3 +1,5 @@
+
+
 server:
   port: 8282
 spring:
@@ -28,6 +30,8 @@ spring:
         format_sql: true
         temp:
           use_jdbc_metadata_defaults: false
+  jackson:
+    date-format: dd-MM-yyyy
 
 #Configurazione per i social(facebook per ora)
 security:

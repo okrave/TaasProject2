@@ -39,4 +39,8 @@ public class GroupService {
     public void saveGroup(AppGroup newGroup) {
         appGroupRepository.save(newGroup);
     }
+
+    public List<AppGroup> findByGroupName(String groupName) {
+        return appGroupRepository.findDistinctByGroupName(groupName);
+    }
 }

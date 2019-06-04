@@ -136,6 +136,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .maximumSessions(1);
+        http.csrf().disable();
 
 
     }
