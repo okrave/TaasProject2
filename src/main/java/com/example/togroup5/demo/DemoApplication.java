@@ -31,7 +31,7 @@ public class DemoApplication extends WebSecurityConfigurerAdapter {
                 .and().logout().logoutSuccessUrl("/").permitAll();
     }
 
-    @RequestMapping("/user2")
+    @RequestMapping("/user")
     public Principal user (Principal principal) {
         return principal;
     }

@@ -1,48 +1,53 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
-    <title th:utext="${title}"></title>
+   <meta charset="UTF-8">
+     <title>Title</title>
 </head>
 
 <body>
 
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
-
-<h2>Message : <span th:utext="${message}"></span></h2>
-
-<div class="Wrapper">
-      <div class="unauthenticated">
-        <a class="btn" href="/login">Login</a>
-      </div>
-      <div class="authenticated" style="display: none">
-        Logged in as: <span id="user2"></span>
-        <div><button onClick="logout()" class="btn">Logout</button></div>
-      </div>
-
-</div>
+    <div class="Wrapper">
+           <div class="unauthenticated">
+             <a class="btn" href="/login">Login</a>
+           </div>
+           <div class="authenticated" style="display: none">
+             Logged in as: <span id="user"></span>
+             <div><button onClick="logout()" class="btn">Logout</button></div>
+           </div>
+    </div>
 
 </body>
+<script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 <script>
+
     // if (window.location.hash == '#_=_'){
     //       history.replaceState
     //           ? history.replaceState(null, null, window.location.href.split('#')[0])
     //           : window.location.hash = '';
     //   }
 
-    $.get("/user2", function(data) {
-        $("#user2").html(data.userAuthentication.details.name);
+    $.get("/user", function(data) {
+        $("#user").html(data.userAuthentication.details.name);
         $(".unauthenticated").hide();
         $(".authenticated").show();
       });
 
     var logout = function() {
         $.post("/logout", function() {
-          $("#user2").html('');
+          $("#user").html('');
           $(".unauthenticated").show();
           $(".authenticated").hide();
         });
         return true;
       }
 </script>
+
 </html>
