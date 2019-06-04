@@ -5,13 +5,13 @@ import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
 
 import static com.example.togroup5.demo.utils.EncryptedPasswordUtils.encryptePassword;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 public class RestHomeController{
@@ -21,7 +21,8 @@ public class RestHomeController{
 
     @GetMapping(value = "/resthome")
     public String resthome(){
-        return "ciao";
+        // Il tipo di ritorno String viene interpretato come JSON
+        return "[\"greetings\", \"ciao\"]";
     }
 
     @GetMapping(value = "/User/createUser")
@@ -31,13 +32,32 @@ public class RestHomeController{
         userService.save(user);
         user = new AppUser("dbadmin1",encryptePassword("123"),"lol@lolool.it",true);
         userService.save(user);
-
     }
 
-    @GetMapping(value= "/listaUtenti")
-    public List<AppUser> userList(Model model){
+    @RequestMapping(
+            value = "/User/register",
+            method = POST
+    )
+    public boolean register(@RequestBody AppUser newUser){
+        // the password is given in a clear format, I guess, so encrypt it
+        newUser.setEncrytedPassword(encryptePassword(newUser.getEncrytedPassword()));
+        if(!userService.containsUser(newUser)) {
+            userService.save(newUser);
+            return true;
+        }
+        return false;
+    }
+
+
+    @GetMapping(value= "/listAllUsers")
+    public List<AppUser> listAllUsers(Model model){
         List<AppUser> allUser = userService.findAll();
         return allUser;
+    }
+
+    @GetMapping(value = "/ping")
+    public boolean ping(){
+        return true;
     }
 
 }

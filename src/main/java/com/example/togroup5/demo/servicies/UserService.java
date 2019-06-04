@@ -30,4 +30,8 @@ public class UserService {
     public List<AppUser> findAll(){
         return appUserRepository.findAll();
     }
+
+    public boolean containsUser(AppUser user){
+        return appUserRepository.findAppUserByUserName(user.getUserName()) != null;
+    }
 }

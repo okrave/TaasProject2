@@ -142,19 +142,43 @@
          */
         status() {
             return new Promise((resolve, reject) => {
-                fetch(this.baseURL + `/`) //fetch 'e una funzione delle Promise, che mi pare Vue renda disponibile se assente
-        .then(response => response.json())
-        .then(response => {
-                if (response.hasOwnProperty("ErrorDetail")) {
-                reject(response);
-            }
-            resolve(response);
-        });
-        });
+                fetch(this.baseURL + `/ping`) //fetch 'e una funzione delle Promise, che mi pare Vue renda disponibile se assente
+                    .then(response => {
+                        console.log("on ping i get: ")
+                        console.log(response);
+                        console.log("havig as .json():");
+                        console.log(response.json());
+                        return response.json();
+                    })
+                    .then(response => {
+                            if (response.hasOwnProperty("ErrorDetail")) {
+                            reject(response);
+                        }
+                        resolve(response);
+                    });
+                });
         }
 
         ping() {
             return this.status();
+        }
+
+        restHome(){
+            console.log("REST HOME")
+            return new Promise((resolve, reject) => {
+                fetch(this.baseURL + `/resthome`)
+                    .then(response => {
+                        console.log("restHome: "+response);
+                        console.log(response.json());
+                        return response.json()
+                    })
+                    .then(response => {
+                        if (response.hasOwnProperty("ErrorDetail")) {
+                            reject(response);
+                        }
+                        resolve(response);
+                    });
+            });
         }
     }
 

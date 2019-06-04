@@ -2,9 +2,9 @@ server:
   port: 8282
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/toGroup
-    username: postgres
-    password: admin
+    url: jdbc:postgresql://localhost:5432/togroup
+    username: lonevetad
+    password: lonevetad
     driver-class-name: org.postgresql.Driver
   thymeleaf:
     cache: false
