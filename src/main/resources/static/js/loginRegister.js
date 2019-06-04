@@ -54,15 +54,16 @@ window.onload = _ => {
             }
 
             , register(){
-                let userInfo;
-
-                userInfo = new User(this.userInfo.username, this.userInfo.password, this.userInfo.email, true);
+                let userInfo, thisVue;
+                userInfo = new UserRegistration(this.userInfo.username, this.userInfo.password, this.userInfo.passwordConfirmation, this.userInfo.email);
+                thisVue = this;
                 this.toGroupAPI
                     .getUserEndpoint()
                     .register(userInfo)
                     .then(resp => {
                         console.log("registered :D");
                         console.log(resp);
+                        thisVue.userInfo.username = resp ? "registration successfull" : "username yet present";
                     })
                     .catch(this.createErrorHandler("register"));
             }

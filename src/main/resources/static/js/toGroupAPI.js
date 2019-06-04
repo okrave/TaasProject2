@@ -218,13 +218,13 @@ class GroupAPI {
 }
 
 /** Represents a User, without a ID set */
-class User {
+class UserRegistration {
 //it's the API payload
-	constructor(userName, password, email, enabled) {
+	constructor(userName, password, passwordRepeat, email) {
 		this.userName = userName;
 		this.password = password;
+		this.passwordRepeat = passwordRepeat;
 		this.email = email;
-		this.enabled = enabled;
 	}
 }
 /** Represents a User */

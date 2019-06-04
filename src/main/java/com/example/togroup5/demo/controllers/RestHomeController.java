@@ -1,7 +1,7 @@
 package com.example.togroup5.demo.controllers;
 
-import com.example.togroup5.demo.entities.AppGroup;
 import com.example.togroup5.demo.entities.AppUser;
+import com.example.togroup5.demo.entities.AppUserRegistration;
 import com.example.togroup5.demo.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -38,11 +38,11 @@ public class RestHomeController{
             value = "/User/register",
             method = POST
     )
-    public boolean register(@RequestBody AppUser newUser){
-        // the password is given in a clear format, I guess, so encrypt it
-        newUser.setEncrytedPassword(encryptePassword(newUser.getEncrytedPassword()));
-        if(!userService.containsUser(newUser)) {
-            userService.save(newUser);
+    public boolean register(@RequestBody AppUserRegistration newUser){
+        AppUser user;
+        user = newUser.toAppUser();
+        if(!userService.containsUser(user)) {
+            userService.save(user);
             return true;
         }
         return false;

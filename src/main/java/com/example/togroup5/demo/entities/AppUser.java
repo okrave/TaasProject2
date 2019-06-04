@@ -1,9 +1,6 @@
 package com.example.togroup5.demo.entities;
 
 import com.example.togroup5.demo.utils.EncryptedPasswordUtils;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
@@ -27,12 +24,7 @@ public class AppUser {
 
     public AppUser (){}
 
-    @JsonCreator
-    public AppUser(
-            @JsonProperty("userName")   String userName,
-            @JsonProperty("password")   String encrytedPassword,
-            @JsonProperty("email")      String userEmail,
-            @JsonProperty("enabled")    boolean enabled) {
+    public AppUser(String userName, String encrytedPassword, String userEmail, boolean enabled) {
         this.userName = userName;
         this.encrytedPassword = encrytedPassword;
         this.userEmail  = userEmail;
