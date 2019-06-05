@@ -1,13 +1,12 @@
 package com.example.togroup5.demo.controllers;
 
 import com.example.togroup5.demo.entities.AppUser;
-import com.example.togroup5.demo.entities.AppUserRegistration;
+import com.example.togroup5.demo.entities.newEntities.AppUserRegistration;
 import com.example.togroup5.demo.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.util.List;
 
 import static com.example.togroup5.demo.utils.EncryptedPasswordUtils.encryptePassword;
