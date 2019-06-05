@@ -52,6 +52,19 @@ window.onload = _ => {
                     })
                     .catch(this.createErrorHandler("reload users list"))
             }
+
+            , removeUser(userId){
+                const thisVue = this;
+                this.toGroupAPI
+                    .getUserEndpoint()
+                    .removeByID(userId)
+                    .then(_ => {
+                        console.log("user " + userId + "removed :D");
+                        thisVue.reloadUserList();
+                    })
+                    .catch(this.createErrorHandler("remove user with id: " + userId))
+
+            }
         }
     });
 };

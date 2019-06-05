@@ -19,6 +19,10 @@ public class RestHomeController{
     @Autowired
     private UserService userService;
 
+    @GetMapping(value = "/ping")
+    public boolean ping(){
+        return true;
+    }
     @GetMapping(value = "/resthome")
     public String resthome(){
         // Il tipo di ritorno String viene interpretato come JSON
@@ -55,9 +59,14 @@ public class RestHomeController{
         return allUser;
     }
 
-    @GetMapping(value = "/ping")
-    public boolean ping(){
-        return true;
+
+
+    /**Remove the user identified by its ID.
+     * @return true if the user existed and then is successfully removed, false otherwise.*/
+    @DeleteMapping(value = "/User/deleteByID/{userId}")
+    public boolean deleteUserByID(@PathVariable Long userId){
+        return userService.delete(userId);
     }
+
 
 }
