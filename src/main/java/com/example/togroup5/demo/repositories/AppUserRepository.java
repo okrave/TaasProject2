@@ -46,8 +46,17 @@ public class AppUserRepository {
         appUserJpa.save(user);
     }
 
-    public void delete(Long userId){
+    public boolean delete(Long userId){
         appUserJpa.deleteById(userId);
+        return true;
+    }
+
+    public boolean delete(String username){
+        AppUser user;
+        user = findAppUserByUserName(username);
+        if(user == null) return false;
+        appUserJpa.delete(user);
+        return true;
     }
 
     // query methods

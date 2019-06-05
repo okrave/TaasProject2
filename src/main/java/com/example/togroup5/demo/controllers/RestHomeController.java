@@ -68,5 +68,11 @@ public class RestHomeController{
         return userService.delete(userId);
     }
 
+    /**Remove the user identified by its username.
+     * @return true if the user existed and then is successfully removed, false otherwise.*/
+    @DeleteMapping(value = "/User/deleteByUsername/{userName}")
+    public boolean deleteUserByUsername(@PathVariable String userName){
+        return userService.delete(userName);
+    }
 
 }

@@ -150,12 +150,10 @@ class UserAPI {
 
 	removeByID(userID){
 		return new Promise((resolve, reject) => {
-			fetch(this.baseURL + `/deleteByID`, {
-				method: 'DELETE',
-				headers: {'Content-Type': 'application/json'},
-				body: JSON.stringify({
-						"userID": userID
-					})
+			fetch(this.baseURL + `/deleteByID/` + userID, {
+				method: 'DELETE'
+				//, headers: {'Content-Type': 'application/json'}
+				//, body: JSON.stringify({ "userID": userID }),
 			})
 				.then(response => response.json())
 				.then(response => {

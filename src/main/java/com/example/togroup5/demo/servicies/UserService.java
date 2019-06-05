@@ -33,6 +33,10 @@ public class UserService {
         return false;
     }
 
+    public boolean delete(String username){
+        return appUserRepository.delete(username);
+    }
+
     // query methods
 
     public boolean containsUser(AppUser user){
