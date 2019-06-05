@@ -60,6 +60,11 @@ window.onload = _ => {
                     .removeByID(userId)
                     .then(_ => {
                         console.log("user " + userId + " removed :D");
+                        thisVue.errorMessage = "user " + userId + " removed :D";
+                        setTimeout( ()=>{
+                            //delete the error
+                            thisVue.errorMessage = null;
+                        }, 3000);
                         thisVue.reloadUserList();
                     })
                     .catch(this.createErrorHandler("remove user with id: " + userId))

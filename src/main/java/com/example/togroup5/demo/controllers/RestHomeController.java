@@ -26,7 +26,7 @@ public class RestHomeController{
     @GetMapping(value = "/resthome")
     public String resthome(){
         // Il tipo di ritorno String viene interpretato come JSON
-        return "[\"greetings\", \"ciao\"]";
+        return "[\"greetings\", 7, \"ciao\"]";
     }
 
     @GetMapping(value = "/User/createUser")
