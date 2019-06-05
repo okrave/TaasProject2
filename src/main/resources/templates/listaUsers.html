@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" >
+<!--
+xmlns:th="http://www.w3.org/1999/xhtml"
+-->
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -11,30 +14,71 @@
             color: blue;
         }
     </style>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="js/toGroupAPI.js"      th:src="@{/js/toGroupAPI.js}"></script>
+
+    <script src="js/listUsers.js"   th:src="@{/js/listUsers.js}"></script>
 </head>
 <body>
-<!-- Include _menu.html -->
+
 <th:block th:include="/_menu"></th:block>
-<h2>Members</h2>
-<table border="1">
-    <tr>
-        <th>ID User</th>
-        <th>User Name</th>
-        <th>Password criptata</th>
-        <th>Email</th>
-        <th>Delete</th>
 
-    </tr>
-    <tr th:each ="member : ${members}">
-        <td th:utext="${member.userId}">...</td>
-        <td th:utext="${member.userName}">...</td>
-        <td th:utext="${member.encrytedPassword}">...</td>
-        <td th:utext="${member.UserEmail}">...</td>
-        <td><a th:href="@{/deleteUser}">delete user</a></td>
+<!-- Include _menu.html -->
+    <div id="appListUser">
+
+        <button @click="reloadUserList()">Reload User list</button>
+
+        <p v-if="errorMessage != null">
+            {{errorMessage}}
+        </p>
+
+        <h2>Members</h2>
+
+        <input type="checkbox" id="checkShowPassword" v-model="showPassword" name="checkbox" checked="false">
+        <label for="checkShowPassword">Show Password?</label>
 
 
-    </tr>
-</table>
+        <table border="1">
+            <tr>
+                <th>Delete</th>
+                <th>ID User</th>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Enabled</th>
+                <th>Encrypted Password (maybe)</th>
+            </tr>
+            <tr v-for="user in users">
+                <td>
+                    <button @click="deleteUser(user.userId)">Delete</button>
+                </td>
+                <td>
+                    <div>{{user.userId}}</div>
+                </td>
+                <td>
+                    <div>{{user.userName}}</div>
+                </td>
+                <td>
+                    <div>{{user.userEmail}}</div>
+                </td>
+                <td>
+                    <div>{{user.enabled}}</div>
+                </td>
+                <td v-if="showPassword">
+                    <div>{{user.encrytedPassword}}</div>
+                </td>
+            <!--
+            <tr th:each ="member : ${members}">
+                <td th:utext="${member.userId}">...</td>
+                <td th:utext="${member.userName}">...</td>
+                <td th:utext="${member.encrytedPassword}">...</td>
+                <td th:utext="${member.UserEmail}">...</td>
+                <td><a th:href="@{/deleteUser}">delete user</a></td>
+            </tr>
+            -->
+        </table>
+    </div>
 
 </body>
 </html>

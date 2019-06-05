@@ -26,7 +26,7 @@ public class RestHomeController{
     }
 
     @GetMapping(value = "/User/createUser")
-    public void createAllGroup(){
+    public void createUsers(){
         //(String userName, String encrytedPassword, String userEmail, boolean enabled)
         AppUser user = new AppUser("dbuser1",encryptePassword("123"),"lol@lol.it",true);
         userService.save(user);
@@ -49,7 +49,7 @@ public class RestHomeController{
     }
 
 
-    @GetMapping(value= "/listAllUsers")
+    @GetMapping(value= "/User/listAllUsers")
     public List<AppUser> listAllUsers(Model model){
         List<AppUser> allUser = userService.findAll();
         return allUser;

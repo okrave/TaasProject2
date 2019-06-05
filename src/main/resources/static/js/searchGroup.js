@@ -35,12 +35,7 @@ window.onload = _ => {
 		methods: {
 			// utils
 
-			tryParseJSON(aProbablyJSON) {
-				if ((typeof aProbablyJSON) === 'string') { //it's still a JSON? if yes, parse it
-					return JSON.parse(aProbablyJSON);
-				}
-				return aProbablyJSON;
-			},
+
 			errorHandling(functionName){
 				return err => {
 					console.log("error on " + functionName + ":");
