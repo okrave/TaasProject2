@@ -59,10 +59,6 @@ window.onload = _ => {
 
             , ping(){
                 this.toGroupAPI.ping().then( resp => console.log("pinged :D " + resp) );
-                this.restHome();
-            }
-            , restHome(){
-                this.toGroupAPI.restHome().then(resp => console.log(resp));
             }
 
             , login(){
