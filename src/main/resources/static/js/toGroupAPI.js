@@ -4,8 +4,22 @@
  * and open the template in the editor.
  */
 
+
+
 const APIUrl = "http://localhost:8282";
+
+// little utils
+
+const checkResponseHoldsErrors = function(response){
+	return ( response.hasOwnProperty("ErrorDetail")
+		|| (response.hasOwnProperty('status') && response.hasOwnProperty('error') &&
+				(response.status >= 300 || response.status < 200)) // not a "ok" response
+		);
+}
+
+
 //
+
 class ToGroup {
 
 	constructor(url = null) {
@@ -33,7 +47,7 @@ class ToGroup {
 			fetch(this.baseURL + `/ping`) //fetch 'e una funzione delle Promise, che mi pare Vue renda disponibile se assente
 			.then(response => response.json())
 			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
+				if (checkResponseHoldsErrors(response)) {
 					reject(response);
 				}
 				resolve(response);
@@ -52,7 +66,7 @@ class ToGroup {
 			})
 				.then(response => response.json())
 				.then(response => {
-					if (response.hasOwnProperty("ErrorDetail")) {
+					if (checkResponseHoldsErrors(response)) {
 						reject(response);
 					}
 					resolve(response);
@@ -87,7 +101,7 @@ class UserAPI {
 			})
 			.then(response => response.json())
 			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
+				if (checkResponseHoldsErrors(response)) {
 					reject(response);
 				}
 				resolve(response);
@@ -103,7 +117,7 @@ class UserAPI {
 			})
 			.then(response => response.json())
 			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
+				if (checkResponseHoldsErrors(response)) {
 					reject(response);
 				}
 				resolve(response);
@@ -125,13 +139,32 @@ class UserAPI {
 			})
 				.then(response => response.json())
 				.then(response => {
-					if (response.hasOwnProperty("ErrorDetail")) {
+					if (checkResponseHoldsErrors(response)) {
 						reject(response);
 					}
 					resolve(response);
 				})
 				.catch(reject);
 		});
+	}
+
+	removeByID(userID){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/deleteByID/` + userID, {
+				method: 'DELETE'
+				//, headers: {'Content-Type': 'application/json'}
+				//, body: JSON.stringify({ "userID": userID }),
+			})
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
+		});
+
 	}
 }
 
@@ -161,7 +194,7 @@ class GroupAPI {
 			})
 			.then(response => response.json())
 			.then(response => {
-					if (response.hasOwnProperty("ErrorDetail")) {
+					if (checkResponseHoldsErrors(response)) {
 						reject(response);
 					}
 					resolve(response);
@@ -191,7 +224,7 @@ class GroupAPI {
 			})
 			.then(response => response.json())
 			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
+				if (checkResponseHoldsErrors(response)) {
 					reject(response);
 				}
 				resolve(response);
@@ -207,7 +240,7 @@ class GroupAPI {
 			})
 			.then(response => response.json())
 			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
+				if (checkResponseHoldsErrors(response)) {
 					reject(response);
 				}
 				resolve(response);

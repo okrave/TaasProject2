@@ -54,6 +54,14 @@ public class RestGroupController {
         groupService.saveGroup(newGroup);
         newGroup = new AppGroup("Ballo di gruppo","incredibile ballo i gruppo",new Date(1996,8,7),"Davide");
         groupService.saveGroup(newGroup);
+        newGroup = new AppGroup("TarTAASSiamoci","Lavoriamo al progetto!", Date.valueOf("2019-06-06"),"Lonevetad");
+        groupService.saveGroup(newGroup);
+        newGroup = new AppGroup("IngrAASSiamo","Si ragiona meglio a stomaco pieno: all you can eat!", Date.valueOf("2019-06-06"),"Lonevetad");
+        groupService.saveGroup(newGroup);
+        newGroup = new AppGroup("Lindy Hop","Un ballo di coppia stile anni 20-30-40, molto rilassante ma energico, per ben concludere la serata.", Date.valueOf("2019-06-06"),"Lonevetad");
+        groupService.saveGroup(newGroup);
+        newGroup = new AppGroup("Cin Cin","Bevuta rinfrescante a tema relax.", Date.valueOf("2019-06-07"),"Bender");
+        groupService.saveGroup(newGroup);
 
     }
 
