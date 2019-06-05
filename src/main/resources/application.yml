@@ -1,16 +1,12 @@
 server:
   port: 8080
-spring.main.allow-bean-definition-overriding: true
 spring:
-
   datasource:
-
     url: jdbc:postgresql://localhost:5432/ilmiodb
     username: ale
     password: pass
     driver-class-name: org.postgresql.Driver
   thymeleaf:
-
     cache: false
     check-template: true
     check-template-location: true
@@ -33,19 +29,15 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
 
-#Configurazione per i social(facebook per ora)
 security:
   oauth2:
     client:
-      client-id: 372321790055906
-      client-secret: 78430eeee2421e47c72e60145abf7bdb
-      access-token-uri: https://graph.facebook.com/oauth/access_token
+      clientId: 372321790055906
+      clientSecret: 78430eeee2421e47c72e60145abf7bdb
+      accessTokenUri: https://graph.facebook.com/oauth/access_token
       userAuthorizationUri: https://www.facebook.com/dialog/oauth
-      token-name: oauth_token
-      authentication-scheme: query
-      client-authentication-scheme: form
+      tokenName: oauth_token
+      authenticationScheme: query
+      clientAuthenticationScheme: form
     resource:
       userInfoUri: https://graph.facebook.com/me
-
-
-

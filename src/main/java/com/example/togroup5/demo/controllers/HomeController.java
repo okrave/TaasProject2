@@ -56,9 +56,9 @@ public class HomeController {
         return "admin";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user_app")
     public String user() {
-        return "user/index";
+        return "user_app/index";
     }
 
     @GetMapping("/about")
@@ -82,7 +82,7 @@ public class HomeController {
     @GetMapping(value = "/userInfo")
     public String userInfo(Model model, Principal principal) {
 
-        // After user login successfully.
+        // After user_app login successfully.
         String userName = principal.getName();
 
         System.out.println("User Name: " + userName);
@@ -105,7 +105,7 @@ public class HomeController {
 
     @PostMapping (value = "/registration")
     public String createUser(ModelAndView modelAndView, @Valid AppUserRegistration user, BindingResult bindingResult, HttpServletRequest request){
-        //AppUser existUser = userService.findByUsername(user.getUserName());
+        //AppUser existUser = userService.findByUsername(user_app.getUserName());
         System.out.println("Dentro registration: "+ user);
         AppUser supportUser = userService.findByUsername(user.getUserName());
         if(supportUser != null){

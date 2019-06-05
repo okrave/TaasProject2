@@ -50,7 +50,7 @@ public class AppUserRepository {
     }
 
     /**
-     * Di default aggiungo un user con Role = ROLE_USER
+     * Di default aggiungo un user_app con Role = ROLE_USER
      * Role = 1 -> ROLE_ADMIN , Role = 2 -> ROLE_USER
     */
     public void save(AppUser user){
