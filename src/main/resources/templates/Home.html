@@ -3,21 +3,22 @@
 <head>
 
     <title> Home </title>
-    <th:block th:replace="fragments/header :: header" />
+
+    <th:block th:insert="fragments/header.html :: headerInclusions" />+++
+
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <script src="js/toGroupAPI.js"      th:src="@{/js/toGroupAPI.js}"></script>
 
     <script src="js/loginRegister.js"   th:src="@{/js/loginRegister.js}"></script>
 </head>
 
 <body>
+
+<th:block th:replace="fragments/navbar :: navbar" />
+
 <div id="appLoginRegister">
 
-    <th:block th:replace="fragments/navbar :: navbar" />
-
+    <th:block th:insert="fragments/header.html :: notificationMessages" />
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">

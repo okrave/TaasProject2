@@ -25,7 +25,7 @@ window.onload = _ => {
 				tags		: []
 			}
 			, tag : ""
-			, errorMessage: null
+			, messages: new NotificationsMessage()
 			, groups: []
 		},
 		created(){
@@ -40,7 +40,7 @@ window.onload = _ => {
 				return err => {
 					console.log("error on " + functionName + ":");
 					console.log(err);
-					this.errorMessage = err;
+					this.messages.setErrorMessage(err);
 				};
 			},
 
@@ -76,7 +76,6 @@ window.onload = _ => {
 				.ping()
 				.then(response => {
 					console.log("connected successfully");
-					this.errorMessage = null;
 				})
 				.catch(this.errorHandling("ping"));
 			},
@@ -90,18 +89,20 @@ window.onload = _ => {
 				.getGroupEndpoint()
 				.listAllGroups()
 				.then(resp => {
-					console.log("groups arrived");
+					console.log("groups fetched");
 					this.groups = resp
 				})
 				.catch(this.errorHandling("listAllGroups"));
 			},
 
 			newGroup(){
+				let thisVue = this;
 				this.toGroupAPI
 				.getGroupEndpoint()
 				.newGroup(this.filterSearch)
 				.then(resp => {
 					console.log("group created");
+					thisVue.messages.setSuccessMessage("group created");
 				})
 				.catch(this.errorHandling("newGroup"));
 

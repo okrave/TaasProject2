@@ -2,12 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Search Group</title>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <script src="js/toGroupAPI.js"  th:src="@{/js/toGroupAPI.js}"></script>
+    <th:block th:insert="fragments/header.html :: headerInclusions" />
 
     <script src="js/createGroup.js" th:src="@{/js/createGroup.js}"></script>
 
@@ -16,9 +13,16 @@
 
 <div id="appNewGroup">
 
-    <div v-if="errorMessage !== null">{{errorMessage}}</div>
+    <th:block th:insert="fragments/header.html :: notificationMessages" />
 
     <div id="formNewGroup">
+
+        <div class="progress">
+            <div id="progBarCreateGroup" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 5%">
+            </div>
+        </div>
+
+
 
         <div>
             <input

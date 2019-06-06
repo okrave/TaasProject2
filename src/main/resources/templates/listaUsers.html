@@ -4,7 +4,9 @@
 xmlns:th="http://www.w3.org/1999/xhtml"
 -->
 <head>
-    <meta charset="UTF-8">
+
+    <th:block th:insert="fragments/header.html :: headerInclusions" />
+
     <title>Title</title>
     <style>
         table th, table td {
@@ -15,10 +17,6 @@ xmlns:th="http://www.w3.org/1999/xhtml"
         }
     </style>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <script src="js/toGroupAPI.js"      th:src="@{/js/toGroupAPI.js}"></script>
-
     <script src="js/listUsers.js"   th:src="@{/js/listUsers.js}"></script>
 </head>
 <body>
@@ -28,11 +26,10 @@ xmlns:th="http://www.w3.org/1999/xhtml"
 <!-- Include _menu.html -->
     <div id="appListUser">
 
-        <button @click="reloadUserList()">Reload User list</button>
 
-        <p v-if="errorMessage != null">
-            {{errorMessage}}
-        </p>
+        <th:block th:insert="fragments/header.html :: notificationMessages" />
+
+        <button @click="reloadUserList()">Reload User list</button>
 
         <h2>Members</h2>
 

@@ -20,61 +20,64 @@ public class RestGroupController {
     GroupService groupService;
 
     @GetMapping(value = "/listGroupRest")
-    public List<AppGroup> listGroup(){
+    public List<AppGroup> listGroup() {
         List<AppGroup> allGroup = groupService.listAllGroup();
         return allGroup;
     }
 
     @GetMapping(value = "/listTagRest")
-    public List<AppTag> listTagRest(){
+    public List<AppTag> listTagRest() {
         List<AppTag> allTag = groupService.listAllTag();
         return allTag;
     }
 
+    @GetMapping(value = "/removeAllTags")
+    public void removeAllTags() {
+        groupService.removeAllTags();
+    }
+
     @GetMapping(value = "/createAllTag")
-    public void createAllTag(){
-        AppTag newTag = new AppTag("Vacanze");
-        groupService.saveTag(newTag);
-        newTag = new AppTag("Famiglia");
-        groupService.saveTag(newTag);
-        newTag = new AppTag("Serate di giochi");
-        groupService.saveTag(newTag);
-        newTag = new AppTag("Happy Hour");
-        groupService.saveTag(newTag);
-        newTag = new AppTag("Cibo");
-        groupService.saveTag(newTag);
-        newTag = new AppTag("Studio");
-        groupService.saveTag(newTag);
-        newTag = new AppTag("Danza");
-        groupService.saveTag(newTag);
+    public void createAllTag() {
+        String[] defaultTags;
+        AppTag newTag;
+
+        defaultTags = new String[]{
+                "Vacanze", "Famiglia", "Serate di giochi", "Happy Hour", "Cibo", "Danza", "Relax", "Bere", "Alcolici",
+                "Lavoro", "Cavalli", "Natura", "Divertimento", "Amici", "Sport", "TAASS", "Progetto", "Pranzo",
+                "Università", "Studio"};
+
+        for (String tag : defaultTags) {
+            newTag = new AppTag(tag);
+            groupService.saveTag(newTag);
+        }
     }
 
     @GetMapping(value = "/createRandomGroup")
-    public void createAllGroup(){
+    public void createAllGroup() {
         //AppGroup(String groupName, String description, Date groupDate, String creator)
-        AppGroup newGroup = new AppGroup("Gita a cavallo","incredibile gita a cavallo",new Date(1995,8,7),"Luca");
+        AppGroup newGroup = new AppGroup("Gita a cavallo", "incredibile gita a cavallo", new Date(1995, 8, 7), "Luca");
         groupService.saveGroup(newGroup);
-        newGroup = new AppGroup("Ballo di gruppo","incredibile ballo i gruppo",new Date(1996,8,7),"Davide");
+        newGroup = new AppGroup("Ballo di gruppo", "incredibile ballo i gruppo", new Date(1996, 8, 7), "Davide");
         groupService.saveGroup(newGroup);
-        newGroup = new AppGroup("TarTAASSiamoci","Lavoriamo al progetto!", Date.valueOf("2019-06-06"),"lonevetad");
+        newGroup = new AppGroup("TarTAASSiamoci", "Lavoriamo al progetto!", Date.valueOf("2019-06-06"), "lonevetad");
         groupService.saveGroup(newGroup);
-        newGroup = new AppGroup("IngrAASSiamo","Si ragiona meglio a stomaco pieno: all you can eat!", Date.valueOf("2019-06-06"),"lonevetad");
+        newGroup = new AppGroup("IngrAASSiamo", "Si ragiona meglio a stomaco pieno: all you can eat!", Date.valueOf("2019-06-06"), "lonevetad");
         groupService.saveGroup(newGroup);
-        newGroup = new AppGroup("Lindy Hop","Un ballo di coppia stile anni 20-30-40, molto rilassante ma energico, per ben concludere la serata.", Date.valueOf("2019-06-06"),"lonevetad");
+        newGroup = new AppGroup("Lindy Hop", "Un ballo di coppia stile anni 20-30-40, molto rilassante ma energico, per ben concludere la serata.", Date.valueOf("2019-06-06"), "lonevetad");
         groupService.saveGroup(newGroup);
-        newGroup = new AppGroup("Cin Cin","Bevuta rinfrescante a tema relax.", Date.valueOf("2019-06-07"),"Bender");
+        newGroup = new AppGroup("Cin Cin", "Bevuta rinfrescante a tema relax.", Date.valueOf("2019-06-07"), "Bender");
         groupService.saveGroup(newGroup);
 
     }
 
-    @GetMapping(value="/{groupName}")
-    public List<AppGroup> findGroupByName(@PathVariable String groupName){
+    @GetMapping(value = "/{groupName}")
+    public List<AppGroup> findGroupByName(@PathVariable String groupName) {
         return groupService.findByGroupName(groupName);
     }
 
 
-    @RequestMapping(value = "/createGroupString" ,method = RequestMethod.POST)
-    public void newGroup(@RequestBody String appGroup){
+    @RequestMapping(value = "/createGroupString", method = RequestMethod.POST)
+    public void newGroup(@RequestBody String appGroup) {
         System.out.println(appGroup);
         //groupService.saveGroup(appGroup);
     }

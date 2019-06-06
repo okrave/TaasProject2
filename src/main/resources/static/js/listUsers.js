@@ -16,7 +16,7 @@ window.onload = _ => {
             toGroupAPI: new ToGroup()
             , users: []
             , showPassword: false
-            , errorMessage: null
+            , messages: new NotificationsMessage()
         },
         created() {
             this.ping();
@@ -28,7 +28,7 @@ window.onload = _ => {
                 return function (err) {
                     console.log("Error on method: " + methodName);
                     console.log(err);
-                    thisVue.errorMessage = err;
+                    thisVue.setErrorMessage(err);
                 }
             }
 
@@ -60,10 +60,9 @@ window.onload = _ => {
                     .removeByID(userId)
                     .then(_ => {
                         console.log("user " + userId + " removed :D");
-                        thisVue.errorMessage = "user " + userId + " removed :D";
-                        setTimeout( ()=>{gi
-                            //delete the error
-                            thisVue.errorMessage = null;
+                        thisVue.setSuccessMessage("user " + userId + " removed :D");
+                        setTimeout( () => {
+                            thisVue.messages.clearMessages();
                         }, 3000);
                         thisVue.reloadUserList();
                     })

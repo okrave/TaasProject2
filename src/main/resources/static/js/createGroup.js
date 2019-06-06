@@ -9,12 +9,23 @@ let app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
+class NewGroupProgression{
+    constructor(){
+        this.actualStep = 0;
+        this.maxSteps = 4;
+    }
+
+    setStep
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
 window.onload = _ => {
     app = new Vue({
         el: "#appNewGroup",
         data: {
             toGroupAPI: new ToGroup()
-            , errorMessage: null
+            , messages: new NotificationsMessage()
             , tag: ""
             , newGroupInfo: new GroupNew()
         },

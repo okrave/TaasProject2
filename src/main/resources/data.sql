@@ -10,7 +10,7 @@ create table APP_GROUP
     DESCRIPTION VARCHAR(512) not null,
     DATE DATE not null,
     CREATOR VARCHAR (36)
-)
+) ;
 
 alter table APP_GROUP
   add constraint APP_GROUP_PK primary key (GROUP_ID);
@@ -24,8 +24,8 @@ create table LOCATION
 (
     LOCATION_ID BIGINT not null,
     GEOM geometry(Point, 4326) not null,
-    GROUP_ID BIGINT not null
-)
+ GROUP_ID BIGINT not null
+) ;
 
 create table APP_USER
 (
