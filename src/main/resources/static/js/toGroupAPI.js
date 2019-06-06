@@ -203,33 +203,50 @@ class GroupAPI {
 		});
 	}
 
-	newGroup(filters /*userCreator, title, date, location, maxDistance, description, genre, tags*/) {
+	newGroup(filters) {
 		return new Promise((resolve, reject) => {
-			fetch(this.baseURL + `/newGroup`, {
+			fetch(this.baseURL + `/createGroup`, {
 				method: "POST",
 				body: filters
-					/*{
-					"groupName"		: title,
-					"description"	: description,
-					"groupDate"		: date,
-					"creator"		: userCreator
-					
-					// omessi perchè ancora non gestiti lato back-end
-					// , "location"	: location
-					// , "maxDistance": maxDistance
-					// , "genre"	: genre
-					// , "tags"		: tags
-				}
-					*/
 			})
-			.then(response => response.json())
-			.then(response => {
-				if (checkResponseHoldsErrors(response)) {
-					reject(response);
-				}
-				resolve(response);
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
+		});
+	}
+
+	searchGroup(filters /*userCreator, title, date, location, maxDistance, description, genre, tags*/) {
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/createGroup`, {
+				method: "POST",
+				body: filters
+				/*{
+                "groupName"		: title,
+                "description"	: description,
+                "groupDate"		: date,
+                "creator"		: userCreator
+
+                // omessi perchè ancora non gestiti lato back-end
+                // , "location"	: location
+                // , "maxDistance": maxDistance
+                // , "genre"	: genre
+                // , "tags"		: tags
+            }
+                */
 			})
-			.catch(reject);
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
 		});
 	}
 
@@ -261,7 +278,7 @@ class UserRegistration {
 	}
 }
 /** Represents a User */
-class UserWithID {
+class User {
 //it's the API payload
 	constructor(userID = null, userName, password, email, enabled) {
 		this.userID = userID;
@@ -269,6 +286,27 @@ class UserWithID {
 		this.password = password;
 		this.email = email;
 		this.enabled = enabled;
+	}
+}
+
+
+/** Represents a New-Group informations*/
+class GroupNew {
+//it's the API payload
+	constructor(groupName, description, groupDate, creator
+			/*location, genre, tags*/
+		) {
+		this.groupName = groupName;
+		this.description = description;
+		this.groupDate = groupDate;
+		this.creator = creator;
+
+		// omessi perchè ancora non gestiti lato back-end
+		/*
+		this.location = location;
+		this.genre = genre;
+		this.tags = tags;
+		*/
 	}
 }
 
@@ -281,13 +319,27 @@ class Group {
 		this.description = description;
 		this.groupDate = groupDate;
 		this.creator = creator;
-					
+
 		// omessi perchè ancora non gestiti lato back-end
 		/*
 		this.location = location;
-		this.maxDistance = maxDistance;
+		this.maxDistance = maxDistance; // only for search o.o
 		this.genre = genre;
 		this.tags = tags;
 		*/
+	}
+}
+/** Represents a search-Group informations*/
+class GroupSearch {
+//it's the API payload
+	constructor( groupName="", dateStartRange="2019-01-01", dateEndRange="2048-01-01", creator="", /*location="",*/ maxDistance="0.0", genre="", tags=[]) {
+		this.groupName = groupName;
+		this.dateStartRange = dateStartRange;
+		this.dateEndRange = dateEndRange;
+		this.creator = creator;
+		//this.location = location;
+		this.maxDistance = maxDistance; // only for search o.o
+		this.genre = genre;
+		this.tags = tags;
 	}
 }

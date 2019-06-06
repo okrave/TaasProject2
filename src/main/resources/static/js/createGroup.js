@@ -11,10 +11,10 @@ let app;
 
 window.onload = _ => {
     app = new Vue({
-        el: "#appListUser",
+        el: "#appNewGroup",
         data: {
             toGroupAPI: new ToGroup()
-            , newGroupInfo:
+            , newGroupInfo: new GroupSearch()
             , errorMessage: null
         },
         created() {
@@ -38,7 +38,13 @@ window.onload = _ => {
             }
 
             , createGroup(){
-
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .newGroup(this.newGroupInfo)
+                    .then(response => {
+                        console.log("group created successfully :D");
+                    })
+                    .catch(createErrorHandler("create group"));
             }
         }
     });
