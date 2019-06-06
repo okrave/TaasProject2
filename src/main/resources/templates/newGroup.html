@@ -9,21 +9,21 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="js/toGroupAPI.js"  th:src="@{/js/toGroupAPI.js}"></script>
 
-    <script src="js/searchGroup.js" th:src="@{/js/searchGroup.js}"></script>
+    <script src="js/createGroup.js" th:src="@{/js/createGroup.js}"></script>
 
 </head>
 <body>
 
-<div id="appSearch">
+<div id="appNewGroup">
 
     <div v-if="errorMessage !== null">{{errorMessage}}</div>
 
-    <div id="formSearchGroup">
+    <div id="formNewGroup">
 
         <div>
             <input
                     type="text"
-                    v-model="filterSearch.userCreator"
+                    v-model="newGroupInfo.creator"
                     name="userCreator"
                     placeholder="User creator, if any">
         </div>
@@ -31,14 +31,14 @@
         <div>
             <input
                     type="text"
-                    v-model="filterSearch.title"
+                    v-model="newGroupInfo.groupName"
                     name="title"
                     placeholder="Title of your group/event">
         </div>
 
         <!--
-       v-model="filterSearch.location"
-       -->
+        v-model="newGroupInfo.location"
+        -->
         <div>
             <input
                     type="text"
@@ -46,38 +46,19 @@
                     placeholder="NOT WORKING RIGHT NOW Location: a city or a building">
         </div>
 
-        <!--
-        -->
-        <div>
-            <input
-                    type="number"
-                    v-model="filterSearch.maxDistance"
-                    name="maxDistance"
-                    placeholder="Maximum distance"
-                    value="0.0">
-        </div>
 
         <div>
             <input
                     type="date"
-                    v-model="newGroupInfo.dateStartRange"
-                    name="dateStart"
-                    value="2019-01-01">
-        </div>
-
-
-        <div>
-            <input
-                    type="date"
-                    v-model="newGroupInfo.dateEndRange"
-                    name="dateEnd"
+                    v-model="newGroupInfo.groupDate"
+                    name="groupDate"
                     value="2020-01-01">
         </div>
 
         <div>
             <input
                     type="text"
-                    v-model="filterSearch.description"
+                    v-model="newGroupInfo.description"
                     name="description"
                     placeholder="Description of the group">
         </div>
@@ -85,7 +66,7 @@
         <div>
             <input
                     type="text"
-                    v-model="filterSearch.genre"
+                    v-model="newGroupInfo.genre"
                     name="genre"
                     placeholder="Genre: 'study', 'sport', 'music', 'street art', ...">
         </div>
@@ -99,28 +80,17 @@
             <button name="addTag" value="Add tag" @click="addTag()">Add Tag</button>
             <div>
                 <ul id="tags">
-                    <li v-for="tag in filterSearch.tags">
+                    <li v-for="tag in newGroupInfo.tags">
                         <p>{{tag}}</p><button value="X" @click="removeTag(tag)">X</button>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <button @click="newGroup">Create Group</button>
+        <button @click="createGroup()">Create Group</button>
 
     </div>
 
-    <div id="groupsResult">
-        <button @click="listAllGroups()">Get all groups</button>
-        <ul id="groupsList">
-            <li v-for="group in groups">
-                <p>{{group.groupName}}</p>
-                <p>{{group.description}}</p>
-                <p>{{group.groupDate}}</p>
-                <p>{{group.creator}}</p>
-            </li>
-        </ul>
-    </div>
 
 </div>
 

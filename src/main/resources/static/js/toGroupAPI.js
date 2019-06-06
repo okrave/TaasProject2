@@ -293,19 +293,19 @@ class User {
 /** Represents a New-Group informations*/
 class GroupNew {
 //it's the API payload
-	constructor(groupName, description, groupDate, creator
-			/*location, genre, tags*/
+	constructor(groupName="", description="", groupDate="2020-01-01", creator="", genre="", tags=[]
+			/*location, */
 		) {
 		this.groupName = groupName;
 		this.description = description;
 		this.groupDate = groupDate;
 		this.creator = creator;
+		this.genre = genre;
+		this.tags = tags;
 
 		// omessi perchè ancora non gestiti lato back-end
 		/*
 		this.location = location;
-		this.genre = genre;
-		this.tags = tags;
 		*/
 	}
 }
