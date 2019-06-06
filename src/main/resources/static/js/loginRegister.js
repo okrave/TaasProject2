@@ -6,24 +6,38 @@
 
 let app;
 
+function removeAllModalBackdrop() {
+    document.querySelectorAll(".modal-backdrop").forEach(e => {
+        e.remove();
+        e.parentNode.removeChild(e);
+    })
+}
+
+function switchFromRegistModalToLogin(){
+    $('#registerModal').modal('hide');
+    removeAllModalBackdrop();
+    $('#loginModal').modal('show');
+    return false;
+}
+
+function switchFromLoginModalToRegistration(){
+    $('#loginModal').modal('hide');
+    removeAllModalBackdrop();
+    $('#registerModal').modal('show');
+    return false;
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 
 window.onload = _ => {
 
     $(document).ready(function(){
-        $('#linkLogin').click(function(){
-            $('#registerModal').modal('hide');
-            $('#loginModal').modal('show');
-        });
-        $('#linkRegistration').click(function(){
-            $('#loginModal').modal('hide');
+        $('#linkToLogin').click(switchFromRegistModalToLogin);
+        $('#linkToRegistration').click(switchFromLoginModalToRegistration);
+        $('#nav-linkRegister').click(function(){
             $('#registerModal').modal('show');
         });
-        $('#nav-linkRegister').click(function(){
-            $('#loginModal').modal('show');
-        });
-        $('#nav-linkLogin').click(function(){
+        $('#nav-linkToLogin').click(function(){
             $('#loginModal').modal('show');
         });
     });
