@@ -39,7 +39,7 @@ window.onload = _ => {
                 email               : "",
                 passwordConfirmation: ""
             }
-            , errorMessage: null
+            , messages: new NotificationsMessage()
         },
         created() {
             this.ping();
@@ -51,7 +51,7 @@ window.onload = _ => {
                 return function (err) {
                     console.log("Error on method: " + methodName);
                     console.log(err);
-                    thisVue.errorMessage = err;
+                    thisVue.messages.errorMessage = err;
                 }
             }
 
@@ -77,6 +77,7 @@ window.onload = _ => {
                     .then(resp => {
                         console.log("registered :D");
                         console.log(resp);
+                        if(resp)
                         thisVue.userInfo.username = resp ? "registration successfull" : "username yet present";
                     })
                     .catch(this.createErrorHandler("register"));

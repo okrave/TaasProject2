@@ -7,7 +7,8 @@
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <script src="js/toGroupAPI.js"  th:src="@{/js/toGroupAPI.js}"></script>
+    <script src="js/utils.js"           th:src="@{/js/utils.js}"></script>
+    <script src="js/toGroupAPI.js"      th:src="@{/js/toGroupAPI.js}"></script>
 
     <script src="js/searchGroup.js" th:src="@{/js/searchGroup.js}"></script>
 
@@ -36,15 +37,18 @@
                     placeholder="Title of your group/event">
         </div>
 
+        <!--
+       v-model="filterSearch.location"
+       -->
         <div>
             <input
                     type="text"
-                    v-model="filterSearch.location"
                     name="location"
-                    placeholder="Location: a city or a building">
+                    placeholder="NOT WORKING RIGHT NOW Location: a city or a building">
         </div>
 
         <!--
+        -->
         <div>
             <input
                     type="number"
@@ -53,13 +57,21 @@
                     placeholder="Maximum distance"
                     value="0.0">
         </div>
-        -->
 
         <div>
             <input
                     type="date"
-                    v-model="filterSearch.date"
-                    name="date"
+                    v-model="newGroupInfo.dateStartRange"
+                    name="dateStart"
+                    value="2019-01-01">
+        </div>
+
+
+        <div>
+            <input
+                    type="date"
+                    v-model="newGroupInfo.dateEndRange"
+                    name="dateEnd"
                     value="2020-01-01">
         </div>
 

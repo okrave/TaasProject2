@@ -25,7 +25,7 @@ window.onload = _ => {
 				tags		: []
 			}
 			, tag : ""
-			, errorMessage: null
+			, messages: new NotificationsMessage()
 			, groups: []
 		},
 		created(){

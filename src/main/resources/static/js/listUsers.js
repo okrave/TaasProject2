@@ -16,7 +16,7 @@ window.onload = _ => {
             toGroupAPI: new ToGroup()
             , users: []
             , showPassword: false
-            , errorMessage: null
+            , messages: new NotificationsMessage()
         },
         created() {
             this.ping();
@@ -61,7 +61,7 @@ window.onload = _ => {
                     .then(_ => {
                         console.log("user " + userId + " removed :D");
                         thisVue.errorMessage = "user " + userId + " removed :D";
-                        setTimeout( ()=>{
+                        setTimeout( ()=>{gi
                             //delete the error
                             thisVue.errorMessage = null;
                         }, 3000);

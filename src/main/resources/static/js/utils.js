@@ -22,3 +22,12 @@ function tryParseJSON(aProbablyJSON) {
     }
     return aProbablyJSON;
 }
+
+
+class NotificationsMessage{
+    constructor(){
+        this.errorMessage = null;
+        this.infoMessage = null;
+        this.SuccessMessage = null;
+    }
+}

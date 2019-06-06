@@ -43,4 +43,15 @@ public class GroupService {
     public List<AppGroup> findByGroupName(String groupName) {
         return appGroupRepository.findDistinctByGroupName(groupName);
     }
+
+    /*
+    public boolean removeTag(String tagName){
+        appTagRepository.delete(appTagRepository.);
+    }
+    */
+
+    public void removeAllTags(){
+        appTagRepository.deleteAll();
+        appTagRepository.flush();
+    }
 }

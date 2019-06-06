@@ -14,13 +14,18 @@ public class AppGroup {
     @Column(unique = true)
     private String groupName;
 
-
     private String description;
-
 
     private java.sql.Date groupDate;
 
     private String creator;
+
+    // private String genre;
+
+    // @questa-e'-una-roba-presa-da-un'-altra-entita'-non-so-come-linkarla o.o
+    // private java.util.List<AppTag> tags; // IN REALTA' e' tutto risolto con la classe GroupTag
+
+    //
 
     public AppGroup() {}
 
@@ -30,6 +35,8 @@ public class AppGroup {
         this.groupDate = groupDate;
         this.creator = creator;
     }
+
+    //
 
     public long getGroupId() {
         return groupId;
