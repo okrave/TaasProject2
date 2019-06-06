@@ -28,13 +28,19 @@ class NotificationsMessage{
     constructor(){
         this.errorMessage = null;
         this.infoMessage = null;
-        this.SuccessMessage = null;
+        this.successMessage = null;
     }
 
     clearMessages(){
         this.errorMessage = null;
         this.infoMessage = null;
-        this.SuccessMessage = null;
+        this.successMessage = null;
+    }
+
+    clearMessagesAfter(milliseconds) {
+        setTimeout( () => {
+            this.clearMessages();
+        }, milliseconds);
     }
 
     setErrorMessage(msg){
@@ -47,6 +53,6 @@ class NotificationsMessage{
     }
     setSuccessMessage(msg){
         this.clearMessages();
-        this.SuccessMessage = msg;
+        this.successMessage = msg;
     }
 }

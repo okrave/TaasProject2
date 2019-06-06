@@ -39,7 +39,8 @@ window.onload = _ => {
                 return function (err) {
                     console.log("Error on method: " + methodName);
                     console.log(err);
-                    thisVue.errorMessage = err;
+                    thisVue.messages.setErrorMessage(err);
+                    thisVue.messages.clearMessagesAfter(5000);
                 }
             }
 
@@ -74,11 +75,14 @@ window.onload = _ => {
             }
 
             , createGroup(){
+                let thisVue = this;
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .newGroup(this.newGroupInfo)
                     .then(response => {
                         console.log("group created successfully :D");
+                        thisVue.setSuccessMessage("group created successfully :D");
+                        thisVue.messages.clearMessagesAfter(3000);
                     })
                     .catch(createErrorHandler("create group"));
             }

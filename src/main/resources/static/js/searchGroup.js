@@ -41,6 +41,7 @@ window.onload = _ => {
 					console.log("error on " + functionName + ":");
 					console.log(err);
 					this.messages.setErrorMessage(err);
+					this.messages.clearMessagesAfter(5000);
 				};
 			},
 
@@ -103,6 +104,7 @@ window.onload = _ => {
 				.then(resp => {
 					console.log("group created");
 					thisVue.messages.setSuccessMessage("group created");
+					thisVue.messages.clearMessages(3000);
 				})
 				.catch(this.errorHandling("newGroup"));
 

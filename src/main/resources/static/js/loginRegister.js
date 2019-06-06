@@ -52,6 +52,7 @@ window.onload = _ => {
                     console.log("Error on method: " + methodName);
                     console.log(err);
                     thisVue.messages.setErrorMessage(err);
+                    thisVue.messages.clearMessagesAfter(5000)
                 }
             }
 
@@ -79,8 +80,10 @@ window.onload = _ => {
                         console.log(resp);
                         if(resp){
                             thisVue.messages.setSuccessMessage("registration successful");
+                            thisVue.messages.clearMessagesAfter(3000);
                         } else {
-                            thisVue.messages.setErrirMessage("username yet present");
+                            thisVue.messages.setErrorMessage("username yet present");
+                            thisVue.messages.clearMessagesAfter(5000);
                         }
                     })
                     .catch(this.createErrorHandler("register"));
