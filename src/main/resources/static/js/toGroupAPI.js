@@ -351,17 +351,18 @@ class GroupNew {
 
 	addTag(tag){
 		if(this.tags == null){
-			this.tags = [];
+			this.tags = [tag];
+			return true;
 		}
-		if(this.tags.includes(this.tag)){
+		if(this.tags.includes(tag)){
 			return false;
 		}
-		this.tags.push(this.tag);
+		this.tags.push(tag);
 		return true;
 	}
 
-	removeTag(tag){
-		var i, elem, newTag, len;
+	removeTag(tag, index){
+		/*var i, elem, newTag, len;
 		var t = this.tags;
 		if(t == null){
 			return false;
@@ -385,7 +386,15 @@ class GroupNew {
 			}
 			return true;
 		}
-		return false;
+		return false;*/
+		if( this.tags == null || index < 0 || index >= this.tags.length || this.tags[index] !== tag){
+			return false;
+		}
+		this.tags.splice(index, 1);
+		if (this.tags.length <= 0){
+			this.tags = null;
+		}
+		return true;
 	}
 }
 

@@ -20,7 +20,7 @@ class NewGroupProgression{
             this.actualStep = this.actualStep + 1;
         }
     }
-    toNextStep(){
+    toPreviousStep(){
         if(this.actualStep > 0){
             this.actualStep = this.actualStep - 1;
         }
@@ -32,7 +32,6 @@ class NewGroupProgression{
 const googleMapApis = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
 
 
-//window.onload =
 function initAll() {
     app = new Vue({
         el: "#appNewGroup",
@@ -44,6 +43,8 @@ function initAll() {
             , newGroupInfo: new GroupNew()
             , creationProgression : new NewGroupProgression()
             , allTags: [] //yet existing tags on database
+            , filteredTags : []
+            , filterTags: ''
 
             //google maps
             , gMapData: {
@@ -58,14 +59,22 @@ function initAll() {
             }
         },
         mounted(){
-            this.setUpGoogleMapsStuffs();
+            //this.setUpGoogleMapsStuffs();
         },
         created() {
             let thisVue = this;
             this.ping();
             setTimeout( ()=>{thisVue.fetchYetExistingTags();}, 1000);
         },
-
+        computed: {
+          getFilteredTags(){
+              if(this.filterTags === '') {
+                  return this.allTags;
+              }
+              this.applyFilter();
+              return this.filteredTags;
+          }
+        },
         methods: {
             setUpGoogleMapsStuffs(){
                 var inputElement, thisVue;
@@ -105,9 +114,11 @@ function initAll() {
             }
 
             , addTag(){
+                console.log("adding tag: " + this.tag + ", and trimmed is: --" + this.tag.trim() + "--");
                 if( this.newGroupInfo.addTag(this.tag.trim())){
                     this.tag = "";
                 }
+                console.log(JSON.stringify(this.newGroupInfo.tags));
             }
 
             , addTagFromExisting(tag){
@@ -117,8 +128,22 @@ function initAll() {
                 this.tag = prevTag;
             }
 
-            , removeTag(tag){
-                this.newGroupInfo.removeTag(tag);
+            , removeTag(tag, index){
+                this.newGroupInfo.removeTag(tag, index);
+            }
+
+            , toNextStep(){ this.creationProgression.toNextStep(); }
+            , toPreviousStep(){ this.creationProgression.toPreviousStep(); }
+
+            , applyFilter(){
+                if(this.filterTags == null || this.filterTags === '') {
+                    return;
+                }
+                let filter = this.filterTags.trim();
+                this.filteredTags = this.allTags.filter( record => {
+                    record = record["name"];
+                    return record === filter || record.includes(filter);
+                });
             }
 
             //API
@@ -146,7 +171,7 @@ function initAll() {
                     .getGroupEndpoint()
                     .listAllTags()
                     .then(response => {
-                        thisVue.allTags = response;
+                        thisVue.allTags = thisVue.filteredTags = response;
                     })
                     .catch(this.createErrorHandler("list all tags"));
             }
@@ -161,5 +186,5 @@ function initAll() {
     });
 }
 
-
-google.maps.event.addDomListener(window, 'load', initAll);
+window.onload = _ => { initAll(); };
+//google.maps.event.addDomListener(window, 'load', initAll);
