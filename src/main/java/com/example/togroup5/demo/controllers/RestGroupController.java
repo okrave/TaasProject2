@@ -83,8 +83,9 @@ public class RestGroupController {
     }
 
     @RequestMapping(value = "/createGroup", method = RequestMethod.POST)
-    public void newGroup(@RequestBody AppGroupNew appGroupNew) {
+    public boolean newGroup(@RequestBody AppGroupNew appGroupNew) {
         groupService.saveGroup(appGroupNew.toAppGrou());
+        return true;
     }
 
 

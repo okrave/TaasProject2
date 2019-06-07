@@ -207,7 +207,10 @@ class GroupAPI {
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/createGroup`, {
 				method: "POST",
-				body: filters
+				headers: {
+					'content-type': 'application/json'
+				},
+				body: JSON.stringify(filters)
 			})
 				.then(response => response.json())
 				.then(response => {

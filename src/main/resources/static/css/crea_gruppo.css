@@ -59,6 +59,12 @@
     overflow-y: scroll;
 }
 
+.descriptionGroup{
+    min-width: 20vh;
+    min-height: 10h;
+}
+
+
 /*bootstrap like*/
 
 .d-flex{

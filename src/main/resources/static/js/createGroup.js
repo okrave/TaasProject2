@@ -12,7 +12,7 @@ let app;
 class NewGroupProgression{
     constructor(){
         this.actualStep = 0;
-        this.maxSteps = 4;
+        this.maxSteps = 3;
     }
 
     toNextStep(){
@@ -65,6 +65,9 @@ function initAll() {
             let thisVue = this;
             this.ping();
             setTimeout( ()=>{thisVue.fetchYetExistingTags();}, 1000);
+
+            // TODO: ottenere il nome (e/o ID?) dell'utente: questa sezione dovrebbe richiedere l'essere loggati
+            this.newGroupInfo.creator = "lonevetad";
         },
         computed: {
           getFilteredTags(){
@@ -107,18 +110,16 @@ function initAll() {
                 let thisVue = this;
                 return function (err) {
                     console.log("Error on method: " + methodName);
-                    console.log(err);
+                    console.log(err.status + " - " + err.error + "\n-----\n" + err.message);
                     thisVue.messages.setErrorMessage(err);
                     thisVue.messages.clearMessagesAfter(5000);
                 }
             }
 
             , addTag(){
-                console.log("adding tag: " + this.tag + ", and trimmed is: --" + this.tag.trim() + "--");
                 if( this.newGroupInfo.addTag(this.tag.trim())){
                     this.tag = "";
                 }
-                console.log(JSON.stringify(this.newGroupInfo.tags));
             }
 
             , addTagFromExisting(tag){
@@ -146,6 +147,16 @@ function initAll() {
                 });
             }
 
+            , formatDateGroup(dg){
+                var splitted;
+                splitted = dg.split("-");
+                if(splitted[0].length != 4){
+                    //so, the format is not yyyy-mm-dd and should be like this !
+                    return splitted.reverse().join("-");
+                }
+                return dg;
+            }
+
             //API
 
             , ping() {
@@ -153,13 +164,34 @@ function initAll() {
             }
 
             , createGroup(){
-                let thisVue = this;
+                let thisVue = this, ngi;
+
+                //get location, in some way
+                this.newGroupInfo.location = this.locationSearch;
+
+                //now the date
+                this.newGroupInfo.groupDate = this.formatDateGroup(this.newGroupInfo.groupDate);
+
+                ngi = this.newGroupInfo.format();
+
+                console.log("creating group:");
+                console.log(JSON.stringify(ngi));
+
+                if((ngi.creator == null || ngi.creator === '')
+                    || (ngi.groupName == null || ngi.groupName === '')
+                    || (ngi.description == null || ngi.description === '')
+                    // (|| ngi.location == null || ngi.location === '')
+                    || (ngi.tags == null || ngi.tags.size <= 0)
+                   ){
+                    alert("fill all new group info");
+                    return;
+                }
                 this.toGroupAPI
                     .getGroupEndpoint()
-                    .newGroup(this.newGroupInfo.format())
+                    .newGroup(ngi)
                     .then(response => {
                         console.log("group created successfully :D");
-                        thisVue.setSuccessMessage("group created successfully :D");
+                        thisVue.messages.setSuccessMessage("group created successfully :D");
                         thisVue.messages.clearMessagesAfter(3000);
                     })
                     .catch(this.createErrorHandler("create group"));
