@@ -36,7 +36,7 @@ window.onload = _ => {
 			// utils
 
 
-			errorHandling(functionName){
+			createErrorHandler(functionName){
 				return err => {
 					console.log("error on " + functionName + ":");
 					console.log(err);
@@ -78,7 +78,7 @@ window.onload = _ => {
 				.then(response => {
 					console.log("connected successfully");
 				})
-				.catch(this.errorHandling("ping"));
+				.catch(this.createErrorHandler("ping"));
 			},
 
 			//users
@@ -93,7 +93,7 @@ window.onload = _ => {
 					console.log("groups fetched");
 					this.groups = resp
 				})
-				.catch(this.errorHandling("listAllGroups"));
+				.catch(this.createErrorHandler("listAllGroups"));
 			},
 
 			newGroup(){
@@ -106,7 +106,7 @@ window.onload = _ => {
 					thisVue.messages.setSuccessMessage("group created");
 					thisVue.messages.clearMessages(3000);
 				})
-				.catch(this.errorHandling("newGroup"));
+				.catch(this.createErrorHandler("newGroup"));
 
 			}
 		}

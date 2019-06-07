@@ -8,6 +8,23 @@
 
     <script src="js/createGroup.js" th:src="@{/js/createGroup.js}"></script>
 
+    <style type="text/css">
+        .tagList{
+            display: flex;
+            flex-flow: column;
+            max-height: 200px;
+            height: 25vh;
+            overflow-y: scroll;
+            max-width: 25vw;
+            border: 1px solid lightcoral;
+        }
+        .tagElement{
+            display: flex;
+            flex-flow: row;
+            flex-wrap: nowrap;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -67,6 +84,7 @@
                     placeholder="Description of the group">
         </div>
 
+        <!--
         <div>
             <input
                     type="text"
@@ -74,6 +92,7 @@
                     name="genre"
                     placeholder="Genre: 'study', 'sport', 'music', 'street art', ...">
         </div>
+        -->
 
         <div id="tagsSection">
             <input
@@ -83,15 +102,29 @@
                     placeholder="Tag: 'computer science', 'math', 'football', ...">
             <button name="addTag" value="Add tag" @click="addTag()">Add Tag</button>
             <div>
-                <ul id="tags">
-                    <li v-for="tag in newGroupInfo.tags">
-                        <p>{{tag}}</p><button value="X" @click="removeTag(tag)">X</button>
-                    </li>
-                </ul>
+                <div id="tags" class="tagList border border-primary rounded shadow-sm bg-white d-flex d-column">
+                    <div class="tagElement"  v-for="tag in newGroupInfo.tags">
+                        <button value="X" @click="removeTag(tag)">X</button><p>{{tag}}</p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <button @click="createGroup()">Create Group</button>
+
+        <div id="yetExistingTags">
+            <p>Pick up some tags from yet existing ones :D</p>
+            <!-- <b-container> -->
+            <div class = "tagList border border-primary rounded shadow-sm bg-white d-flex d-column">
+                <!-- <b-row -->
+                <div
+                    v-for="tag in allTags">
+                    <button @click="addTagFromExisting(tag.name)">{{tag.name}}</button>
+                </div>
+                <!-- </b-row> -->
+            </div>
+            <!--</b-container> -->
+        </div>
 
     </div>
 

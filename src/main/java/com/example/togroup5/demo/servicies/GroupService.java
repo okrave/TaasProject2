@@ -2,10 +2,12 @@ package com.example.togroup5.demo.servicies;
 
 import com.example.togroup5.demo.entities.AppGroup;
 import com.example.togroup5.demo.entities.AppTag;
+import com.example.togroup5.demo.entities.payloads.GroupSearchAdvPayload;
 import com.example.togroup5.demo.repositories.AppGroupRepository;
 import com.example.togroup5.demo.repositories.AppTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +42,7 @@ public class GroupService {
         appGroupRepository.save(newGroup);
     }
 
-    public List<AppGroup> findByGroupName(String groupName) {
+    public AppGroup findByGroupName(String groupName) {
         return appGroupRepository.findDistinctByGroupName(groupName);
     }
 
@@ -53,5 +55,14 @@ public class GroupService {
     public void removeAllTags(){
         appTagRepository.deleteAll();
         appTagRepository.flush();
+        for( AppTag t : appTagRepository.findAll()){
+            appTagRepository.delete(t);
+            appTagRepository.deleteById(t.getTagId());
+        }
+        appTagRepository.flush();
+    }
+
+    public List<AppGroup> searchGroupAdvanced(GroupSearchAdvPayload groupSearchFilters) {
+        return appGroupRepository.advancedSearch(groupSearchFilters);
     }
 }

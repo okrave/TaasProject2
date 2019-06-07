@@ -29,4 +29,9 @@ public class GroupController {
         return "listaGroups";
     }
 
+    @GetMapping(value = "/newGroup")
+    public String newGroup(){
+        return "newGroup";
+    }
+
 }

@@ -15,7 +15,9 @@ class NewGroupProgression{
         this.maxSteps = 4;
     }
 
-    setStep
+    setStep(){
+
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -28,9 +30,12 @@ window.onload = _ => {
             , messages: new NotificationsMessage()
             , tag: ""
             , newGroupInfo: new GroupNew()
+            , allTags: [] //yet existing tags on database
         },
         created() {
+            let thisVue = this;
             this.ping();
+            setTimeout( ()=>{thisVue.fetchYetExistingTags();}, 1000);
         },
 
         methods: {
@@ -45,27 +50,20 @@ window.onload = _ => {
             }
 
             , addTag(){
-                if(! this.newGroupInfo.tags.includes(this.tag)){
-                    this.newGroupInfo.tags.push(this.tag);
+                if( this.newGroupInfo.addTag(this.tag.trim())){
                     this.tag = "";
                 }
             }
+
+            , addTagFromExisting(tag){
+                let prevTag = this.tag;
+                this.tag = tag.trim();
+                this.addTag();
+                this.tag = prevTag;
+            }
+
             , removeTag(tag){
-                var i, elem;
-                var t = this.newGroupInfo.tags;
-                var len = t.length;
-                var newTag, t;
-                if(this.newGroupInfo.tags.includes(tag)){
-                    newTag = [];
-                    i = -1;
-                    while ( ++i < len) {
-                        elem = t[i];
-                        if(tag !== elem){
-                            newTag.push(elem);
-                        }
-                    }
-                    this.newGroupInfo.tags = newTag;
-                }
+                this.newGroupInfo.removeTag(tag);
             }
 
             //API
@@ -78,13 +76,24 @@ window.onload = _ => {
                 let thisVue = this;
                 this.toGroupAPI
                     .getGroupEndpoint()
-                    .newGroup(this.newGroupInfo)
+                    .newGroup(this.newGroupInfo.format())
                     .then(response => {
                         console.log("group created successfully :D");
                         thisVue.setSuccessMessage("group created successfully :D");
                         thisVue.messages.clearMessagesAfter(3000);
                     })
-                    .catch(createErrorHandler("create group"));
+                    .catch(this.createErrorHandler("create group"));
+            }
+
+            , fetchYetExistingTags(){
+                let thisVue = this;
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .listAllTags()
+                    .then(response => {
+                        thisVue.allTags = response;
+                    })
+                    .catch(this.createErrorHandler("list all tags"));
             }
         }
     });
