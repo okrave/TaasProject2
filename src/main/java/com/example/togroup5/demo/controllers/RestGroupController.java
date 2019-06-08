@@ -47,7 +47,7 @@ public class RestGroupController {
                 "Università", "Studio"};
 
         for (String tag : defaultTags) {
-            newTag = new AppTag(tag);
+            newTag = new AppTag(tag.toLowerCase());
             groupService.saveTag(newTag);
         }
     }
@@ -71,7 +71,7 @@ public class RestGroupController {
     }
 
     @GetMapping(value = "/{groupName}")
-    public List<AppGroup> findGroupByName(@PathVariable String groupName) {
+    public AppGroup findGroupByName(@PathVariable String groupName) {
         return groupService.findByGroupName(groupName);
     }
 
@@ -83,16 +83,20 @@ public class RestGroupController {
     }
 
     @RequestMapping(value = "/createGroup", method = RequestMethod.POST)
-    public void newGroup(@RequestBody AppGroupNew appGroupNew) {
+    public boolean newGroup(@RequestBody AppGroupNew appGroupNew) {
         groupService.saveGroup(appGroupNew.toAppGrou());
+        return true;
+
     }
 
 
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.GET)
-    public void searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
+    public List<AppGroup> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
         //groupService.saveGroup(appGroupNew.toAppGrou());
         System.out.println("search filters: ");
         System.out.println(groupSearchFilters);
+        return groupService.searchGroupAdvanced(groupSearchFilters);
+
     }
 
 }

@@ -28,7 +28,8 @@ window.onload = _ => {
                 return function (err) {
                     console.log("Error on method: " + methodName);
                     console.log(err);
-                    thisVue.errorMessage = err;
+                    thisVue.messages.setErrorMessage(err);
+                    thisVue.messages.clearMessagesAfter(5000);
                 }
             }
 
@@ -60,11 +61,8 @@ window.onload = _ => {
                     .removeByID(userId)
                     .then(_ => {
                         console.log("user " + userId + " removed :D");
-                        thisVue.errorMessage = "user " + userId + " removed :D";
-                        setTimeout( ()=>{gi
-                            //delete the error
-                            thisVue.errorMessage = null;
-                        }, 3000);
+                        thisVue.messages.setSuccessMessage("user " + userId + " removed :D");
+                        thisVue.messages.clearMessagesAfter(3000);
                         thisVue.reloadUserList();
                     })
                     .catch(this.createErrorHandler("remove user with id: " + userId))

@@ -35,6 +35,12 @@ public class RestHomeController{
         userService.save(user);
         user = new AppUser("dbadmin1",encryptePassword("123"),"lol@lolool.it",true);
         userService.save(user);
+        user = new AppUser("ciao",encryptePassword("123"),"lol@lolool.it",true);
+        userService.save(user);
+        user = new AppUser("lonevetad",encryptePassword("lonevetad"),"lone@vetad.it",true);
+        userService.save(user);
+        user = new AppUser("Bender",encryptePassword("im_drunk"),"im_drunk@beer.it",true);
+        userService.save(user);
     }
 
     @RequestMapping(

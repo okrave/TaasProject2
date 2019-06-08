@@ -36,11 +36,12 @@ window.onload = _ => {
 			// utils
 
 
-			errorHandling(functionName){
+			createErrorHandler(functionName){
 				return err => {
 					console.log("error on " + functionName + ":");
 					console.log(err);
-					this.errorMessage = err;
+					this.messages.setErrorMessage(err);
+					this.messages.clearMessagesAfter(5000);
 				};
 			},
 
@@ -76,9 +77,8 @@ window.onload = _ => {
 				.ping()
 				.then(response => {
 					console.log("connected successfully");
-					this.errorMessage = null;
 				})
-				.catch(this.errorHandling("ping"));
+				.catch(this.createErrorHandler("ping"));
 			},
 
 			//users
@@ -90,20 +90,23 @@ window.onload = _ => {
 				.getGroupEndpoint()
 				.listAllGroups()
 				.then(resp => {
-					console.log("groups arrived");
+					console.log("groups fetched");
 					this.groups = resp
 				})
-				.catch(this.errorHandling("listAllGroups"));
+				.catch(this.createErrorHandler("listAllGroups"));
 			},
 
 			newGroup(){
+				let thisVue = this;
 				this.toGroupAPI
 				.getGroupEndpoint()
 				.newGroup(this.filterSearch)
 				.then(resp => {
 					console.log("group created");
+					thisVue.messages.setSuccessMessage("group created");
+					thisVue.messages.clearMessages(3000);
 				})
-				.catch(this.errorHandling("newGroup"));
+				.catch(this.createErrorHandler("newGroup"));
 
 			}
 		}

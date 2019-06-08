@@ -4,7 +4,9 @@
 xmlns:th="http://www.w3.org/1999/xhtml"
 -->
 <head>
-    <meta charset="UTF-8">
+
+    <th:block th:insert="fragments/header.html :: headerInclusions" />
+
     <title>Title</title>
     <style>
         table th, table td {
@@ -14,8 +16,6 @@ xmlns:th="http://www.w3.org/1999/xhtml"
             color: blue;
         }
     </style>
-
-    <th:block th:insert="fragments/header.html :: headerInclusions" />
 
     <script src="js/listUsers.js"   th:src="@{/js/listUsers.js}"></script>
 </head>

@@ -4,21 +4,31 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-
 public class AppGroup {
 
     @Id
     @GeneratedValue
     private long groupId;
 
+    private String creator;
+
     @Column(unique = true)
     private String groupName;
 
-    private String description;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //private GoogleLocation location; // use GOOGLE MAPS's documentation
 
     private java.sql.Date groupDate;
 
-    private String creator;
+    private String description;
+
+
+    // private String genre;
+
+    // @questa-e'-una-roba-presa-da-un'-altra-entita'-non-so-come-linkarla o.o
+    // private java.util.List<AppTag> tags; // IN REALTA' e' tutto risolto con la classe GroupTag
+
+    //
 
     // private String genre;
 

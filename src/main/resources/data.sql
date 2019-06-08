@@ -1,7 +1,28 @@
 -- Create table https://o7planning.org/en/11705/create-a-login-application-with-spring-boot-spring-security-jpa
+/*
 CREATE EXTENSION postgis;
+
 -- Enable Topology
 CREATE EXTENSION postgis_topology;
+*/
+
+
+create table APP_USER
+(
+    USER_ID           BIGINT not null,
+    USER_NAME         VARCHAR(36) not null unique,
+    ENCRYTED_PASSWORD VARCHAR(128) not null,
+    USER_EMAIL        VARCHAR(36) not null,
+    ENABLED           Int not null
+) ;
+--
+alter table APP_USER
+    add constraint APP_USER_PK primary key (USER_ID);
+
+alter table APP_USER
+    add constraint APP_USER_UK unique (USER_NAME);
+
+
 
 create table APP_GROUP
 (
@@ -24,7 +45,7 @@ create table LOCATION
 (
     LOCATION_ID BIGINT not null,
     GEOM geometry(Point, 4326) not null,
- GROUP_ID BIGINT not null
+    GROUP_ID BIGINT not null
 ) ;
 
 create table APP_USER
@@ -35,12 +56,6 @@ create table APP_USER
   USER_EMAIL        VARCHAR(36) not null,
   ENABLED           Int not null
 ) ;
---
-alter table APP_USER
-  add constraint APP_USER_PK primary key (USER_ID);
-
-alter table APP_USER
-  add constraint APP_USER_UK unique (USER_NAME);
 
 
 -- Create table
@@ -130,13 +145,22 @@ CREATE TABLE Persistent_Logins (
 
 );
 
-
+/*
 insert into App_User (USER_ID, USER_NAME, USER_EMAIL, ENCRYTED_PASSWORD, ENABLED)
 values (2, 'dbuser1','ff@asd.it','$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', 1);
 
 insert into App_User (USER_ID, USER_NAME,USER_EMAIL, ENCRYTED_PASSWORD, ENABLED)
 values (1, 'dbadmin1','cc@asd.it','$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', 1);
 
+insert into App_User (USER_ID, USER_NAME, USER_EMAIL, ENCRYTED_PASSWORD, ENABLED)
+values (3, 'ciao','ciao@ciao.it','$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8az9E97k2FZbFsvGFFaSsiTUgl.TCrFu', 1);
+
+insert into App_User (USER_ID, USER_NAME,USER_EMAIL, ENCRYTED_PASSWORD, ENABLED)
+values (4, 'lonevetad','lonevetad@lonevetad.it','$2a$10$PrI5Gk9L.tSZaW9FXhTS8O8asMz9E97k2FZdFvGFSsiTUIl.TCrFg', 1);
+
+insert into App_User (USER_ID, USER_NAME,USER_EMAIL, ENCRYTED_PASSWORD, ENABLED)
+values (5, 'Bender','im_drunk@beer.it','$2a$10$PrI5Gk9L.tqZa29FXhTSsO8asMzgE97k2FfdFvGFSsiTUel.TCrFg', 1);
+*/
 ---
 
 insert into app_role (ROLE_ID, ROLE_NAME)
@@ -146,7 +170,7 @@ insert into app_role (ROLE_ID, ROLE_NAME)
 values (2, 'ROLE_USER');
 
 ---
-
+/*
 insert into user_role (ID, USER_ID, ROLE_ID)
 values (1, 1, 1);
 
@@ -155,9 +179,9 @@ values (2, 1, 2);
 
 insert into user_role (ID, USER_ID, ROLE_ID)
 values (3, 2, 2);
-
+*/
 ---
-
+/*
 insert  into app_group(GROUP_ID, GROUP_NAME, DESCRIPTION, DATE, CREATOR)
 values (1,'Esperienza cavalli','stupenda esperienza tra i boschi e cavalli','2019-05-28','ciao');
 
@@ -173,8 +197,10 @@ values (4,'Lindy Hop','Un ballo di coppia stile anni 20-30-40, molto rilassante 
 insert  into app_group(GROUP_ID, GROUP_NAME, DESCRIPTION, DATE, CREATOR)
 values (5,'Cin Cin','Bevuta rinfrescante a tema relax."','2019-06-06','Bender');
 
+*/
 
 ---
+/*
 
 insert into app_tag (TAG_ID, TAG_NAME)
 values (1, 'relax');
@@ -211,9 +237,10 @@ values (16, 'cibo');
 insert into app_tag (TAG_ID, TAG_NAME)
 values (17, 'pranzo');
 
+*/
 
 ---
-
+/*
 insert into group_tag (ID, GROUP_ID, TAG_ID)
 values (1, 1, 5);
 insert into group_tag (ID, GROUP_ID, TAG_ID)
@@ -243,9 +270,10 @@ values (12, 3, 15);
 insert into group_tag (ID, GROUP_ID, TAG_ID)
 values (13, 3, 10);
 
+*/
         
-
+/*
 insert into LOCATION(LOCATION_ID,GEOM, GROUP_ID)
 values (1,ST_GeomFromText('POINT(-71.060316 48.432044)', 4326),1);
-
+*/
 Commit;
