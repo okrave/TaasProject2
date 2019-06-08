@@ -415,7 +415,6 @@ class Group {
 		// omessi perchè ancora non gestiti lato back-end
 		/*
 		this.maxDistance = maxDistance; // only for search o.o
-		this.genre = genre;
 		this.tags = tags;
 		*/
 	}

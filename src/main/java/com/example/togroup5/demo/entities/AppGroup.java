@@ -15,7 +15,6 @@ public class AppGroup {
     @Column(unique = true)
     private String groupName;
 
-
     //@ManyToOne(fetch = FetchType.LAZY)
     //private GoogleLocation location; // use GOOGLE MAPS's documentation
 
@@ -23,6 +22,13 @@ public class AppGroup {
 
     private String description;
 
+
+    // private String genre;
+
+    // @questa-e'-una-roba-presa-da-un'-altra-entita'-non-so-come-linkarla o.o
+    // private java.util.List<AppTag> tags; // IN REALTA' e' tutto risolto con la classe GroupTag
+
+    //
 
     // private String genre;
 

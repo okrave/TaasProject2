@@ -86,6 +86,7 @@ public class RestGroupController {
     public boolean newGroup(@RequestBody AppGroupNew appGroupNew) {
         groupService.saveGroup(appGroupNew.toAppGrou());
         return true;
+
     }
 
 
@@ -95,6 +96,7 @@ public class RestGroupController {
         System.out.println("search filters: ");
         System.out.println(groupSearchFilters);
         return groupService.searchGroupAdvanced(groupSearchFilters);
+
     }
 
 }

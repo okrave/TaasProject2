@@ -44,8 +44,17 @@ alter table APP_GROUP
 create table LOCATION
 (
     LOCATION_ID BIGINT not null,
-    --GEOM geometry(Point, 4326) not null,
+    GEOM geometry(Point, 4326) not null,
     GROUP_ID BIGINT not null
+) ;
+
+create table APP_USER
+(
+  USER_ID           BIGINT not null,
+  USER_NAME         VARCHAR(36) not null unique,
+  ENCRYTED_PASSWORD VARCHAR(128) not null,
+  USER_EMAIL        VARCHAR(36) not null,
+  ENABLED           Int not null
 ) ;
 
 
@@ -187,10 +196,12 @@ values (4,'Lindy Hop','Un ballo di coppia stile anni 20-30-40, molto rilassante 
 
 insert  into app_group(GROUP_ID, GROUP_NAME, DESCRIPTION, DATE, CREATOR)
 values (5,'Cin Cin','Bevuta rinfrescante a tema relax."','2019-06-06','Bender');
+
 */
 
 ---
 /*
+
 insert into app_tag (TAG_ID, TAG_NAME)
 values (1, 'relax');
 insert into app_tag (TAG_ID, TAG_NAME)
@@ -225,6 +236,7 @@ insert into app_tag (TAG_ID, TAG_NAME)
 values (16, 'cibo');
 insert into app_tag (TAG_ID, TAG_NAME)
 values (17, 'pranzo');
+
 */
 
 ---
@@ -257,6 +269,7 @@ insert into group_tag (ID, GROUP_ID, TAG_ID)
 values (12, 3, 15);
 insert into group_tag (ID, GROUP_ID, TAG_ID)
 values (13, 3, 10);
+
 */
         
 /*

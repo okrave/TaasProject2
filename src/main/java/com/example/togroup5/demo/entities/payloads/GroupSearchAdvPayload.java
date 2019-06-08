@@ -19,7 +19,6 @@ public class GroupSearchAdvPayload {
 
     private List<String> tags;
 
-
     //
 
     public GroupSearchAdvPayload() {    }

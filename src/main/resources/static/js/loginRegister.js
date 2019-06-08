@@ -65,8 +65,10 @@ window.onload = _ => {
                 return function (err) {
                     console.log("Error on method: " + methodName);
                     console.log(err);
+
                     thisVue.messages.setErrorMessage(err);
                     thisVue.messages.clearMessagesAfter(5000)
+
                 }
             }
 
