@@ -11,13 +11,25 @@
     <script src="js/toGroupAPI.js"      th:src="@{/js/toGroupAPI.js}"></script>
 
     <script src="js/loginRegister.js"   th:src="@{/js/loginRegister.js}"></script>
+
+
 </head>
 
 <body>
+
 <div id="appLoginRegister">
 
     <th:block th:replace="fragments/navbar :: navbar" />
 
+    <div class="Wrapper">
+               <div class="unauthenticated">
+                 <a class="btn" href="/login">Login</a>
+               </div>
+               <div class="authenticated" style="display: none">
+                 Logged in as: <span id="user"></span>
+                 <div><button onClick="logout()" class="btn">Logout</button></div>
+               </div>
+        </div>
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">
@@ -108,7 +120,41 @@
 <!--<script src="../static/js/bootstrap.js" th:href="@{/js/bootstrap.js}"></script>-->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
+ <script
+    			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+    			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    			  crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script>
+
+    if (window.location.hash == '#_=_'){
+          history.replaceState
+              ? history.replaceState(null, null, window.location.href.split('#')[0])
+              : window.location.hash = '';
+      }
+
+    $.get("/user", function(data) {
+        $("#user").html(data.userAuthentication.details.name);
+        $(".unauthenticated").hide();
+        $(".authenticated").show();
+      });
+
+    var logout = function() {
+        $.post("/logout", function() {
+          $("#user").html('');
+          $(".unauthenticated").show();
+          $(".authenticated").hide();
+        });
+        return true;
+      }
+</script>
 
 
 </body>
+
+
+
 </html>

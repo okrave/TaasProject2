@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-const APIUrl = "http://localhost:8282";
+const APIUrl = "http://localhost:8080";
 //
 class ToGroup {
 
@@ -180,7 +180,7 @@ class GroupAPI {
 					"description"	: description,
 					"groupDate"		: date,
 					"creator"		: userCreator
-					
+
 					// omessi perchè ancora non gestiti lato back-end
 					// , "location"	: location
 					// , "maxDistance": maxDistance
@@ -248,7 +248,7 @@ class Group {
 		this.description = description;
 		this.groupDate = groupDate;
 		this.creator = creator;
-					
+
 		// omessi perchè ancora non gestiti lato back-end
 		/*
 		this.location = location;

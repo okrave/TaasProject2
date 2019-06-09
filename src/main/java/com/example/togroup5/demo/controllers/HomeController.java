@@ -64,9 +64,9 @@ public class HomeController {
         return "admin";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user2")
     public String user() {
-        return "user/index";
+        return "user2/index";
     }
 
     @GetMapping("/about")
