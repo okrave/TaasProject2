@@ -8,51 +8,41 @@ public class AppGroup {
 
     @Id
     @GeneratedValue
-    private long groupId;
+    private Long groupId;
 
     private String creator;
 
     @Column(unique = true)
     private String groupName;
 
+    private java.sql.Date groupDate;
+
     //@ManyToOne(fetch = FetchType.LAZY)
     //private GoogleLocation location; // use GOOGLE MAPS's documentation
-
-    private java.sql.Date groupDate;
+    private Long locationId;
 
     private String description;
 
-
-    // private String genre;
-
-    // @questa-e'-una-roba-presa-da-un'-altra-entita'-non-so-come-linkarla o.o
-    // private java.util.List<AppTag> tags; // IN REALTA' e' tutto risolto con la classe GroupTag
-
-    //
-
-    // private String genre;
-
-    // @questa-e'-una-roba-presa-da-un'-altra-entita'-non-so-come-linkarla o.o
-    // private java.util.List<AppTag> tags; // IN REALTA' e' tutto risolto con la classe GroupTag
 
     //
 
     public AppGroup() {}
 
-    public AppGroup(String groupName, String description, Date groupDate, String creator) {
+    public AppGroup(String creator, String groupName, String description, Date groupDate) {
         this.groupName = groupName;
         this.description = description;
         this.groupDate = groupDate;
         this.creator = creator;
+        this.locationId = null;
     }
 
     //
 
-    public long getGroupId() {
+    public Long getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(long groupId) {
+    public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
 
@@ -88,8 +78,25 @@ public class AppGroup {
         this.groupName = groupName;
     }
 
-    public String toString(){
-        return " "+ this.groupName+" "+ this.description+" " + this.groupDate.toString();
+    public Long getLocation() {
+        return locationId;
     }
 
+    public void setLocation(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    //
+
+    @Override
+    public String toString() {
+        return "AppGroup{" +
+                "groupId=" + groupId +
+                ", creator='" + creator + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", groupDate=" + groupDate +
+                ", locationId='" + locationId + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

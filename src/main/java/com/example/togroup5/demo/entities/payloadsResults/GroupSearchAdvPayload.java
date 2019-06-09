@@ -1,4 +1,4 @@
-package com.example.togroup5.demo.entities.payloads;
+package com.example.togroup5.demo.entities.payloadsResults;
 
 import com.example.togroup5.demo.entities.GoogleLocation;
 import com.fasterxml.jackson.annotation.JsonCreator;

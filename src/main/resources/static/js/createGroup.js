@@ -66,7 +66,7 @@ function initAll() {
             this.ping();
             setTimeout( ()=>{thisVue.fetchYetExistingTags();}, 1000);
 
-            // TODO: ottenere il nome (e/o ID?) dell'utente: questa sezione dovrebbe richiedere l'essere loggati
+            // TODO: ottenere il nome (e/o ID?) dell'utente: questa operazione dovrebbe richiedere l'essere loggati
             this.newGroupInfo.creator = "lonevetad";
         },
         computed: {
@@ -116,6 +116,10 @@ function initAll() {
                 }
             }
 
+
+            , toNextStep(){ this.creationProgression.toNextStep(); }
+            , toPreviousStep(){ this.creationProgression.toPreviousStep(); }
+
             , addTag(){
                 if( this.newGroupInfo.addTag(this.tag.trim())){
                     this.tag = "";
@@ -132,10 +136,6 @@ function initAll() {
             , removeTag(tag, index){
                 this.newGroupInfo.removeTag(tag, index);
             }
-
-            , toNextStep(){ this.creationProgression.toNextStep(); }
-            , toPreviousStep(){ this.creationProgression.toPreviousStep(); }
-
             , applyFilter(){
                 if(this.filterTags == null || this.filterTags === '') {
                     return;
@@ -150,8 +150,10 @@ function initAll() {
             , formatDateGroup(dg){
                 var splitted;
                 splitted = dg.split("-");
+                console.log("original date: " + dg + ", splitted: " + JSON.stringify(splitted));
                 if(splitted[0].length != 4){
                     //so, the format is not yyyy-mm-dd and should be like this !
+                    console.log("then reverse: : " + JSON.stringify(splitted.reverse()) + ", and joined: " + splitted.reverse().join("-") );
                     return splitted.reverse().join("-");
                 }
                 return dg;
@@ -166,8 +168,13 @@ function initAll() {
             , createGroup(){
                 let thisVue = this, ngi;
 
+                if(this.locationSearch == null || this.locationSearch === '') {
+                    alert("Location not setted");
+                    return;
+                }
+
                 //get location, in some way
-                this.newGroupInfo.location = this.locationSearch;
+                this.newGroupInfo.location = GoogleLocation.fromString(this.locationSearch);
 
                 //now the date
                 this.newGroupInfo.groupDate = this.formatDateGroup(this.newGroupInfo.groupDate);

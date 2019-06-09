@@ -2,12 +2,9 @@ package com.example.togroup5.demo.repositories;
 
 import com.example.togroup5.demo.entities.AppGroup;
 import com.example.togroup5.demo.entities.AppTag;
-import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.entities.GroupTag;
-import com.example.togroup5.demo.entities.newEntities.AppGroupNew;
-import com.example.togroup5.demo.entities.payloads.GroupSearchAdvPayload;
+import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -124,7 +121,7 @@ public class AppGroupRepository {
                 orderTagMatchAmountClause = //
                         "0 < ( SELECT count(*) AS tagMatches FROM " + GroupTag.class.getName() + " gt JOIN "
                                 + AppTag.class.getName() +
-                                " tag ON (gt.tag_id==tag.tag_id) WHERE ((g.group_id==gt.group_d) AND (tag.tag_name IN :tags))";
+                                " tag ON (gt.tagId = tag.tagIdd) WHERE ((g.groupId = gt.groupId) AND (tag.tag_name IN :tags))";
                 appliedFields.add(new SingleFilter(orderTagMatchAmountClause, "tags", filters.getTags()));
             }
 

@@ -131,12 +131,6 @@ public class HomeController {
         return "listaUsers";
     }
 
-
-    @GetMapping(value="/searchGroup")
-    public String searchGroup(){
-        return "searchGroup";
-    }
-
     @GetMapping(value = "/403")
     public String accessDenied(Model model, Principal principal) {
 

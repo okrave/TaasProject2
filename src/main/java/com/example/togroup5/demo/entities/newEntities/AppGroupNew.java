@@ -2,35 +2,43 @@ package com.example.togroup5.demo.entities.newEntities;
 
 import com.example.togroup5.demo.entities.AppGroup;
 import com.example.togroup5.demo.entities.AppUser;
+import com.example.togroup5.demo.entities.GoogleLocation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Date;
+import java.util.List;
 
 public class AppGroupNew {
 
-    private String groupName;
-
-    private String description;
+    private String groupName, description, creator;
 
     private java.sql.Date groupDate;
 
-    private String creator;
+    private List<String> tags;
+
+    private GoogleLocation location;
 
     //
 
-    public AppGroupNew() {}
+    public AppGroupNew() {
+    }
 
     @JsonCreator
     public AppGroupNew(
-            @JsonProperty("groupName")      String groupName,
-            @JsonProperty("description")    String description,
-            @JsonProperty("groupDate")      Date groupDate,
-            @JsonProperty("creator")        String creator) {
+            @JsonProperty("creator") String creator,
+            @JsonProperty("groupName") String groupName,
+            @JsonProperty("location") LocationReceived location,
+            @JsonProperty("tags") List<String> tags,
+            @JsonProperty("description") String description,
+            @JsonProperty("groupDate") Date groupDate
+    ) {
         this.groupName = groupName;
         this.description = description;
         this.groupDate = groupDate;
         this.creator = creator;
+        this.location = location.toGoogleLocation();
+        this.tags = tags;
     }
 
     //
@@ -67,17 +75,66 @@ public class AppGroupNew {
         this.creator = creator;
     }
 
+    public AppGroup toAppGroup() {
+        return new AppGroup(creator, groupName, description, groupDate);
+    }
+
+    public GoogleLocation getLocation() {
+        return location;
+    }
+
+    public void setLocation(GoogleLocation location) {
+        this.location = location;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "AppGroupNew{" +
-                "groupName='" + groupName + '\'' +
-                ", description='" + description + '\'' +
+                "creator='" + creator + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", location=" + location +
                 ", groupDate=" + groupDate +
-                ", creator='" + creator + '\'' +
+                ", description='" + description + '\'' +
+                ", tags=" + tags +
                 '}';
     }
 
-    public AppGroup toAppGrou(){
-        return new AppGroup(groupName, description, groupDate, creator);
+    //
+
+    public static class LocationReceived {
+        private double lat, lng;
+
+
+        public LocationReceived(){
+        }
+
+        public LocationReceived(String toBeDeserialized){
+            // format ('someValue')
+            // example: ('40, 42.5')
+            String[] vals;
+            vals = toBeDeserialized.substring(toBeDeserialized.indexOf('\'')+1, toBeDeserialized.lastIndexOf('\'')).split(",");
+            this.lat = Double.parseDouble(vals[0].trim());
+            this.lng = Double.parseDouble(vals[1].trim());
+        }
+
+        @JsonCreator
+        public LocationReceived(
+                @JsonProperty("lat") double lat,
+                @JsonProperty("lng") double lng) {
+            this.lat = lat;
+            this.lng = lng;
+        }
+
+        public GoogleLocation toGoogleLocation() {
+            return new GoogleLocation(lat, lng);
+        }
     }
 }

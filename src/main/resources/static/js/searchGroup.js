@@ -14,27 +14,29 @@ window.onload = _ => {
 		el: "#appSearch",
 		data: {
 			toGroupAPI: new ToGroup()
-			, filterSearch: {
-				userCreator	: "",
-				groupName	: "",
-				location	: "",
-				maxDistance	: 0.0,
-				date		: "2020-01-01",
-				description	: "",
-				genre		: "",
-				tags		: []
-			}
+			, filterSearch: new GroupSearch()
 			, tag : ""
 			, messages: new NotificationsMessage()
 			, groups: []
+			, allTags: [] //yet existing tags on database
+			, filteredTags : []
+			, filterTags: ''
 		},
 		created(){
 			this.ping();
-		},
+		}
+		, computed: {
+			getFilteredTags(){
+				if(this.filterTags === '') {
+					return this.allTags;
+				}
+				this.applyFilter();
+				return this.filteredTags;
+			}
+		}
+		, methods: {
 
-		methods: {
 			// utils
-
 
 			createErrorHandler(functionName){
 				return err => {
@@ -43,35 +45,48 @@ window.onload = _ => {
 					this.messages.setErrorMessage(err);
 					this.messages.clearMessagesAfter(5000);
 				};
-			},
+			}
 
-			addTag(){
-				if(! this.filterSearch.tags.includes(this.tag)){
-					this.filterSearch.tags.push(this.tag);
+			, addTag(){
+				if( this.newGroupInfo.addTag(this.tag.trim())){
 					this.tag = "";
 				}
-			},
-			removeTag(tag){
-				var i, elem;
-				var t = this.filterSearch.tags;
-				var len = t.length;
-				var newTag, t;
-				if(this.filterSearch.tags.includes(tag)){
-					newTag = [];
-					i = -1;
-					while ( ++i < len) {
-						elem = t[i];
-						if(tag !== elem){
-							newTag.push(elem);
-						}
-					}
-					this.filterSearch.tags = newTag;
+			}
+
+			, addTagFromExisting(tag){
+				let prevTag = this.tag;
+				this.tag = tag.trim();
+				this.addTag();
+				this.tag = prevTag;
+			}
+
+			, removeTag(tag, index){
+				this.newGroupInfo.removeTag(tag, index);
+			}
+			, applyFilter(){
+				if(this.filterTags == null || this.filterTags === '') {
+					return;
 				}
-			},
+				let filter = this.filterTags.trim();
+				this.filteredTags = this.allTags.filter( record => {
+					record = record["name"];
+					return record === filter || record.includes(filter);
+				});
+			}
+
+			, formatDateGroup(dg){
+				var splitted;
+				splitted = dg.split("-");
+				if(splitted[0].length != 4){
+					//so, the format is not yyyy-mm-dd and should be like this !
+					return splitted.reverse().join("-");
+				}
+				return dg;
+			}
 
 			// API
 			
-			ping(){
+			, ping(){
 				console.log("pinging");
 				this.toGroupAPI
 				.ping()
@@ -79,13 +94,11 @@ window.onload = _ => {
 					console.log("connected successfully");
 				})
 				.catch(this.createErrorHandler("ping"));
-			},
-
-			//users
+			}
 
 
 			//group
-			listAllGroups(){
+			, listAllGroups(){
 				this.toGroupAPI
 				.getGroupEndpoint()
 				.listAllGroups()
@@ -94,20 +107,20 @@ window.onload = _ => {
 					this.groups = resp
 				})
 				.catch(this.createErrorHandler("listAllGroups"));
-			},
+			}
 
-			newGroup(){
+			, advSearchGroups(){
 				let thisVue = this;
 				this.toGroupAPI
 				.getGroupEndpoint()
-				.newGroup(this.filterSearch)
+				.searchGroups(this.filterSearch)
 				.then(resp => {
-					console.log("group created");
-					thisVue.messages.setSuccessMessage("group created");
-					thisVue.messages.clearMessages(3000);
 				})
-				.catch(this.createErrorHandler("newGroup"));
+				.catch(this.createErrorHandler("searchGroups"));
+			}
 
+			, deleteGroup(groupId){
+				console.log("removing: " + groupId);
 			}
 		}
 	});

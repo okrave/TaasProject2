@@ -8,7 +8,7 @@ public class GoogleLocation {
     @Id
     @GeneratedValue
     private Long locationId;
-    private double lat, lng;
+    private Double lat, lng;
 
     public GoogleLocation(){
         this(0.0,0.0);
@@ -26,7 +26,7 @@ public class GoogleLocation {
         this.locationId = locationId;
     }
 
-    public double getLat() {
+    public Double getLat() {
         return lat;
     }
 
@@ -34,11 +34,12 @@ public class GoogleLocation {
         this.lat = lat;
     }
 
-    public double getLng() {
+    public Double getLng() {
         return lng;
     }
 
     public void setLng(double lng) {
         this.lng = lng;
     }
+
 }

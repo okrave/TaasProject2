@@ -28,21 +28,6 @@ public class RestHomeController{
         return "[\"greetings\", 7, \"ciao\"]";
     }
 
-    @GetMapping(value = "/User/createUser")
-    public void createUsers(){
-        //(String userName, String encrytedPassword, String userEmail, boolean enabled)
-        AppUser user = new AppUser("dbuser1",encryptePassword("123"),"lol@lol.it",true);
-        userService.save(user);
-        user = new AppUser("dbadmin1",encryptePassword("123"),"lol@lolool.it",true);
-        userService.save(user);
-        user = new AppUser("ciao",encryptePassword("123"),"lol@lolool.it",true);
-        userService.save(user);
-        user = new AppUser("lonevetad",encryptePassword("lonevetad"),"lone@vetad.it",true);
-        userService.save(user);
-        user = new AppUser("Bender",encryptePassword("im_drunk"),"im_drunk@beer.it",true);
-        userService.save(user);
-    }
-
     @RequestMapping(
             value = "/User/register",
             method = POST
@@ -78,6 +63,34 @@ public class RestHomeController{
     @DeleteMapping(value = "/User/deleteByUsername/{userName}")
     public boolean deleteUserByUsername(@PathVariable String userName){
         return userService.delete(userName);
+    }
+
+
+    // populate db with default staffs
+
+    @GetMapping(value = "/User/createUser")
+    public void createUsers(){
+        //(String userName, String encrytedPassword, String userEmail, boolean enabled)
+        AppUser user = new AppUser("dbuser1",encryptePassword("123"),"lol@lol.it",true);
+        userService.save(user);
+        user = new AppUser("dbadmin1",encryptePassword("123"),"lol@lolool.it",true);
+        userService.save(user);
+        user = new AppUser("ciao",encryptePassword("123"),"lol@lolool.it",true);
+        userService.save(user);
+        user = new AppUser("Luca",encryptePassword("Luca"),"luca@luca.com",true);
+        userService.save(user);
+        user = new AppUser("Davide",encryptePassword("Davide"),"davide@qualcuno.en",true);
+        userService.save(user);
+        user = new AppUser("lonevetad",encryptePassword("lonevetad"),"lone@vetad.it",true);
+        userService.save(user);
+        user = new AppUser("Bender",encryptePassword("im_drunk"),"im_drunk@beer.it",true);
+        userService.save(user);
+    }
+
+    @PostMapping(value = "/User/createAll")
+    public void createAllHomeData(){
+        createUsers();
+        // create role and RoleUser
     }
 
 }

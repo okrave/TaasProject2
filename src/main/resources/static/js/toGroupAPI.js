@@ -207,9 +207,7 @@ class GroupAPI {
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/createGroup`, {
 				method: "POST",
-				headers: {
-					'content-type': 'application/json'
-				},
+				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify(filters)
 			})
 				.then(response => response.json())
@@ -223,25 +221,13 @@ class GroupAPI {
 		});
 	}
 
-	searchGroup(filters /*userCreator, title, date, location, maxDistance, description, genre, tags*/) {
+	searchGroups(filters) {
 		return new Promise((resolve, reject) => {
-			fetch(this.baseURL + `/createGroup`, {
-				method: "POST",
-				body: filters
-				/*{
-                "groupName"		: title,
-                "description"	: description,
-                "groupDate"		: date,
-                "creator"		: userCreator
-
-                // omessi perchè ancora non gestiti lato back-end
-                // , "location"	: location
-                // , "maxDistance": maxDistance
-                // , "genre"	: genre
-                // , "tags"		: tags
-            }
-                */
-			})
+			fetch(this.baseURL + `/advGroupSearch`, {
+				method: "GET",
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(filters)
+				})
 				.then(response => response.json())
 				.then(response => {
 					if (checkResponseHoldsErrors(response)) {
@@ -269,7 +255,6 @@ class GroupAPI {
 		});
 	}
 
-
 	listAllTags() {
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/listTagRest`, {
@@ -286,6 +271,9 @@ class GroupAPI {
 		});
 	}
 
+	deleteGroup(groupId){
+
+	}
 
 }
 
@@ -312,32 +300,33 @@ class User {
 }
 
 
-class GoogleLocation{
-	constructor(lat=0.0, lng=0.0){
-		this.lat = lat;
-		this.lng = lng;
-	}
-}
-
-/** Represents a New-Group informations*/
-class GroupNew {
+/** Represents a Group */
+/*
+class Group {
 //it's the API payload
-	constructor(creator="", groupName="", location=null, groupDate=null, description="", /*genre="",*/ tags=null
-			/*location, */
-		) {
+	constructor(id = null, creator="", groupName="", location=null, groupDate="2020-01-01", description="", tags = null) {
+		this.id = id;
 		this.creator = creator;
 		this.groupName = groupName;
 		this.location = location;
 		this.groupDate = groupDate;
 		this.description = description;
-		//this.genre = genre;
 		this.tags = tags;
 
 		// omessi perchè ancora non gestiti lato back-end
-		/*
-		*/
+		//this.maxDistance = maxDistance; // only for search o.o
+		//this.tags = tags;
 	}
-	
+}*/
+
+class GroupBasic {
+	constructor(creator="", groupName="", location=null, tags=null) {
+		this.creator = creator;
+		this.groupName = groupName;
+		this.location = location;
+		this.tags = tags;
+	}
+
 	/**Trim strings*/
 	format(){
 		if(this.creator != null){
@@ -401,35 +390,43 @@ class GroupNew {
 	}
 }
 
-/** Represents a Group */
-class Group {
-//it's the API payload
-	constructor(id = null, creator="", groupName="", location=null, groupDate="2020-01-01", description="") {
-		this.id = id;
-		this.creator = creator;
-		this.groupName = groupName;
-		this.location = location;
-		this.groupDate = groupDate;
-		this.description = description;
 
-		// omessi perchè ancora non gestiti lato back-end
-		/*
-		this.maxDistance = maxDistance; // only for search o.o
-		this.tags = tags;
-		*/
+class GoogleLocation{
+	constructor(lat=0.0, lng=0.0){
+		//this.locationId = 0;
+		this.lat = lat;
+		this.lng = lng;
+		//this.groupId = 0;
+	}
+
+	static fromString(text){
+		text = text.replace("(", "");
+		text = text.replace(")", "");
+		text = text.replace("\'", "");
+		var numbers = text.split(",").map(x => (+(x.trim())));
+		return new GoogleLocation(numbers[0], numbers[1]);
 	}
 }
-/** Represents a search-Group informations*/
-class GroupSearch {
+
+/** Represents a New-Group informations*/
+class GroupNew extends GroupBasic{
 //it's the API payload
-	constructor( groupName="", location=null, dateStartRange="2019-01-01", dateEndRange="2048-01-01", creator="", maxDistance="0.0", genre="", tags=[]) {
-		this.groupName = groupName;
-		this.location = location;
+	constructor(creator="", groupName="", location=null, tags=null,
+				groupDate=null, description="") {
+		super(creator, groupName, location, tags);
+		this.groupDate = groupDate;
+		this.description = description;
+	}
+}
+
+/** Represents a search-Group informations*/
+class GroupSearch  extends GroupBasic{
+//it's the API response
+	constructor(creator="", groupName="", location=null, tags=null,
+				dateStartRange=null, dateEndRange=null, maxDistance="0.0") {
+		super(creator, groupName,location, tags);
 		this.dateStartRange = dateStartRange;
 		this.dateEndRange = dateEndRange;
-		this.creator = creator;
 		this.maxDistance = maxDistance; // only for search o.o
-		this.genre = genre;
-		this.tags = tags;
 	}
 }
