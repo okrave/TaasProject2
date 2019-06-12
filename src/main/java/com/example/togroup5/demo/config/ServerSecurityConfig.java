@@ -93,8 +93,8 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/login**", "/webjars/**")
                 .permitAll()
-                .anyRequest()
-                .authenticated()
+                .anyRequest().permitAll()
+                .and()
 //  ------------------------------------------------------
                     /*.antMatchers(
                         "/js/**",
@@ -108,6 +108,13 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
                     .anyRequest().authenticated()*/
 
+
+                .formLogin()
+                .loginProcessingUrl("/j_spring_security_check")
+                .loginPage("/login")
+                .failureUrl("/login?error=true")
+                .usernameParameter("username")//
+                .passwordParameter("password")
 
 //  ------------------------IMPOSTAZIONI PER FB LOGIN ------------------------------
 
@@ -189,3 +196,4 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 }
+

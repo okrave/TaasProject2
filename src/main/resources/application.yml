@@ -4,9 +4,9 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ilmiodb
-    username: ale
-    password: pass
+    url: jdbc:postgresql://localhost:5432/toGroup
+    username: postgres
+    password: admin
     driver-class-name: org.postgresql.Driver
   thymeleaf:
     cache: false

@@ -35,7 +35,7 @@
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">
         Launch demo modal
     </button>
-    <form id="loginModal" class="modal animated bounceInUp" role="form" method="POST" th:action="@{/auth/login_check}">
+    <form id="loginModal" class="modal animated bounceInUp" role="form" method="POST" th:action="@{/j_spring_security_check}">
         <div class="modal-dialog" id="modal-login">
             <div class="modal-content">
                 <div class="modal-header">
@@ -140,6 +140,7 @@
         $("#user").html(data.userAuthentication.details.name);
         $(".unauthenticated").hide();
         $(".authenticated").show();
+
       });
 
     var logout = function() {
