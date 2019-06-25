@@ -133,8 +133,12 @@
                             </textarea>
                         </div>
                     </div>
+                    <button @click="createGroup()">Create Group</button>
                 </div>
-                <button class="btn btn-primary" @click="toNextStep()">Avanti</button>
+
+                <div v-if="creationProgression.actualStep < 3">
+                    <button class="btn btn-primary" @click="toNextStep()">Avanti</button>
+                </div>
             </div>
             <div>
                 <!-- type="hidden" -->
@@ -145,7 +149,6 @@
                         placeholder="User creator, if any">
             </div>
 
-            <button @click="createGroup()">Create Group</button>
 
 
             <!--

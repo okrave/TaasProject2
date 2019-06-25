@@ -55,16 +55,7 @@ window.onload = _ => {
             }
             , messages: new NotificationsMessage()
 
-            , groupsCarousel : JSON.parse("[" +
-                "[" +
-                " {\"groupId\":2, \"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1}" +
-                ",{\"groupId\":10,\"creator\":\"lonevetad\",\"groupName\":\"Cucina itinerante\",\"groupDate\":\"0019-12-10\",\"description\":\"CIBOOOOOOOOOOOOOOOOOOOOOOOO\",\"location\":9}" +
-                ",{\"groupId\":16,\"creator\":\"calo\",\"groupName\":\"Front-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo alle pagine html\",\"location\":15}" +
-                "],[" +
-                " {\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}" +
-                ",{\"groupId\":23,\"creator\":\"luca\",\"groupName\":\"Back-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo al back\",\"location\":22}" +
-                "]" +
-                "]")
+            , groupsCarousel: null
 },
         created() {
             this.ping();
@@ -72,7 +63,47 @@ window.onload = _ => {
         },
 
         computed: {
+            groupToGroupsCarousel() {
+                var ret, groupSize, i, gsIndex, groupEachSection, gC; //  sectionAmount,
+                gC = this.groupsCarousel;
+                if(gC == null) return [];
+                ret = [];
+                groupSize = gC.length;
+                groupEachSection = 3;
 
+                console.log("... during groupToGroupsCarousel: groups received:");
+                console.log(JSON.stringify(gC));
+                console.log("sections: :");
+                //sectionAmount = Math.floor(groupSize / 3);
+                i = 0;
+                while( i < groupSize ) {
+                    var section = [];
+                    gsIndex = -1;
+                    while( ++gsIndex < groupEachSection && i < groupSize) {
+                        section.push(gC[i]);
+                        i++;
+                    }
+                    ret.push(section);
+                    console.log("section: ...");
+                    console.log(JSON.stringify(section));
+                    section = null;
+                }
+                return ret;
+            }
+            , groupToGroupsCarouselInactive(){
+                var ret, gtgc, i, len;
+                ret = [];
+                gtgc = this.groupToGroupsCarousel;
+                len = gtgc.length;
+                if(len == 0) {
+                    return ret;
+                }
+                i = 0;
+                while( ++i < len){
+                    ret.push(gtgc[i]);
+                }
+                return ret;
+            }
         },
 
         methods: {
@@ -130,58 +161,66 @@ window.onload = _ => {
                     .listAllGroupsSimple()
                     .then(resp => {
                         if(resp.length == 0){
-                            resp = JSON.parse(//"[{\"groupId\":2,\"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1},{\"groupId\":10,\"creator\":\"lonevetad\",\"groupName\":\"Cucina itinerante\",\"groupDate\":\"0019-12-10\",\"description\":\"CIBOOOOOOOOOOOOOOOOOOOOOOOO\",\"location\":9},{\"groupId\":16,\"creator\":\"calo\",\"groupName\":\"Front-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo alle pagine html\",\"location\":15},{\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}]")
+                            resp = /*JSON.parse(//"[{\"groupId\":2,\"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1},{\"groupId\":10,\"creator\":\"lonevetad\",\"groupName\":\"Cucina itinerante\",\"groupDate\":\"0019-12-10\",\"description\":\"CIBOOOOOOOOOOOOOOOOOOOOOOOO\",\"location\":9},{\"groupId\":16,\"creator\":\"calo\",\"groupName\":\"Front-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo alle pagine html\",\"location\":15},{\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}]")
                                 "[" +
                                     "[" +
-                                    "{\"groupId\":2,\"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1}" +
+                                    " {\"groupId\":2 ,\"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1}" +
                                     ",{\"groupId\":10,\"creator\":\"lonevetad\",\"groupName\":\"Cucina itinerante\",\"groupDate\":\"0019-12-10\",\"description\":\"CIBOOOOOOOOOOOOOOOOOOOOOOOO\",\"location\":9}" +
                                     ",{\"groupId\":16,\"creator\":\"calo\",\"groupName\":\"Front-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo alle pagine html\",\"location\":15}" +
                                     "],[" +
-                                    "{\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}" +
+                                    " {\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}" +
                                     ", {\"groupId\":23,\"creator\":\"luca\",\"groupName\":\"Back-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo al back\",\"location\":22}" +
                                     "]" +
-                                    "]") ;
+                                    "]")*/
+                                [ //
+                                    //[
+                                        {
+                                            "groupId":2 ,
+                                            "creator":"lonevetad",
+                                            "groupName":"Ciao",
+                                            "groupDate":"0017-12-10",
+                                            "description":"tanti saluti",
+                                            "location":1
+                                        }, {
+                                            "groupId":10,
+                                            "creator":"lonevetad",
+                                            "groupName":"Cucina itinerante",
+                                            "groupDate":"0019-12-10",
+                                            "description":"CIBOOOOOOOOOOOOOOOOOOOOOOOO",
+                                            "location":9
+                                        }, {
+                                            "groupId":16,
+                                            "creator":"calo",
+                                            "groupName":"Front-end TAASS",
+                                            "groupDate":"0020-12-09",
+                                            "description":"Lavoriamo alle pagine html",
+                                            "location":15
+                                        }
+                                    ,//], [
+
+                                        {
+                                            "groupId":22,
+                                            "creator":"calo",
+                                            "groupName":"Beviamoci su",
+                                            "groupDate":"0019-12-10",
+                                            "description":"Birra in compagnia",
+                                            "location":21
+                                        }, {
+                                            "groupId":23,
+                                            "creator":"luca",
+                                            "groupName":"Back-end TAASS",
+                                            "groupDate":"0020-12-09",
+                                            "description":"Lavoriamo al back",
+                                            "location":22
+                                        }
+                                    //]
+                                ];
+
                         }
                         console.log("resp is:\n" + JSON.stringify(resp));
-                        thisVue.groupsCarousel = thisVue.groupToGroupsCarousel(resp);
+                        thisVue.groupsCarousel = resp; //thisVue.groupToGroupsCarousel(resp);
                     })
                     .catch(this.createErrorHandler("fetchGroupSimple"))
-            }
-
-
-            /*return a object like: {
-                "groupId":2,
-                "creator":"lonevetad",
-                "groupName":"Ciao",
-                "groupDate":"0017-12-10",
-                "description":"tanti saluti",
-                "location":1
-            }*/
-            , groupToGroupsCarousel(gC) {
-                var ret, groupSize, i, gsIndex, groupEachSection; //  sectionAmount,
-                ret = [];
-                groupSize = gC.length;
-                groupEachSection = 3;
-
-                console.log("groups received:");
-                console.log(JSON.stringify(gC));
-                console.log("sections: :");
-                //sectionAmount = Math.floor(groupSize / 3);
-                i = 0;
-                while( i < groupSize ) {
-                    var section = [];
-                    gsIndex = -1;
-                    while( ++gsIndex < groupEachSection && i < groupSize) {
-                        section.push(gC[i]);
-                        i++;
-                    }
-                    ret.push(section);
-                    console.log("section: ...");
-                    console.log(JSON.stringify(section));
-                    section = null;
-                }
-
-                return ret;
             }
         }
     });

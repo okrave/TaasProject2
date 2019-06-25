@@ -177,7 +177,7 @@ function initAll() {
                 this.newGroupInfo.location = GoogleLocation.fromString(this.locationSearch);
 
                 //now the date
-                this.newGroupInfo.groupDate = this.formatDateGroup(this.newGroupInfo.groupDate);
+                //this.newGroupInfo.groupDate = this.formatDateGroup(this.newGroupInfo.groupDate);
 
                 ngi = this.newGroupInfo.format();
 

@@ -45,11 +45,19 @@
         <div class="carousel-inner" role="listbox">
 
 
+            <!--
+            -->
             <section class="item active" >
-                <!-- class="(indexGES == 0 ? 'item active' : 'item')" -->
 
-                <div class="thumbnail" v-for="group in groupsCarousel[0]">
-                    <img src="https://source.unsplash.com/category/nature/400x260" alt="">
+                <div class="thumbnail" v-for="group in groupToGroupsCarousel[0]">
+
+
+            <!--
+            <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarousel" :key="indexGES" class="(indexGES == 0 ? 'item active' : 'item')" >
+
+                 <div class="thumbnail" v-for="group in groupsEachSection">
+            -->
+                <img src="https://source.unsplash.com/category/nature/400x260" alt="">
                     <div class="post__date">
                         <span class="date">25</span>
                         <span class="month">nov</span>
@@ -70,9 +78,7 @@
                 </div>
             </section>
 
-            <section v-for="(groupsEachSection, indexGES) in groupsCarousel" :key="indexGES" class="item" >
-
-                <div v-if="indexGES > 0">
+            <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarouselInactive" :key="indexGES" class="item" >
 
                 <div class="thumbnail" v-for="group in groupsEachSection">
                     <img src="https://source.unsplash.com/category/nature/400x260" alt="">
@@ -94,9 +100,8 @@
                         </div>
                     </div>
                 </div>
-                </div>
             </section>
-
+            -->
             <!--
             <section class="item active">
 
@@ -316,7 +321,9 @@
       }
 
     $.get("/user", function(data) {
-        $("#user").html(data.userAuthentication.details.name);
+        if(data != undefined && data != null && data.userAuthentication != undefined && data.userAuthentication != null){
+            $("#user").html(data.userAuthentication.details.name);
+        }
         $(".unauthenticated").hide();
         $(".authenticated").show();
 
