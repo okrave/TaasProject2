@@ -3,27 +3,155 @@
 <head>
 
     <title> Home </title>
-
-    <th:block th:insert="fragments/header.html :: headerInclusions" />
-
+    <th:block th:replace="fragments/header.html :: headerInclusions" />
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
+    <link rel="stylesheet" href="../static/css/Home.css" th:href="@{/css/Home.css}">
 
-    <script src="js/loginRegister.js"   th:src="@{/js/loginRegister.js}"></script>
+
+
 </head>
 
 <body>
-
 <th:block th:replace="fragments/navbar :: navbar" />
 
 <div id="appLoginRegister">
 
+    <!----------------------------------------------
+  COVER
+ ------------------------------------------------->
+
+    <section class="cover">
+        <div class="cover__caption">
+            <div class="title">
+                <h2>Da soli possiamo fare così poco, insieme possiamo fare così tanto</h2>
+            </div>
+            <div class="cover__caption__copy">
+
+            </div>
+        </div>
+    </section>
+
+    <!----------------------------------------------
+      CARDS
+     ------------------------------------------------->
+
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <div class="post__intestazione">
+            <span class="post__intestazione__titolo">Popolari</span>
+            <a class="link2" href=""><span class="post__intestazione__link">Vedi tutti</span></a>
+        </div>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+
+            <section class="item active">
+
+                <div class="thumbnail">
+                    <img src="https://source.unsplash.com/category/nature/400x260" alt="">
+                    <div class="post__date">
+                        <span class="date">25</span>
+                        <span class="month">nov</span>
+                    </div>
+
+                    <div class="caption">
+                        <h4 style="margin: 0">Martedì 25 Novembre, 20:00</h4>
+                        <h3 style="margin-top: 10px;">Nome Gruppo</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta rem sit quos voluptatibus, delectus aliquam doloremque debitis iure? </p>
+                        <div class="row" >
+                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
+
+
+                            <h4 class="organizzato">Organizzato da Calogero</h4>
+
+                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="thumbnail">
+                    <img src="https://source.unsplash.com/random/400x260" alt="">
+                    <div class="post__date">
+                        <span class="date">25</span>
+                        <span class="month">nov</span>
+                    </div>
+                    <div class="caption">
+                        <h4 style="margin: 0;">Martedì 25 Novembre, 20:00</h4>
+                        <h3 style="margin-top: 10px;">Nome Gruppo</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta rem sit quos voluptatibus, delectus aliquam doloremque debitis iure? </p>
+                        <div class="row" >
+                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
+
+
+                            <h4 class="organizzato">Organizzato da Calogero</h4>
+
+                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="thumbnail">
+                    <img src="https://source.unsplash.com/random/400x260" alt="">
+                    <div class="post__date">
+                        <span class="date">25</span>
+                        <span class="month">nov</span>
+                    </div>
+                    <div class="caption">
+                        <h4 style="margin: 0;">Martedì 25 Novembre, 20:00</h4>
+                        <h3 style="margin-top: 10px;">Nome Gruppo</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta rem sit quos voluptatibus, delectus aliquam doloremque debitis iure? </p>
+                        <div class="row" >
+                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
+
+
+                            <h4 class="organizzato">Organizzato da Luca</h4>
+
+                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!----
+             <section class="item">
+
+             </section>
+             ------->
+        </div>
+
+
+        <!-- Indicators -->
+        <section class="indicators">
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            </ol>
+        </section>
+    </div>
+
+    <!--------------------------------------------------->
+
+
+    <div class="Wrapper">
+               <div class="unauthenticated">
+                 <a class="btn" href="/login">Login</a>
+               </div>
+               <div class="authenticated" style="display: none">
+                 Logged in as: <span id="user"></span>
+                 <div><button onClick="logout()" class="btn">Logout</button></div>
+               </div>
+  </div>
     <th:block th:insert="fragments/header.html :: notificationMessages" />
+
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">
         Launch demo modal
     </button>
-    <form id="loginModal" class="modal animated bounceInUp" role="form" method="POST" th:action="@{/auth/login_check}">
+    <form id="loginModal" class="modal animated bounceInUp" role="form" method="POST" th:action="@{/j_spring_security_check}">
         <div class="modal-dialog" id="modal-login">
             <div class="modal-content">
                 <div class="modal-header">
@@ -104,11 +232,51 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<!--<script src="../static/js/bootstrap.js" th:href="@{/js/bootstrap.js}"></script>-->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
+
+ <script
+    			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+    			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    			  crossorigin="anonymous">
+
+ </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="js/toGroupAPI.js"      th:src="@{/js/toGroupAPI.js}"></script>
+
+    <script src="js/loginRegister.js"   th:src="@{/js/loginRegister.js}"></script>
+
+<script>
+
+    if (window.location.hash == '#_=_'){
+          history.replaceState
+              ? history.replaceState(null, null, window.location.href.split('#')[0])
+              : window.location.hash = '';
+      }
+
+    $.get("/user", function(data) {
+        $("#user").html(data.userAuthentication.details.name);
+        $(".unauthenticated").hide();
+        $(".authenticated").show();
+
+      });
+
+    var logout = function() {
+        $.post("/logout", function() {
+          $("#user").html('');
+          $(".unauthenticated").show();
+          $(".authenticated").hide();
+        });
+        return true;
+      }
+</script>
 
 
 </body>
+
+
+
 </html>

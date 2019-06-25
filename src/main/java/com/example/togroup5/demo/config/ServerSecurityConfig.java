@@ -2,6 +2,7 @@ package com.example.togroup5.demo.config;
 
 import com.example.togroup5.demo.servicies.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,9 +20,11 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
 
+@EnableOAuth2Sso
 @Configuration
 @EnableWebSecurity
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -84,7 +87,15 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessHandler(logoutSuccessHandler());*/
         http
+                //  -------------IMPOSTAZIONI PER FB LOGIN------------------
+                .csrf().disable()
+                .antMatcher("/**")
                 .authorizeRequests()
+                .antMatchers("/", "/login**", "/webjars/**")
+                .permitAll()
+                .anyRequest().permitAll()
+                .and()
+//  ------------------------------------------------------
                     /*.antMatchers(
                         "/js/**",
                         "/css/**",
@@ -96,20 +107,33 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/user/**").hasAnyRole("USER")
                     .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
                     .anyRequest().authenticated()*/
-                    .anyRequest().permitAll()
-                    .and()
-                    //.oauth2Login()
 
 
                 .formLogin()
-                    .loginProcessingUrl("/auth/login_check")
-                    .loginPage("/login")
-                    .failureUrl("/login?error=true")
-                    .usernameParameter("username")//
-                    .passwordParameter("password")
-                    .and()
-                    .logout().logoutSuccessUrl("/home");
+                .loginProcessingUrl("/j_spring_security_check")
+                .loginPage("/login")
+                .failureUrl("/login?error=true")
+                .usernameParameter("username")//
+                .passwordParameter("password")
 
+//  ------------------------IMPOSTAZIONI PER FB LOGIN ------------------------------
+
+                .and().logout().logoutSuccessUrl("/").permitAll();
+//  ---------------------------------------------------------------------------------
+//                    .and()
+//                    .oauth2Login()
+//                    .and()
+//
+//
+//                .formLogin()
+//                    .loginProcessingUrl("/auth/login_check")
+//                    .loginPage("/login")
+//                    .failureUrl("/login?error=true")
+//                    .usernameParameter("username")//
+//                    .passwordParameter("password")
+//                    .and()
+//                    .logout().logoutSuccessUrl("/home");
+//
 
 
 
@@ -172,3 +196,4 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 }
+

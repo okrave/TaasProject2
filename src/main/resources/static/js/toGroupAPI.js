@@ -4,10 +4,7 @@
  * and open the template in the editor.
  */
 
-
-
-const APIUrl = "http://localhost:8282";
-
+const APIUrl = "http://localhost:8080";
 // little utils
 
 const checkResponseHoldsErrors = function(response){
@@ -16,7 +13,6 @@ const checkResponseHoldsErrors = function(response){
 				(response.status >= 300 || response.status < 200)) // not a "ok" response
 		);
 }
-
 
 //
 

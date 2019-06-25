@@ -27,7 +27,7 @@
     box-shadow: 2px 1px 1px lightgrey,
     -1px 1px 1px lightgrey;
     color: white;
-    background-color: #BDBDBD;
+    background-color: lightgrey;
 }
 
 .btn-google{
@@ -38,16 +38,17 @@
     box-shadow: 2px 1px 1px lightgrey,
     -1px 1px 1px lightgrey;
 
-    color: #BDBDBD;
-    background-color: white;
+    color: white;
+    background-color: lightgrey;
 }
 .btn-facebook:hover{background-color: #3B5998; box-shadow: 2px 4px 5px lightgrey,-2px 4px 5px lightgrey;}
-.btn-google:hover{background-color: #BF360C;color: white;box-shadow: 2px 4px 5px lightgrey,-2px 4px 5px lightgrey;}
+.btn-google:hover{background-color: #BF360C;box-shadow: 2px 4px 5px lightgrey,-2px 4px 5px lightgrey;}
 
 /* ICON */
 
 .fa-facebook-f{font-size: 20px;color: white;padding-right: 10px;}
-.fa-google{font-size: 20px;padding-right: 10px;}
+.fa-google{font-size: 20px;color: white;padding-right: 10px;}
+
 
 /* ANIMATION */
 

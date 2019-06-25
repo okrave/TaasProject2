@@ -33,7 +33,7 @@ public class HomeController {
         return "Home";
     }
 
-    @GetMapping(value="/home")
+    @GetMapping(value="/Home")
     public String home(){
         return "Home";
     }
@@ -56,9 +56,9 @@ public class HomeController {
         return "admin";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user2")
     public String user() {
-        return "user/index";
+        return "user2/index";
     }
 
     @GetMapping("/about")
