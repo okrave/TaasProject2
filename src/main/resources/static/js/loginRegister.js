@@ -54,9 +54,25 @@ window.onload = _ => {
                 passwordConfirmation: ""
             }
             , messages: new NotificationsMessage()
-        },
+
+            , groupsCarousel : JSON.parse("[" +
+                "[" +
+                " {\"groupId\":2, \"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1}" +
+                ",{\"groupId\":10,\"creator\":\"lonevetad\",\"groupName\":\"Cucina itinerante\",\"groupDate\":\"0019-12-10\",\"description\":\"CIBOOOOOOOOOOOOOOOOOOOOOOOO\",\"location\":9}" +
+                ",{\"groupId\":16,\"creator\":\"calo\",\"groupName\":\"Front-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo alle pagine html\",\"location\":15}" +
+                "],[" +
+                " {\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}" +
+                ",{\"groupId\":23,\"creator\":\"luca\",\"groupName\":\"Back-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo al back\",\"location\":22}" +
+                "]" +
+                "]")
+},
         created() {
             this.ping();
+            this.fetchGroupSimple();
+        },
+
+        computed: {
+
         },
 
         methods: {
@@ -103,6 +119,69 @@ window.onload = _ => {
                         }
                     })
                     .catch(this.createErrorHandler("register"));
+            }
+
+            // group
+
+            , fetchGroupSimple(){
+                var thisVue = this;
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .listAllGroupsSimple()
+                    .then(resp => {
+                        if(resp.length == 0){
+                            resp = JSON.parse(//"[{\"groupId\":2,\"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1},{\"groupId\":10,\"creator\":\"lonevetad\",\"groupName\":\"Cucina itinerante\",\"groupDate\":\"0019-12-10\",\"description\":\"CIBOOOOOOOOOOOOOOOOOOOOOOOO\",\"location\":9},{\"groupId\":16,\"creator\":\"calo\",\"groupName\":\"Front-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo alle pagine html\",\"location\":15},{\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}]")
+                                "[" +
+                                    "[" +
+                                    "{\"groupId\":2,\"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1}" +
+                                    ",{\"groupId\":10,\"creator\":\"lonevetad\",\"groupName\":\"Cucina itinerante\",\"groupDate\":\"0019-12-10\",\"description\":\"CIBOOOOOOOOOOOOOOOOOOOOOOOO\",\"location\":9}" +
+                                    ",{\"groupId\":16,\"creator\":\"calo\",\"groupName\":\"Front-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo alle pagine html\",\"location\":15}" +
+                                    "],[" +
+                                    "{\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}" +
+                                    ", {\"groupId\":23,\"creator\":\"luca\",\"groupName\":\"Back-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo al back\",\"location\":22}" +
+                                    "]" +
+                                    "]") ;
+                        }
+                        console.log("resp is:\n" + JSON.stringify(resp));
+                        thisVue.groupsCarousel = thisVue.groupToGroupsCarousel(resp);
+                    })
+                    .catch(this.createErrorHandler("fetchGroupSimple"))
+            }
+
+
+            /*return a object like: {
+                "groupId":2,
+                "creator":"lonevetad",
+                "groupName":"Ciao",
+                "groupDate":"0017-12-10",
+                "description":"tanti saluti",
+                "location":1
+            }*/
+            , groupToGroupsCarousel(gC) {
+                var ret, groupSize, i, gsIndex, groupEachSection; //  sectionAmount,
+                ret = [];
+                groupSize = gC.length;
+                groupEachSection = 3;
+
+                console.log("groups received:");
+                console.log(JSON.stringify(gC));
+                console.log("sections: :");
+                //sectionAmount = Math.floor(groupSize / 3);
+                i = 0;
+                while( i < groupSize ) {
+                    var section = [];
+                    gsIndex = -1;
+                    while( ++gsIndex < groupEachSection && i < groupSize) {
+                        section.push(gC[i]);
+                        i++;
+                    }
+                    ret.push(section);
+                    console.log("section: ...");
+                    console.log(JSON.stringify(section));
+                    section = null;
+                }
+
+                return ret;
             }
         }
     });

@@ -251,6 +251,24 @@ class GroupAPI {
 		});
 	}
 
+	listAllGroupsSimple() {
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/listGroupSimple`, {
+				method: "GET"
+			})
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
+		});
+	}
+
+
+
 	listAllTags() {
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/listTagRest`, {

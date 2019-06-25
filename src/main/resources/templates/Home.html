@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../static/css/Home.css" th:href="@{/css/Home.css}">
 
 
+    <script src="js/loginRegister.js"      th:src="@{/js/loginRegister.js}"></script>
 
 </head>
 
@@ -43,6 +44,60 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
 
+
+            <section class="item active" >
+                <!-- class="(indexGES == 0 ? 'item active' : 'item')" -->
+
+                <div class="thumbnail" v-for="group in groupsCarousel[0]">
+                    <img src="https://source.unsplash.com/category/nature/400x260" alt="">
+                    <div class="post__date">
+                        <span class="date">25</span>
+                        <span class="month">nov</span>
+                    </div>
+
+                    <div class="caption">
+                        <h4 style="margin: 0">{{group.groupDate}}</h4>
+                        <h3 style="margin-top: 10px;">{{group.groupName}}</h3>
+                        <p>{{group.description}}</p>
+                        <div class="row" >
+                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
+
+                            <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
+
+                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section v-for="(groupsEachSection, indexGES) in groupsCarousel" :key="indexGES" class="item" >
+
+                <div v-if="indexGES > 0">
+
+                <div class="thumbnail" v-for="group in groupsEachSection">
+                    <img src="https://source.unsplash.com/category/nature/400x260" alt="">
+                    <div class="post__date">
+                        <span class="date">25</span>
+                        <span class="month">nov</span>
+                    </div>
+
+                    <div class="caption">
+                        <h4 style="margin: 0">{{group.groupDate}}</h4>
+                        <h3 style="margin-top: 10px;">{{group.groupName}}</h3>
+                        <p>{{group.description}}</p>
+                        <div class="row" >
+                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
+
+                            <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
+
+                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+
+            <!--
             <section class="item active">
 
                 <div class="thumbnail">
@@ -114,6 +169,7 @@
                     </div>
                 </div>
             </section>
+            -->
             <!----
              <section class="item">
 
@@ -143,8 +199,7 @@
                  Logged in as: <span id="user"></span>
                  <div><button onClick="logout()" class="btn">Logout</button></div>
                </div>
-  </div>
-    <th:block th:insert="fragments/header.html :: notificationMessages" />
+    </div>
 
 
     <!-- Button trigger modal -->
@@ -159,6 +214,11 @@
                     <h4 class="modal-title scritta-accedi">Accedi</h4>
                 </div>
                 <div class="modal-body">
+
+                    <!--
+                    <th:block th:insert="fragments/header.html :: notificationMessages" />
+                    -->
+
                     <input type="text" id="username" name="username" class="form-control login-input " placeholder= "Username"
                            v-model="userInfo.username"
                     />
@@ -169,14 +229,7 @@
                     <br />
                     <button type="submit" name="submit" value="submit" class="btn-l" >Login</button>
                     <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" href="#" role="button" > Registrati qui </a></h5>
-                    <!-- <div class="alert alert-danger fade in" role="alert">
-                         <h2 class="alert-link">Oh Snap!Login Failed</h2>
-                         <h4>Reason:</h4>
-                         <span th:if="${#session!= null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}"
-                               th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">
-                                 Static summary
-                         </span>
-                     </div>-->
+
 
 
                 </div>
@@ -202,6 +255,15 @@
                     <h4 class="modal-title scritta-accedi">Registrati</h4>
                 </div>
                 <div class="modal-body">
+
+                    <th:block th:insert="fragments/header.html :: notificationMessages" />
+                    <!--
+                   <input type="text" class="form-control registration-input-input " id="errorMessageSection" v-if="messages.errorMessage != null" v-model="messages.errorMessage" >
+                   <input type="text" class="form-control registration-input-input " id="infoMessageSection" v-if="messages.infoMessage != null" v-model="messages.infoMessage" >
+                   <input type="text" class="form-control registration-input-input " id="successMessageSection" v-if="messages.successMessage != null" v-model="messages.successMessage" >
+                   -->
+
+
                     <input type="text" name="username"   class="form-control registration-input " placeholder= "Username" required
                            v-model="userInfo.username"
                     />
@@ -243,11 +305,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <script src="js/toGroupAPI.js"      th:src="@{/js/toGroupAPI.js}"></script>
 
-    <script src="js/loginRegister.js"   th:src="@{/js/loginRegister.js}"></script>
 
 <script>
 
