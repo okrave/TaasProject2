@@ -5,7 +5,17 @@
  */
 
 const APIUrl = "http://localhost:8080";
+// little utils
+
+const checkResponseHoldsErrors = function(response){
+	return ( response.hasOwnProperty("ErrorDetail")
+		|| (response.hasOwnProperty('status') && response.hasOwnProperty('error') &&
+				(response.status >= 300 || response.status < 200)) // not a "ok" response
+		);
+}
+
 //
+
 class ToGroup {
 
 	constructor(url = null) {
@@ -33,7 +43,7 @@ class ToGroup {
 			fetch(this.baseURL + `/ping`) //fetch 'e una funzione delle Promise, che mi pare Vue renda disponibile se assente
 			.then(response => response.json())
 			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
+				if (checkResponseHoldsErrors(response)) {
 					reject(response);
 				}
 				resolve(response);
@@ -52,7 +62,7 @@ class ToGroup {
 			})
 				.then(response => response.json())
 				.then(response => {
-					if (response.hasOwnProperty("ErrorDetail")) {
+					if (checkResponseHoldsErrors(response)) {
 						reject(response);
 					}
 					resolve(response);
@@ -87,7 +97,7 @@ class UserAPI {
 			})
 			.then(response => response.json())
 			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
+				if (checkResponseHoldsErrors(response)) {
 					reject(response);
 				}
 				resolve(response);
@@ -103,7 +113,7 @@ class UserAPI {
 			})
 			.then(response => response.json())
 			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
+				if (checkResponseHoldsErrors(response)) {
 					reject(response);
 				}
 				resolve(response);
@@ -125,13 +135,32 @@ class UserAPI {
 			})
 				.then(response => response.json())
 				.then(response => {
-					if (response.hasOwnProperty("ErrorDetail")) {
+					if (checkResponseHoldsErrors(response)) {
 						reject(response);
 					}
 					resolve(response);
 				})
 				.catch(reject);
 		});
+	}
+
+	removeByID(userID){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/deleteByID/` + userID, {
+				method: 'DELETE'
+				//, headers: {'Content-Type': 'application/json'}
+				//, body: JSON.stringify({ "userID": userID }),
+			})
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
+		});
+
 	}
 }
 
@@ -161,7 +190,7 @@ class GroupAPI {
 			})
 			.then(response => response.json())
 			.then(response => {
-					if (response.hasOwnProperty("ErrorDetail")) {
+					if (checkResponseHoldsErrors(response)) {
 						reject(response);
 					}
 					resolve(response);
@@ -170,33 +199,39 @@ class GroupAPI {
 		});
 	}
 
-	newGroup(filters /*userCreator, title, date, location, maxDistance, description, genre, tags*/) {
+	newGroup(filters) {
 		return new Promise((resolve, reject) => {
-			fetch(this.baseURL + `/newGroup`, {
+			fetch(this.baseURL + `/createGroup`, {
 				method: "POST",
-				body: filters
-					/*{
-					"groupName"		: title,
-					"description"	: description,
-					"groupDate"		: date,
-					"creator"		: userCreator
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(filters)
+			})
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
+		});
+	}
 
-					// omessi perchè ancora non gestiti lato back-end
-					// , "location"	: location
-					// , "maxDistance": maxDistance
-					// , "genre"	: genre
-					// , "tags"		: tags
-				}
-					*/
-			})
-			.then(response => response.json())
-			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
-					reject(response);
-				}
-				resolve(response);
-			})
-			.catch(reject);
+	searchGroups(filters) {
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/advGroupSearch`, {
+				method: "GET",
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(filters)
+				})
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
 		});
 	}
 
@@ -205,16 +240,37 @@ class GroupAPI {
 			fetch(this.baseURL + `/listGroupRest`, {
 				method: "GET"
 			})
-			.then(response => response.json())
-			.then(response => {
-				if (response.hasOwnProperty("ErrorDetail")) {
-					reject(response);
-				}
-				resolve(response);
-			})
-			.catch(reject);
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
 		});
 	}
+
+	listAllTags() {
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/listTagRest`, {
+				method: "GET"
+			})
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
+		});
+	}
+
+	deleteGroup(groupId){
+
+	}
+
 }
 
 /** Represents a User, without a ID set */
@@ -228,7 +284,7 @@ class UserRegistration {
 	}
 }
 /** Represents a User */
-class UserWithID {
+class User {
 //it's the API payload
 	constructor(userID = null, userName, password, email, enabled) {
 		this.userID = userID;
@@ -239,22 +295,134 @@ class UserWithID {
 	}
 }
 
+
 /** Represents a Group */
+/*
 class Group {
 //it's the API payload
-	constructor(id = null, groupName, description, groupDate, creator) {
+	constructor(id = null, creator="", groupName="", location=null, groupDate="2020-01-01", description="", tags = null) {
 		this.id = id;
-		this.groupName = groupName;
-		this.description = description;
-		this.groupDate = groupDate;
 		this.creator = creator;
+		this.groupName = groupName;
+		this.location = location;
+		this.groupDate = groupDate;
+		this.description = description;
+		this.tags = tags;
 
 		// omessi perchè ancora non gestiti lato back-end
-		/*
+		//this.maxDistance = maxDistance; // only for search o.o
+		//this.tags = tags;
+	}
+}*/
+
+class GroupBasic {
+	constructor(creator="", groupName="", location=null, tags=null) {
+		this.creator = creator;
+		this.groupName = groupName;
 		this.location = location;
-		this.maxDistance = maxDistance;
-		this.genre = genre;
 		this.tags = tags;
-		*/
+	}
+
+	/**Trim strings*/
+	format(){
+		if(this.creator != null){
+			this.creator = this.creator.trim()
+		}
+		if(this.groupName != null){
+			this.groupName = this.groupName.trim()
+		}
+		if(this.description != null){
+			this.description = this.description.trim()
+		}
+		return this;
+	}
+
+	addTag(tag){
+		if(this.tags == null){
+			this.tags = [tag];
+			return true;
+		}
+		if(this.tags.includes(tag)){
+			return false;
+		}
+		this.tags.push(tag);
+		return true;
+	}
+
+	removeTag(tag, index){
+		/*var i, elem, newTag, len;
+		var t = this.tags;
+		if(t == null){
+			return false;
+		}
+		len = t.length;
+		if(len <= 0){
+			return false;
+		}
+		if(t.includes(tag)){
+			newTag = [];
+			i = -1;
+			while ( ++i < len) {
+				elem = t[i];
+				if(tag !== elem){
+					newTag.push(elem);
+				}
+			}
+			this.tags = newTag;
+			if(newTag.length <= 0){
+				this.tags = null;
+			}
+			return true;
+		}
+		return false;*/
+		if( this.tags == null || index < 0 || index >= this.tags.length || this.tags[index] !== tag){
+			return false;
+		}
+		this.tags.splice(index, 1);
+		if (this.tags.length <= 0){
+			this.tags = null;
+		}
+		return true;
+	}
+}
+
+
+class GoogleLocation{
+	constructor(lat=0.0, lng=0.0){
+		//this.locationId = 0;
+		this.lat = lat;
+		this.lng = lng;
+		//this.groupId = 0;
+	}
+
+	static fromString(text){
+		text = text.replace("(", "");
+		text = text.replace(")", "");
+		text = text.replace("\'", "");
+		var numbers = text.split(",").map(x => (+(x.trim())));
+		return new GoogleLocation(numbers[0], numbers[1]);
+	}
+}
+
+/** Represents a New-Group informations*/
+class GroupNew extends GroupBasic{
+//it's the API payload
+	constructor(creator="", groupName="", location=null, tags=null,
+				groupDate=null, description="") {
+		super(creator, groupName, location, tags);
+		this.groupDate = groupDate;
+		this.description = description;
+	}
+}
+
+/** Represents a search-Group informations*/
+class GroupSearch  extends GroupBasic{
+//it's the API response
+	constructor(creator="", groupName="", location=null, tags=null,
+				dateStartRange=null, dateEndRange=null, maxDistance="0.0") {
+		super(creator, groupName,location, tags);
+		this.dateStartRange = dateStartRange;
+		this.dateEndRange = dateEndRange;
+		this.maxDistance = maxDistance; // only for search o.o
 	}
 }

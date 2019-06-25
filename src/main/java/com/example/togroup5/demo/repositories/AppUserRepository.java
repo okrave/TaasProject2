@@ -34,6 +34,32 @@ public class AppUserRepository {
     @Autowired
     private AppUserRoleRepository appUserRoleRepository;
 
+    // basic methods
+
+
+    /**
+     * Di default aggiungo un user con Role = ROLE_USER
+     * Role = 1 -> ROLE_ADMIN , Role = 2 -> ROLE_USER
+     */
+    public void save(AppUser user) {
+        //AppUser supportUser =
+        appUserJpa.save(user);
+    }
+
+    public boolean delete(Long userId){
+        appUserJpa.deleteById(userId);
+        return true;
+    }
+
+    public boolean delete(String username){
+        AppUser user;
+        user = findAppUserByUserName(username);
+        if(user == null) return false;
+        appUserJpa.delete(user);
+        return true;
+    }
+
+    // query methods
 
     public AppUser findUserAccount(String userName) {
         try {
@@ -49,22 +75,17 @@ public class AppUserRepository {
         }
     }
 
-    /**
-     * Di default aggiungo un user con Role = ROLE_USER
-     * Role = 1 -> ROLE_ADMIN , Role = 2 -> ROLE_USER
-    */
-    public void save(AppUser user){
-        AppUser supportUser = appUserJpa.save(user);
-    }
-
     public AppUser findAppUserByUserName(String userName){
         return appUserJpa.findAppUserByUserName(userName);
+    }
+
+    public AppUser findAppUserByID(Long userID){
+        return appUserJpa.getOne(userID);
     }
 
     public List<AppUser> findAll(){
         return appUserJpa.findAll();
     }
-
 
 
 

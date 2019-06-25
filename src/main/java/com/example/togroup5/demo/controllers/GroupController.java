@@ -19,14 +19,25 @@ public class GroupController {
     public String listGroup(Model model){
         List<AppGroup> allGroup = groupService.listAllGroup();
         model.addAttribute("groups",allGroup);
-        return "listaGroups";
+        return "searchGroup";
     }
 
     @GetMapping(value = "/listGroupByCreator")
     public String listGroupByCreator(Model model){
         List<AppGroup> allGroup = groupService.listGroupByCreator();
         model.addAttribute("groups",allGroup);
-        return "listaGroups";
+        return "searchGroup";
+    }
+
+    @GetMapping(value = "/newGroup")
+    public String newGroup(){
+        return "newGroup";
+    }
+
+
+    @GetMapping(value = "/searchGroup")
+    public String advSearchGroup(){
+        return "searchGroup";
     }
 
 }

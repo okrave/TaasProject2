@@ -16,7 +16,7 @@ window.onload = _ => {
             toGroupAPI: new ToGroup()
             , users: []
             , showPassword: false
-            , errorMessage: null
+            , messages: new NotificationsMessage()
         },
         created() {
             this.ping();
@@ -28,7 +28,8 @@ window.onload = _ => {
                 return function (err) {
                     console.log("Error on method: " + methodName);
                     console.log(err);
-                    thisVue.errorMessage = err;
+                    thisVue.messages.setErrorMessage(err);
+                    thisVue.messages.clearMessagesAfter(5000);
                 }
             }
 
@@ -51,6 +52,21 @@ window.onload = _ => {
                         }
                     })
                     .catch(this.createErrorHandler("reload users list"))
+            }
+
+            , deleteUser(userId){
+                const thisVue = this;
+                this.toGroupAPI
+                    .getUserEndpoint()
+                    .removeByID(userId)
+                    .then(_ => {
+                        console.log("user " + userId + " removed :D");
+                        thisVue.messages.setSuccessMessage("user " + userId + " removed :D");
+                        thisVue.messages.clearMessagesAfter(3000);
+                        thisVue.reloadUserList();
+                    })
+                    .catch(this.createErrorHandler("remove user with id: " + userId))
+
             }
         }
     });

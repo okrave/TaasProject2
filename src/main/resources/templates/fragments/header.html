@@ -2,16 +2,42 @@
 
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:fragment="header">
-    <meta charset="UTF-8">
+    <th:block th:fragment="headerInclusions">
+        <meta charset="UTF-8">
 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-
-
-
-    <!-- Bootstrap core CSS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+       <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    <!--<link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>-->
+  
+
+        <!-- Vue, axios and custom-common js files -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+        <script src="js/utils.js"           th:src="@{/js/utils.js}"></script>
+        <script src="js/toGroupAPI.js"      th:src="@{/js/toGroupAPI.js}"></script>
     </th:block>
 </head>
+<body>
+
+<div th:fragment="header">
+    <!-- insert common stuffs here -->
+</div>
+
+<div th:fragment="notificationMessages">
+    <div id="messageHandling">
+        <div id="errorMessageSection" v-if="messages.errorMessage != null">
+            <p>{{messages.errorMessage}}</p>
+        </div>
+        <div id="infoMessageSection" v-if="messages.infoMessage != null">
+            <p>{{messages.infoMessage}}</p>
+        </div>
+        <div id="successMessageSection" v-if="messages.successMessage != null">
+            <p>{{messages.successMessage}}</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

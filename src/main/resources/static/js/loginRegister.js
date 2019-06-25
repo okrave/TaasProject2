@@ -6,24 +6,38 @@
 
 let app;
 
+function removeAllModalBackdrop() {
+    document.querySelectorAll(".modal-backdrop").forEach(e => {
+        e.remove();
+        e.parentNode.removeChild(e);
+    })
+}
+
+function switchFromRegistModalToLogin(){
+    $('#registerModal').modal('hide');
+    removeAllModalBackdrop();
+    $('#loginModal').modal('show');
+    return false;
+}
+
+function switchFromLoginModalToRegistration(){
+    $('#loginModal').modal('hide');
+    removeAllModalBackdrop();
+    $('#registerModal').modal('show');
+    return false;
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 
 window.onload = _ => {
 
     $(document).ready(function(){
-        $('#linkLogin').click(function(){
-            $('#registerModal').modal('hide');
-            $('#loginModal').modal('show');
-        });
-        $('#linkRegistration').click(function(){
-            $('#loginModal').modal('hide');
+        $('#linkToLogin').click(switchFromRegistModalToLogin);
+        $('#linkToRegistration').click(switchFromLoginModalToRegistration);
+        $('#nav-linkRegister').click(function(){
             $('#registerModal').modal('show');
         });
-        $('#nav-linkRegister').click(function(){
-            $('#loginModal').modal('show');
-        });
-        $('#nav-linkLogin').click(function(){
+        $('#nav-linkToLogin').click(function(){
             $('#loginModal').modal('show');
         });
     });
@@ -39,7 +53,7 @@ window.onload = _ => {
                 email               : "",
                 passwordConfirmation: ""
             }
-            , errorMessage: null
+            , messages: new NotificationsMessage()
         },
         created() {
             this.ping();
@@ -51,7 +65,10 @@ window.onload = _ => {
                 return function (err) {
                     console.log("Error on method: " + methodName);
                     console.log(err);
-                    thisVue.errorMessage = err;
+
+                    thisVue.messages.setErrorMessage(err);
+                    thisVue.messages.clearMessagesAfter(5000)
+
                 }
             }
 
@@ -77,7 +94,13 @@ window.onload = _ => {
                     .then(resp => {
                         console.log("registered :D");
                         console.log(resp);
-                        thisVue.userInfo.username = resp ? "registration successfull" : "username yet present";
+                        if(resp){
+                            thisVue.messages.setSuccessMessage("registration successful");
+                            thisVue.messages.clearMessagesAfter(3000);
+                        } else {
+                            thisVue.messages.setErrorMessage("username yet present");
+                            thisVue.messages.clearMessagesAfter(5000);
+                        }
                     })
                     .catch(this.createErrorHandler("register"));
             }

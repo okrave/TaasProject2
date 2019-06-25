@@ -22,3 +22,37 @@ function tryParseJSON(aProbablyJSON) {
     }
     return aProbablyJSON;
 }
+
+
+class NotificationsMessage{
+    constructor(){
+        this.errorMessage = null;
+        this.infoMessage = null;
+        this.successMessage = null;
+    }
+
+    clearMessages(){
+        this.errorMessage = null;
+        this.infoMessage = null;
+        this.successMessage = null;
+    }
+
+    clearMessagesAfter(milliseconds) {
+        setTimeout( () => {
+            this.clearMessages();
+        }, milliseconds);
+    }
+
+    setErrorMessage(msg){
+        this.clearMessages();
+        this.errorMessage = msg;
+    }
+    setInfoMessage(msg){
+        this.clearMessages();
+        this.infoMessage = msg;
+    }
+    setSuccessMessage(msg){
+        this.clearMessages();
+        this.successMessage = msg;
+    }
+}
