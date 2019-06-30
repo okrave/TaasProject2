@@ -80,13 +80,19 @@ CARDS
         -2px  2px 20px #424242;
 }
 
+.card_body>h4 {margin: 0; }
+.card_body>h3 {margin-top: 10px; }
+.card_footer{border: 10px solid red;}
+
 .carousel-inner{padding: 10px;}
 .img-circle{ margin: 4%; float: left;border-style: solid;border-width: 2px;border-color: black;}
 
-.organizzato{margin-top: 2px;padding-right: 10%; padding-top: 19px; font-size: 14px;float: left;}
+.organizzato{margin-top: 2px;padding-right: 10%;padding-top: 25px; font-size: 14px;float: left;}
 
 
 .link_card{color: black; font-size: 15px;display: inline-block; padding-top: 19px;padding-right: 3%;}
+
+.clearfix{clear: both;}
 
 
 
