@@ -211,7 +211,7 @@ public class RestGroupController {
                     new AppGroupNew.LocationReceived(locationInfo[0]),//
                     tags, groupInfo[2], Date.valueOf(groupInfo[3]));
             newGroup.getLocation().setLocationId(id++);
-            groupService.createGrouqp(newGroup);
+            groupService.createGroup(newGroup);
         }
     }
 
