@@ -47,6 +47,10 @@ public class HomeController {
     public String login(){
         return "login";
     }
+    @GetMapping (value="/create_group")
+    public String create_group(){
+        return "crea_gruppo1";
+    }
 
     @GetMapping("/admin")
     public String admin(Model model, Principal principal) {
