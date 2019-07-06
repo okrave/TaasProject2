@@ -39,12 +39,22 @@ function initAll() {
             toGroupAPI: new ToGroup()
             , messages: new NotificationsMessage()
             , tag: ""
-            , locationSearch: ""
+            , locationSearch: "Torino"
             , newGroupInfo: new GroupNew()
             , creationProgression : new NewGroupProgression()
-            , allTags: [] //yet existing tags on database
+            , tags: [
+                {id: 1, name:'Famiglia'},
+                {id: 2, name:'Montagna'},
+                {id: 3,name:'Escursioni'},
+                {id: 4,name:'Corsa'},
+                {id: 5,name:'Appuntamenti'},
+                {id: 6,name:'Studio'},
+                {id: 7,name:'Gruppo Lavoro'}
+                ] //yet existing tags on database
             , filteredTags : []
             , filterTags: ''
+            , googleMaps: false
+            , selectedTag: []
 
             //google maps
             , gMapData: {
@@ -79,6 +89,15 @@ function initAll() {
           }
         },
         methods: {
+
+            activateMaps(){
+                this.googleMaps = true;
+            },
+            disactivateMaps(){
+                this.googleMaps = false;
+            },
+
+
             setUpGoogleMapsStuffs(){
                 var inputElement, thisVue;
                 thisVue = this;
@@ -120,8 +139,12 @@ function initAll() {
             , toNextStep(){ this.creationProgression.toNextStep(); }
             , toPreviousStep(){ this.creationProgression.toPreviousStep(); }
 
+            , selectTag(tag){
+
+                }
             , addTag(){
                 if( this.newGroupInfo.addTag(this.tag.trim())){
+                    this.selectedTag.push(this.tag.trim)
                     this.tag = "";
                 }
             }

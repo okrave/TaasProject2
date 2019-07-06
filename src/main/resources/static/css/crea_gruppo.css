@@ -1,6 +1,10 @@
 .navbar-inverse{margin-bottom: 0;}
 
-.gruppo-body{padding-left: 20%;padding-right: 20%;}
+.gruppo-body{
+    padding-left: 20%;
+    padding-right: 20%;
+    padding-top: 10%;
+}
 .gruppo-header>h5{padding-left: 47%;}
 
 .gruppo-buttons>button{
@@ -14,6 +18,11 @@
 .gruppo-buttons>button:hover{
     background-color: blue;
     color: white;
+}
+.buttonAvanti{
+    margin-top: 10%;
+    margin-left: 15%;
+    margin-right: 15%;
 }
 
 .gruppo-buttons>button:focus-within{
@@ -63,40 +72,25 @@
     min-width: 20vh;
     min-height: 10vh;
 }
+.calendarGroup{
+    border: InactiveBorder;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding-left: 10px;
+    margin-top:20px;
+}
+
+.locationText{
+    border: InactiveBorder;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding-left: 10px;
+    font-size: 14px;
+    background: linear-gradient(to right,#616161, #616161) 5px calc(100% - 5px)/calc(100% - 10px) 2px no-repeat;
+
+}
 
 
-/*bootstrap like*/
 
-.d-flex{
-    display: flex;
-}
-.flex-column{
-    flex-flow: column;
-}
-.flex-row{
-    flex-flow: row;
-}
-.flex-nowrap{
-    flex-wrap: nowrap;
-}
-.flex-wrap{
-    flex-wrap: wrap;
-}
-.justify-content-between{
-    justify-content: space-between;
-}
-.align-item-center{
-    align-items: center;
-}
-.align-content-center{
-    align-content: center;
-}
-.align-content-between {
-    align-content: space-between;
-}
-.w-100{
-    width: 100%;
-}
-.w-50{
-    width: 50%;
-}
+
