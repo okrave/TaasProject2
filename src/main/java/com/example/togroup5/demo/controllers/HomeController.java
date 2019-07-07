@@ -47,6 +47,8 @@ public class HomeController {
     public String login(){
         return "login";
     }
+
+
     @GetMapping (value="/create_group")
     public String create_group(){
         return "crea_gruppo1";
@@ -105,6 +107,11 @@ public class HomeController {
         modelAndView.addObject("userRegistration",user);
         modelAndView.setViewName("registration");
         return modelAndView;
+    }
+
+    @PostMapping(value="/custom_login")
+    public String customLogin(ModelAndView modelAndView,BindingResult bindingResult, HttpServletRequest request){
+        return "asd";
     }
 
     @PostMapping (value = "/registration")

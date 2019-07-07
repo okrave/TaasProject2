@@ -5,6 +5,11 @@ html,body{height: 100%;background-color: lightgrey;}
     min-width: 132px;
 }
 
+.navbar-nav>li>a.creaNuovoGruppo{
+    color:brown;
+    opacity: 5%;
+}
+
 .cover{
     height: 80%;
     background-image: url(home.jpg);

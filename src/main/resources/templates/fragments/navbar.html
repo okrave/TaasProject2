@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <title>Navbar</title>
 </head>
-<style>
-    .dropdown-menu{
-        min-width: 132px;
-    }
-</style>
+
 <body>
 <th:block th:fragment="navbar">
 <nav class="navbar navbar-inverse ">
@@ -21,7 +17,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">ToGroup</a>
+            <a class="navbar-brand" th:href="@{/}" >ToGroup</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -35,6 +31,7 @@
                     </div>
 
                 </form>
+                <li><a class="creaNuovoGruppo"th:href="@{/newGroup}">Crea un nuovo gruppo</a></li>
                 <li><a th:if="${#request.userPrincipal == null}"type="button"  data-toggle="modal" data-target="#registerModal" style="cursor: pointer;">Registrati</a></li>
                 <li><a th:if="${#request.userPrincipal == null}"type="button"  data-toggle="modal" data-target="#loginModal" style="cursor: pointer;">Accedi</a></li>
                 <li><a th:if="${#request.userPrincipal != null}" >Esplora</a></li>

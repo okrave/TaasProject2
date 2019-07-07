@@ -211,45 +211,50 @@
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">
         Launch demo modal
     </button>
-    <form id="loginModal" class="modal animated bounceInUp" role="form" method="POST" th:action="@{/j_spring_security_check}">
-        <div class="modal-dialog" id="modal-login">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title scritta-accedi">Accedi</h4>
-                </div>
-                <div class="modal-body">
-
-                    <!--
-                    <th:block th:insert="fragments/header.html :: notificationMessages" />
-                    -->
-
-                    <input type="text" id="username" name="username" class="form-control login-input " placeholder= "Username"
-                           v-model="userInfo.username"
-                    />
-                    <br />
-                    <input type="password" id="password" name="password" class="form-control control login-input " placeholder="Password"
-                           v-model="userInfo.password"
-                    />
-                    <br />
-                    <button type="submit" name="submit" value="submit" class="btn-l" >Login</button>
-                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" href="#" role="button" > Registrati qui </a></h5>
-
-
-
-                </div>
-                <div class="modal-footer">
-                    <h4 style="text-align: center;">Or</h4>
-                    <div class="col-sm-6">
-                        <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook</button>
+    <div id="loginModal" class="modal animated bounceInUp">
+            <div class="modal-dialog" id="modal-login">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title scritta-accedi">Accedi</h4>
                     </div>
-                    <div class="col-sm-6">
-                        <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
-                    </div>
+                    <form  role="form" method="POST" th:action="@{/custom_login}">
+                        <div class="modal-body">
+
+                            <!--
+                            <th:block th:insert="fragments/header.html :: notificationMessages" />
+                            -->
+
+                            <input type="text" id="username" name="username" class="form-control login-input " placeholder= "Username"
+                                   v-model="userInfo.username"
+                            />
+                            <br />
+                            <input type="password" id="password" name="password" class="form-control control login-input " placeholder="Password"
+                                   v-model="userInfo.password"
+                            />
+                            <br />
+                            <button type="submit" name="submit" value="submit" class="btn-l" >Login</button>
+                            <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" href="#" role="button" > Registrati qui </a></h5>
+
+
+
+                        </div>
+                    </form>
+                    <form  role="form" method="POST" th:action="@{/j_spring_security_check}">
+                        <div class="modal-footer">
+                            <h4 style="text-align: center;">Or</h4>
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </div>
-    </form>
+
+    </div>
     <!-- Modal Registrazione-->
 
     <div th:action="@{/registration}" id="registerModal" class="modal  animated bounceInUp" role="form" method="POST" >

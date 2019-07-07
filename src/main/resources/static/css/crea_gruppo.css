@@ -69,6 +69,10 @@
     color: white;
 }
 
+.navbar-nav>li>a.creaNuovoGruppo{
+    color:brown;
+    opacity: 5%;
+}
 .dropdown-menu{
     min-width: 132px;
 }

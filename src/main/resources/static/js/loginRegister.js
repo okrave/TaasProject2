@@ -107,7 +107,13 @@ window.onload = _ => {
         },
 
         methods: {
-            createErrorHandler(methodName){
+            normalLogin(){
+                console.log(this.userInfo.password);
+            }
+            ,facebookLogin(){
+                console.log(this.userInfo.username);
+            }
+            ,createErrorHandler(methodName){
                 let thisVue = this;
                 return function (err) {
                     console.log("Error on method: " + methodName);
@@ -132,6 +138,7 @@ window.onload = _ => {
             }
 
             , register(){
+
                 let userInfo, thisVue;
                 userInfo = new UserRegistration(this.userInfo.username, this.userInfo.password, this.userInfo.passwordConfirmation, this.userInfo.email);
                 thisVue = this;
