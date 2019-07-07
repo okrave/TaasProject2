@@ -356,15 +356,16 @@ class GroupBasic {
 	}
 
 	addTag(tag){
+		var i;
 		if(this.tags == null){
-			this.tags = [tag];
-			return true;
+			this.tags = [];
 		}
-		if(this.tags.includes(tag)){
-			return false;
+		for(i = 0; i<tag.length;i++){
+			if (!this.tags.includes(tag[i])) {
+				this.tags.push(tag[i]);
+			}
 		}
-		this.tags.push(tag);
-		return true;
+
 	}
 
 	removeTag(tag, index){

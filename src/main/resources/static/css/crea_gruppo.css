@@ -7,16 +7,10 @@
 }
 .gruppo-header>h5{padding-left: 47%;}
 
-.gruppo-buttons>button{
-    margin: 10px;
-    border-radius: 20px;
-    border-color: blue;
-    background-color: transparent;
-    color: blue;
-}
+
 
 .gruppo-buttons>button:hover{
-    background-color: blue;
+    background-color: #337ab7;
     color: white;
 }
 .buttonAvanti{
@@ -25,8 +19,28 @@
     margin-right: 15%;
 }
 
-.gruppo-buttons>button:focus-within{
-    background-color: blue;
+.activate-tag{
+    margin: 10px;
+    border-radius: 20px;
+    border-color: blue;
+    background-color: #337ab7;
+    color: white;
+}
+
+.deactivate-tag{
+    margin: 10px;
+    border-radius: 20px;
+    border-color: blue;
+    background-color: transparent;
+    color: #337ab7;
+}
+
+
+.gruppo-buttons>deactivate-tag>button:focus-within{
+    color: #337ab7;
+}
+
+.gruppo-buttons>activate-tag>button:focus-within{
     color: white;
 }
 
@@ -50,6 +64,24 @@
     flex-wrap: nowrap;
 }
 
+.pager li>a:hover{
+    background-color: #337ab7;
+    color: white;
+}
+
+.dropdown-menu{
+    min-width: 132px;
+}
+
+.pager li>a{
+    padding: 6px 60px;
+}
+
+.navbar-nav>li>a.profile-image {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 #map-canvas{
     width: 800px;
     height: 500px;
@@ -58,6 +90,7 @@
     width: 100%;
     height: 100%;
 }
+
 
 
 .yetExistingTags{

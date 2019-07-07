@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Navbar</title>
 </head>
+<style>
+    .dropdown-menu{
+        min-width: 132px;
+    }
+</style>
 <body>
 <th:block th:fragment="navbar">
 <nav class="navbar navbar-inverse ">
@@ -32,7 +37,19 @@
                 </form>
                 <li><a th:if="${#request.userPrincipal == null}"type="button"  data-toggle="modal" data-target="#registerModal" style="cursor: pointer;">Registrati</a></li>
                 <li><a th:if="${#request.userPrincipal == null}"type="button"  data-toggle="modal" data-target="#loginModal" style="cursor: pointer;">Accedi</a></li>
-                <li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a></li>
+                <li><a th:if="${#request.userPrincipal != null}" >Esplora</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="https://source.unsplash.com/random/20x20" class="profile-image img-circle"> Username <b class="caret"></b></a>
+                    <ul class="dropdown-menu dropdown-navbar">
+                        <li><a href="#"><i class="fa fa-user"></i> &nbsp  Account</a></li>
+                        <li><a href="#"><i class="fa fa-cog"></i> &nbsp Impostazioni</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+
+                    </ul>
+                </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

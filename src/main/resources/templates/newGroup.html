@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <title>Search Group</title>
 
@@ -19,6 +19,8 @@
 
 </head>
 <body>
+<th:block th:replace="fragments/navbar :: navbar" />
+
 
     <div id="appNewGroup">
 
@@ -29,16 +31,12 @@
             <div id="newGroupSection">
                 <div class="progress">
                     <div id="progBarCreateGroup" class="progress-bar progress-bar-striped active" role="progressbar"
-                         :aria-valuenow="creationProgression.actualStep" aria-valuemin="0"
-                         :aria-valuemax="creationProgression.maxSteps" style="width: 5%">
+                         aria-valuemin="0" aria-valuemax="100" v-bind:style="{width:100 - (25*(creationProgression.maxSteps - creationProgression.actualStep))+'%'}">
+                        STEP {{creationProgression.actualStep + 1}} DI {{creationProgression.maxSteps + 1}}
                     </div>
                 </div>
-                <div class="gruppo-header">
-                    <div v-if="creationProgression.actualStep > 0">
-                        <button class="btn btn-primary" @click="toPreviousStep()">Indietro</button>
-                    </div>
-                    <h5>STEP {{creationProgression.actualStep + 1}} DI {{creationProgression.maxSteps + 1}}</h5>
-                </div>
+
+
                 <div id="newGroupSections">
                     <div v-if="creationProgression.actualStep == 0" class="d-flex flex-column flex-nowrap">
                         <h1 class="titolo-luogo">Per prima cosa impostiamo data e luogo del tuo Gruppo</h1>
@@ -79,17 +77,19 @@
                         <div class="gruppo-body">
                             <h1 class="gruppo-titolo">Scegli qualche argomento che descriva gli interessi del tuo gruppo</h1>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="text"
+                                   :value = "selectedTag"
+                                   class="form-control"
+                                   placeholder="Search"
+                                   readonly >
                             <br />
-                            <div class="gruppo-buttons">
-                                <button v-for="tag in tags" class="btn">{{tag.name}}</button>
+                            <div class="gruppo-buttons" id="class-buttons-tag">
+                                <button :disabled='isDisabled' v-for="tag in tags" class="btn deactivate-tag"  @click="selectTag(tag.name)" v-bind:id="tag.name">{{tag.name}}</button>
                             </div>
-                        </div>
-                        <div class="gruppo-footer">
-                            <a type="button" class="btn btn-primary" href="crea_gruppo3.html" th:href="@{crea_gruppo3}" >Avanti</a>
+                            <button type="button" class="btn btn-primary btn-lg btn-block" @click="addTag()">Aggiungi tag</button>
                         </div>
 
-
+                        <!--
                         <div class="d-flex flex-row flex-nowrap w-100" id="tagsSection">
                             <div class="d-flex flex-column flex-nowrap w-50">
                                 <p>Your chosen tags</p>
@@ -118,49 +118,63 @@
                                             placeholder="Search onto existing tags">
                                     <button name="filterTag" value="Add filter" @click="applyFilter()">Apply filter</button>
                                 </div>
-                                <!-- <b-container> -->
+
                                 <div class="tagList yetExistingTags d-flex flex-column flex-nowrap border border-primary rounded shadow-sm bg-white">
-                                    <!-- <b-row -->
+
                                     <div
                                             v-for="tag in getFilteredTags">
                                         <button @click="addTagFromExisting(tag.name)">{{tag.name}}</button>
                                     </div>
-                                    <!-- </b-row> -->
+
                                 </div>
                             </div>
                         </div>
+                        -->
                     </div>
 
                     <div v-if="creationProgression.actualStep == 2">
-
-                        <div>
+                        <div class="gruppo-body">
+                            <h1 class="gruppo-titolo">Come si chiamerà il tuo gruppo?</h1>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
                             <input
                                     type="text"
                                     v-model="newGroupInfo.groupName"
-                                    name="title"
+                                    class="form-control"
                                     placeholder="Title of your group/event">
                         </div>
                     </div>
 
                     <div v-if="creationProgression.actualStep == 3">
+                        <div class="gruppo-body">
+                            <h1 class="gruppo-titolo">Ora descrivi di cosa si occuperà il tuo gruppo</h1>
+                            <h4>Qual è lo scopo del gruppo?</h4>
+                            <h4>  Chi dovrebbe unirsi?</h4>
+                            <h4> Cosa farete agli eventi?</h4>
 
-                        <div>
                             <textarea
-                                rows="4" cols="20"
-                                class="descriptionGroup"
-                                wrap="soft"
-                                v-model="newGroupInfo.description"
-                                name="description"
-                                placeholder="Description of the group">
+                                    rows="4" cols="20"
+                                    class="descriptionGroup form-control"
+                                    wrap="soft"
+                                    v-model="newGroupInfo.description"
+                                    name="description"
+                                    placeholder="Description of the group">
                             </textarea>
                         </div>
+
+
                     </div>
-                    <button @click="createGroup()"  v-if="creationProgression.actualStep > 2">Create Group</button>
+                    <div class="buttonAvanti">
+                        <button type="button" class="btn btn-primary btn-lg btn-block" @click="createGroup()"  v-if="creationProgression.actualStep > 2">Create Group</button>
+                    </div>
                 </div>
 
                 <div v-if="creationProgression.actualStep < 3" class ="buttonAvanti">
-                    <button type="button" class="btn btn-primary btn-lg btn-block" @click="toNextStep()">Avanti</button>
+                    <ul class="pager">
+                        <li v-if="creationProgression.actualStep > 0"><a @click="toPreviousStep()">Prev</a></li>
+                        <li><a @click="toNextStep()">Next</a></li>
+                    </ul>
                 </div>
+
             </div>
             <div>
                 <!-- type="hidden" -->
@@ -184,5 +198,15 @@
             -->
         </div>
     </div>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
 </body>
 </html>

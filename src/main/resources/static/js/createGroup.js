@@ -39,6 +39,8 @@ function initAll() {
             toGroupAPI: new ToGroup()
             , messages: new NotificationsMessage()
             , tag: ""
+            , tag1:""
+            , terms: false
             , locationSearch: "Torino"
             , newGroupInfo: new GroupNew()
             , creationProgression : new NewGroupProgression()
@@ -49,10 +51,20 @@ function initAll() {
                 {id: 4,name:'Corsa'},
                 {id: 5,name:'Appuntamenti'},
                 {id: 6,name:'Studio'},
-                {id: 7,name:'Gruppo Lavoro'}
+                {id: 7,name:'Gruppo Lavoro'},
+                {id: 8,name:'Danza'},
+                {id: 9,name:'Karate'},
+                {id: 10,name:'Yoga'},
+                {id: 11,name:'Mare'},
+                {id: 12,name:'Intrattenimento'},
+                {id: 13,name:'Sport'},
+                {id: 14,name:'Lavoro'},
                 ] //yet existing tags on database
             , filteredTags : []
             , filterTags: ''
+            , isActive: true
+            , activeClass : 'btn activeButton'
+            , deactiveClass: 'btn deactiveButton'
             , googleMaps: false
             , selectedTag: []
 
@@ -80,6 +92,11 @@ function initAll() {
             this.newGroupInfo.creator = "lonevetad";
         },
         computed: {
+            isDisabled:function(){
+                return this.terms;
+
+            },
+
           getFilteredTags(){
               if(this.filterTags === '') {
                   return this.allTags;
@@ -136,18 +153,60 @@ function initAll() {
             }
 
 
-            , toNextStep(){ this.creationProgression.toNextStep(); }
+            , toNextStep(){
+                if(this.creationProgression.actualStep == 1) {
+                    this.addTag();
+                }
+                this.creationProgression.toNextStep();
+                }
             , toPreviousStep(){ this.creationProgression.toPreviousStep(); }
 
             , selectTag(tag){
 
                 }
-            , addTag(){
-                if( this.newGroupInfo.addTag(this.tag.trim())){
-                    this.selectedTag.push(this.tag.trim)
-                    this.tag = "";
+            , selectTag(tagName) {
+                for(tag in this.selectedTag) {
+                    console.log(this.selectedTag[tag]);
+                }
+                buttonTag = document.getElementById(tagName);
+                if (!this.selectedTag.includes(tagName)) {
+                    buttonTag.className = "btn activate-tag";
+                    this.selectedTag.push(tagName);
+                } else {
+                    buttonTag.className = "btn deactivate-tag";
+                    this.selectedTag = this.selectedTag.filter(tag => tag !== tagName);
                 }
             }
+
+
+            , addTag(){
+
+                this.newGroupInfo.addTag(this.selectedTag);
+
+            }
+
+
+
+                /*if (this.terms == true) {//disattivato
+                    this.terms = false;
+                    if (!this.selectedTag.includes(tagName)) {
+                        this.selectedTag.push(tagName);
+                    }
+                } else {
+                    this.term = true;
+                    if (this.selectedTag.includes(tagName)) {
+                        this.selectedTag.splice(tagName);
+                    }
+                }*/
+
+
+
+
+                /*if( this.newGroupInfo.addTag(this.tag.trim())){
+                    this.selectedTag.push(this.tag.trim)
+                    this.tag = "";
+                }*/
+
 
             , addTagFromExisting(tag){
                 let prevTag = this.tag;
