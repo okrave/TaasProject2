@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it" xmlns:th="http://www.thymeleaf.org" >
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
 
     <title> Home </title>
@@ -48,11 +48,12 @@
             <!--
             -->
             <section class="item active" >
-
-                <div class="thumbnail" v-for="group in groupToGroupsCarousel[0]">
+                
+                <div class="thumbnail" v-for="group in groupToGroupsCarousel[0]" @click="loadGroupPage(group.groupId)">
 
 
             <!--
+            v-bind:href="'localhost:8080/groupPage/'+ group.groupId"
             <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarousel" :key="indexGES" class="(indexGES == 0 ? 'item active' : 'item')" >
 
                  <div class="thumbnail" v-for="group in groupsEachSection">
@@ -65,7 +66,7 @@
 
                     <div class="caption">
                         <h4 style="margin: 0">{{group.groupDate}}</h4>
-                        <h3 style="margin-top: 10px;">{{group.groupName}}</h3>
+                        <h3 style="margin-top: 10px;"> <a th:href="@{/group_page/123}" >{{group.groupName}}</a></h3>
                         <p>{{group.description}}</p>
                         <div class="row" >
                             <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
@@ -80,7 +81,7 @@
 
             <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarouselInactive" :key="indexGES" class="item" >
 
-                <div class="thumbnail" v-for="group in groupsEachSection">
+                <div class="thumbnail" v-for="group in groupsEachSection" >
                     <img src="https://source.unsplash.com/category/nature/400x260" alt="">
                     <div class="post__date">
                         <span class="date">25</span>
@@ -306,15 +307,10 @@
 
 
 
- <script
-    			  src="https://code.jquery.com/jquery-3.4.1.min.js"
-    			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-    			  crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
- </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
 
 <script>

@@ -6,8 +6,10 @@ import com.example.togroup5.demo.entities.GoogleLocation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Entity;
 import java.sql.Date;
 import java.util.List;
+
 
 public class AppGroupNew {
 
@@ -21,8 +23,6 @@ public class AppGroupNew {
 
     //
 
-    public AppGroupNew() {
-    }
 
     @JsonCreator
     public AppGroupNew(

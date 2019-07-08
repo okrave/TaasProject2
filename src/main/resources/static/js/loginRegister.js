@@ -125,7 +125,9 @@ window.onload = _ => {
                 }
             }
 
-            //API
+            ,loadGroupPage(groupId){
+                console.log(groupId);
+            }
 
             , ping(){
                 this.toGroupAPI.ping().then( resp => console.log("pinged :D " + resp) );

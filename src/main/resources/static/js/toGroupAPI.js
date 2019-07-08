@@ -182,14 +182,12 @@ class GroupAPI {
 
 	getGroupInfo(groupID) {
 		return new Promise((resolve, reject) => {
-			fetch(this.baseURL + `/info`, {
-				method: "GET",
-				data: JSON.stringify({
-					id: id
-				})
+			fetch(this.baseURL + `/info/` + groupID, {
+				method: "GET"
 			})
-			.then(response => response.json())
 			.then(response => {
+					console.log("asdasdads");
+					console.log(response);
 					if (checkResponseHoldsErrors(response)) {
 						reject(response);
 					}

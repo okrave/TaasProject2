@@ -72,6 +72,14 @@ public class RestGroupController {
         return true;
     }
 
+    @GetMapping(value = "/info/{groupId}")
+    public AppGroup infoGroup(@PathVariable String groupId ){
+        System.out.println("groupId:" + groupId);
+        AppGroup newGroup = groupService.findGroupById(new Long(groupId));
+        System.out.println("Il gruppo:"+ newGroup.getGroupName());
+        return newGroup;
+    }
+
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.GET)
     public List<GroupWithTags> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
         List<AppGroup> groups;

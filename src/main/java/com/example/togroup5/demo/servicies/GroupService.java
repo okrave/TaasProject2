@@ -37,6 +37,8 @@ public class GroupService {
         return appGroupRepository.findAll();
     }
 
+    public AppGroup findGroupById(Long id){ return appGroupRepository.findAppGroupByID(id);}
+
     public List<AppGroup> listGroupByCreator() {
         return appGroupRepository.findDistinctByCreator("ciao");
     }

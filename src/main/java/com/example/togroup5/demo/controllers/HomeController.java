@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,6 +39,12 @@ public class HomeController {
         return "Home";
     }
 
+
+    @GetMapping(value = "/group_page/{id}")
+    public String group_page(@PathVariable(required = false) String id){
+        System.out.println(id);
+        return "group_page";
+    }
     @GetMapping(value="/client_home")
     public String client_home(){
         return "client_home";
