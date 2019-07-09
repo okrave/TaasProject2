@@ -1,0 +1,54 @@
+.fa, .far, .fas {
+    width: 10%;
+}
+.groupHomeHeader-info{
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+.groupHomeHeader-banner{
+    border-radius: 30px 30px 30px 30px;
+    margin-right: 3%;
+    margin-left: 2%;
+}
+
+.group-bar ul{
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.group-bar li{
+    margin-right: 5%;
+}
+.groupHomeHeader-banner>img{
+    border-radius: 30px 30px 30px 30px;
+}
+
+.flex-container {
+    display: flex;
+    margin: 3%;
+}
+
+
+.flex-column{
+    flex-direction: column;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.groupHomeHeader-groupName{
+    margin-bottom: 5%;
+}
+
+.groupHomeHeader-groupCreator{
+
+}
+
+
+.groupHomeHeader-groupData{
+
+}
+
+.groupHomeHeader-groupDescription{
+    margin-bottom: 2%;
+
+}
