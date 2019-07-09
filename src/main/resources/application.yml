@@ -31,7 +31,10 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
   jackson:
-      date-format: dd-MM-yyyy
+    serialization:
+      fail-on-empty-beans: false
+    date-format: dd-MM-yyyy
+
 
 #Configurazione per i social(facebook per ora)
 security:

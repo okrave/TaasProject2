@@ -4,14 +4,16 @@ import com.example.togroup5.demo.entities.AppGroup;
 import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.entities.GoogleLocation;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
 
-public class AppGroupNew {
+public class AppGroupNew implements Serializable {
 
     private String groupName, description, creator;
 

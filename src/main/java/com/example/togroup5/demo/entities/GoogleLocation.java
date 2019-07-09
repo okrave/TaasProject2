@@ -1,10 +1,11 @@
 package com.example.togroup5.demo.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "location", uniqueConstraints={@UniqueConstraint(columnNames ={"lat","lng"})})
-public class GoogleLocation {
+public class GoogleLocation implements Serializable {
     @Id
     @GeneratedValue
     private Long locationId;

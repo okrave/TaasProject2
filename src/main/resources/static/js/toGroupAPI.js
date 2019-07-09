@@ -185,12 +185,14 @@ class GroupAPI {
 			fetch(this.baseURL + `/info/` + groupID, {
 				method: "GET"
 			})
+			.then(response => response.json())
 			.then(response => {
 					console.log("asdasdads");
-					console.log(response);
+					console.log(JSON.stringify(response));
 					if (checkResponseHoldsErrors(response)) {
 						reject(response);
 					}
+					console.log("entra in resolve");
 					resolve(response);
 			})
 			.catch(reject);

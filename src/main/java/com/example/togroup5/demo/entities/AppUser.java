@@ -5,9 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.io.Serializable;
 
 @Entity
-public class AppUser {
+public class AppUser implements Serializable {
 
     @Id
     @GeneratedValue

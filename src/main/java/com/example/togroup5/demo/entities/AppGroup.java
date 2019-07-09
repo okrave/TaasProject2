@@ -1,10 +1,13 @@
 package com.example.togroup5.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
-public class AppGroup {
+public class AppGroup implements Serializable {
 
     @Id
     @GeneratedValue

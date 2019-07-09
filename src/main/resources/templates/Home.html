@@ -66,7 +66,7 @@
 
                     <div class="caption">
                         <h4 style="margin: 0">{{group.groupDate}}</h4>
-                        <h3 style="margin-top: 10px;"> <a th:href="@{/group_page/123}" >{{group.groupName}}</a></h3>
+                        <h3 style="margin-top: 10px;"> <a v-bind:href="'/group_page/'+group.groupId" >{{group.groupName}}</a></h3>
                         <p>{{group.description}}</p>
                         <div class="row" >
                             <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
