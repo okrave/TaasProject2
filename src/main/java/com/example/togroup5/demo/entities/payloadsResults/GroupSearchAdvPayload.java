@@ -4,10 +4,11 @@ import com.example.togroup5.demo.entities.GoogleLocation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-public class GroupSearchAdvPayload {
+public class GroupSearchAdvPayload implements Serializable {
 
     private String groupName, creator; // genre
 

@@ -5,11 +5,12 @@ import com.example.togroup5.demo.entities.AppTag;
 import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.entities.GoogleLocation;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
-public class GroupFullDetail {
+public class GroupFullDetail implements Serializable {
 
     private Long groupId;
 
