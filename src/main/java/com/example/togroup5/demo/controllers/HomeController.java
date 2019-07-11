@@ -34,6 +34,12 @@ public class HomeController {
         return "Home";
     }
 
+    @GetMapping(value="/userPage/{id}")
+    public String user_page(@PathVariable(required = false) String id){
+        System.out.println(id);
+        return "user_page";
+    }
+
     @GetMapping(value="/Home")
     public String home(){
         return "Home";

@@ -18,6 +18,8 @@ const checkResponseHoldsErrors = function(response){
 
 class ToGroup {
 
+    isLoaded = false;
+
 	constructor(url = null) {
 		if (url === null) {
 			url = APIUrl;
@@ -86,6 +88,24 @@ class UserAPI {
 		//this.alternativeURL = `https://blabla qualcos'altro.com`;
 	}
 
+	getUserInfo2(userID) {
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/info/` + userID, {
+			method: "GET"
+		})
+		.then(response => response.json())
+		.then(response => {
+				console.log("asdasdads");
+			console.log(JSON.stringify(response));
+			if (checkResponseHoldsErrors(response)) {
+				reject(response);
+			}
+			console.log("entra in resolve");
+			resolve(response);
+		}).catch(reject);
+
+		});
+	}
 	getUserInfo(userName) {
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/Info`, {
@@ -179,6 +199,24 @@ class GroupAPI {
 		this.baseURL = url + `/Group`;
 		//this.alternativeURL = `https://blabla qualcos'altro.com`;
 	}
+
+	addGroupMember(userName,groupId){
+        return new Promise((resolve, reject) => {
+            fetch(this.baseURL + `/addMember`, {
+                methods: "POST",
+                headers: { 'content-type': 'application/json' },
+                body: {}
+            })
+            .then(response => response.json())
+            .then(response => {
+                    if (checkResponseHoldsErrors(response)) {
+                    reject(response);
+                }
+                resolve(response);
+            })
+            .catch(reject);
+    });
+    }
 
 	getGroupInfo(groupID) {
 		return new Promise((resolve, reject) => {

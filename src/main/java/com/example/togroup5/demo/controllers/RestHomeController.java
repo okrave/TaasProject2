@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.example.togroup5.demo.utils.EncryptedPasswordUtils.encryptePassword;
@@ -50,6 +51,13 @@ public class RestHomeController{
     }
 
 
+    @GetMapping(value = "/User/info/{userId}")
+    public AppUser infoUser(@PathVariable String userId ){
+        System.out.println("groupId:" + userId);
+        AppUser newUser = userService.findUserById(new Long(userId));
+
+        return newUser;
+    }
 
     /**Remove the user identified by its ID.
      * @return true if the user existed and then is successfully removed, false otherwise.*/
@@ -91,6 +99,12 @@ public class RestHomeController{
     public void createAllHomeData(){
         createUsers();
         // create role and RoleUser
+    }
+
+    @RequestMapping("/login-user")
+    public AppUser loginUser(@ModelAttribute AppUser user, HttpServletRequest request){
+        return userService.findByUsernameAndPassword(user.getUserName(),user.getEncrytedPassword());
+
     }
 
 }

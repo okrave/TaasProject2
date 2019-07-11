@@ -66,6 +66,7 @@ CARDS
 .post__intestazione__link{float: right;display: block; margin-top: 20px;margin-right: 25px;font-size: 15px;color: blue;}
 
 .thumbnail{
+    width: 25%;
     max-width: 25%;
     margin: 1.6%;
     float: left;

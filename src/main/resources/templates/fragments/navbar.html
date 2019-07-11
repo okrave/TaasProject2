@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Navbar</title>
@@ -40,7 +40,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="https://source.unsplash.com/random/20x20" class="profile-image img-circle"> Username <b class="caret"></b></a>
                     <ul class="dropdown-menu dropdown-navbar">
-                        <li><a href="#"><i class="fa fa-user"></i> &nbsp  Account</a></li>
+                        <li><a  th:href="@{/userPage/74}"><i class="fa fa-user"></i> &nbsp  Profilo</a></li>
                         <li><a href="#"><i class="fa fa-cog"></i> &nbsp Impostazioni</a></li>
                         <li class="divider"></li>
                         <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
