@@ -1,12 +1,10 @@
 package com.example.togroup5.demo.servicies;
 
-import com.example.togroup5.demo.entities.AppGroup;
-import com.example.togroup5.demo.entities.AppTag;
-import com.example.togroup5.demo.entities.GoogleLocation;
-import com.example.togroup5.demo.entities.GroupTag;
+import com.example.togroup5.demo.entities.*;
 import com.example.togroup5.demo.entities.newEntities.AppGroupNew;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
 import com.example.togroup5.demo.repositories.AppGroupRepository;
+import com.example.togroup5.demo.repositories.AppUserRepository;
 import com.example.togroup5.demo.repositories.AppTagRepository;
 import com.example.togroup5.demo.repositories.GroupTagRepository;
 import com.example.togroup5.demo.repositories.LocationRepository;
@@ -30,6 +28,9 @@ public class GroupService {
 
     @Autowired
     private LocationRepository locationRepository;
+
+    @Autowired
+    private AppUserRepository appUserRepository;
 
     // list all
 
@@ -147,6 +148,9 @@ public class GroupService {
 
     public List<AppTag> listTagsByAppGroupId(Long groupId) {
         return appTagRepository.listTagsByGroupId(groupId);
+    }
+    public List<AppUser> listUsersByAppGroupId(Long groupId) {
+        return appUserRepository.listUsersByGroupId(groupId);
     }
 
 

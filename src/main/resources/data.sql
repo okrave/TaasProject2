@@ -70,6 +70,15 @@ create table GROUP_TAG
 );
 
 
+create table GROUP_USER
+(
+    ID      BIGINT not null,
+    GROUP_ID BIGINT not null,
+    USER_ID BIGINT not null,
+    PRIMARY KEY (ID)
+);
+
+
 -- Used by Spring Remember Me API.
 CREATE TABLE Persistent_Logins
 (
@@ -136,6 +145,18 @@ alter table GROUP_TAG
     add constraint GROUP_TAG_FK2 foreign key (TAG_ID)
         references APP_TAG (TAG_ID);
 
+--
+
+alter table GROUP_USER
+    add constraint GROUP_USER_UK unique (GROUP_ID, USER_ID);
+
+alter table GROUP_USER
+    add constraint GROUP_USER_FK1 foreign key (GROUP_ID)
+        references APP_GROUP (GROUP_ID);
+
+alter table GROUP_USER
+    add constraint GROUP_USER_FK2 foreign key (USER_ID)
+        references APP_USER (USER_ID);
 
 
 --- INSERTION

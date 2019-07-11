@@ -2,12 +2,14 @@ package com.example.togroup5.demo.entities.payloadsResults;
 
 import com.example.togroup5.demo.entities.AppGroup;
 import com.example.togroup5.demo.entities.AppTag;
+import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.entities.GoogleLocation;
 
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.List;
 
-public class GroupWithTags {
+public class GroupFullDetail {
 
     private Long groupId;
 
@@ -19,7 +21,9 @@ public class GroupWithTags {
 
     private List<AppTag> tags;
 
-    public GroupWithTags(AppGroup g, List<AppTag> t) {
+    private List<AppUser> members;
+
+    public GroupFullDetail(AppGroup g, List<AppTag> t, List<AppUser> members) {
         this.groupId=g.getGroupId();
         this.groupName = g.getGroupName();
         this.description = g.getDescription();
@@ -27,6 +31,7 @@ public class GroupWithTags {
         this.creator = g.getCreator();
         this.location = null;
         this.tags = t;
+        this.members = members;
     }
 
     //
@@ -87,6 +92,14 @@ public class GroupWithTags {
         this.tags = tags;
     }
 
+    public List<AppUser> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<AppUser> members) {
+        this.members = members;
+    }
+
     //
 
 
@@ -99,7 +112,8 @@ public class GroupWithTags {
                 ", creator='" + creator + '\'' +
                 ", groupDate=" + groupDate +
                 ", location=" + location +
-                ", tags=" + tags +
+                ", tags=" + Arrays.toString(tags.toArray() )+
+                ", members=" + Arrays.toString(members.toArray() )+
                 '}';
     }
 }

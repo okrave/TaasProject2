@@ -6,9 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import com.example.togroup5.demo.entities.AppRole;
-import com.example.togroup5.demo.entities.AppUser;
-import com.example.togroup5.demo.entities.UserRole;
+import com.example.togroup5.demo.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,5 +86,17 @@ public class AppUserRepository {
     }
 
 
+    public List<AppUser> listUsersByGroupId(Long groupId) {
+        try {
+            String sql = "Select u from " + AppUser.class.getName() + //
+                    " t JOIN " + GroupUser.class.getName()
+                    + " gu ON u.userId = gu.userId WHERE gu.groupId = :groupId";
+            Query query = entityManager.createQuery(sql, AppUser.class);
+            query.setParameter("groupId", groupId);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
 }

@@ -5,7 +5,7 @@ import com.example.togroup5.demo.entities.AppTag;
 import com.example.togroup5.demo.entities.GoogleLocation;
 import com.example.togroup5.demo.entities.newEntities.AppGroupNew;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
-import com.example.togroup5.demo.entities.payloadsResults.GroupWithTags;
+import com.example.togroup5.demo.entities.payloadsResults.GroupFullDetail;
 import com.example.togroup5.demo.servicies.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,13 +40,12 @@ public class RestGroupController {
 
 
     @GetMapping(value = "/listGroupRest")
-    public List<GroupWithTags> listGroupWithTags() {
+    public List<GroupFullDetail> listGroupFullDetail() {
         List<AppGroup> groups;
-        List<GroupWithTags> gts;
-        GroupWithTags gt;
+        List<GroupFullDetail> gfd;
         groups = this.listGroup();
-        gts = groupWithTagsFromGroups(groups);
-        return gts;
+        gfd = groupFullDetailFromGroups(groups);
+        return gfd;
     }
 
     @GetMapping(value = "/listLocations")
@@ -81,28 +80,31 @@ public class RestGroupController {
     }
 
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.GET)
-    public List<GroupWithTags> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
+    public List<GroupFullDetail> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
         List<AppGroup> groups;
         //groupService.saveGroup(appGroupNew.toAppGrou());
         System.out.println("search filters: ");
         System.out.println(groupSearchFilters);
         groups = groupService.searchGroupAdvanced(groupSearchFilters);
         System.out.println("found " + groups.size() + " groups, now add tags");
-        return groupWithTagsFromGroups(groups);
+        return groupFullDetailFromGroups(groups);
     }
 
 
     //utils
 
-    protected List<GroupWithTags> groupWithTagsFromGroups(List<AppGroup> groups) {
-        List<GroupWithTags> gts;
-        GroupWithTags gwt;
+    protected List<GroupFullDetail> groupFullDetailFromGroups(List<AppGroup> groups) {
+        List<GroupFullDetail> gts;
+        GroupFullDetail gfd;
         if (groups == null) return null;
         gts = new ArrayList<>(groups.size());
         for (AppGroup g : groups){
-            gwt = new GroupWithTags(g, groupService.listTagsByAppGroupId(g.getGroupId()));
-            gwt.setLocation(groupService.findLocationById(g.getLocation()));
-            gts.add(gwt);
+            gfd = new GroupFullDetail(g,//
+                    groupService.listTagsByAppGroupId(g.getGroupId()),//
+                    groupService.listUsersByAppGroupId(g.getGroupId())
+                     );
+            gfd.setLocation(groupService.findLocationById(g.getLocation()));
+            gts.add(gfd);
         }
         return gts;
     }

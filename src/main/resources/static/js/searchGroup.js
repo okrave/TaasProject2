@@ -18,6 +18,8 @@ window.onload = _ => {
 			, tag : ""
 			, messages: new NotificationsMessage()
 			, groups: []
+
+			//tags yet present on remove
 			, allTags: [] //yet existing tags on database
 			, filteredTags : []
 			, filterTags: ''
