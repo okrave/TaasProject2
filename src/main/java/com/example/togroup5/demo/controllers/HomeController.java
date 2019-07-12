@@ -75,6 +75,10 @@ public class HomeController {
         return "admin";
     }
 
+    @GetMapping(value = "/navigator")
+    public String navigator(){
+        return "navigator";
+    }
     @GetMapping("/user2")
     public String user() {
         return "user2/index";

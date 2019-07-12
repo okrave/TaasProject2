@@ -1,6 +1,7 @@
 package com.example.togroup5.demo.servicies;
 
 import com.example.togroup5.demo.entities.AppUser;
+import com.example.togroup5.demo.entities.payloadsResults.UserLoginPayload;
 import com.example.togroup5.demo.repositories.AppRoleRepository;
 import com.example.togroup5.demo.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,9 @@ public class UserService {
         return appUserRepository.findAll();
     }
 
-
+    public AppUser findByEmailPassword(UserLoginPayload userEmailPassword){
+        return appUserRepository.findByEmailPassword(userEmailPassword);
+    }
     public AppUser findUserById(Long userId){ return appUserRepository.findAppUserByID(userId);}
 
     public AppUser findByUsernameAndPassword(String userName, String password){
