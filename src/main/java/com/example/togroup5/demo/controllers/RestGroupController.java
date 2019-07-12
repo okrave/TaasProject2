@@ -1,12 +1,12 @@
 package com.example.togroup5.demo.controllers;
 
-import com.example.togroup5.demo.entities.AppGroup;
-import com.example.togroup5.demo.entities.AppTag;
-import com.example.togroup5.demo.entities.GoogleLocation;
+import com.example.togroup5.demo.entities.*;
 import com.example.togroup5.demo.entities.newEntities.AppGroupNew;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
 import com.example.togroup5.demo.entities.payloadsResults.GroupFullDetail;
+import com.example.togroup5.demo.entities.payloadsResults.MemberGroupPayload;
 import com.example.togroup5.demo.servicies.GroupService;
+import com.example.togroup5.demo.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +20,9 @@ public class RestGroupController {
 
     @Autowired
     GroupService groupService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping(value = "/listGroupSimple")
     public List<AppGroup> listGroup() {
@@ -90,6 +93,41 @@ public class RestGroupController {
         return groupFullDetailFromGroups(groups);
     }
 
+    @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
+    public boolean addUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
+        UserGroupFound guf;
+        guf = fetchGroupUser(userGroupInfo);
+        if(guf == null) return false; // error
+        if(guf.gu != null) return true; // yet present but it's not an error. TODO: is it an error?
+
+        groupService.addMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId());
+        return true;
+    }
+
+    @RequestMapping(value = "/removeMember", method = RequestMethod.PATCH)
+    public boolean removeUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
+        UserGroupFound guf;
+        guf = fetchGroupUser(userGroupInfo);
+        if(guf == null) return false; // error
+        if(guf.gu == null) return true; // not present but it's not an error. TODO: is it an error?
+
+        groupService.removeMembershipByGroupUserId(guf.gu.getId());
+        return true;
+    }
+
+    protected UserGroupFound fetchGroupUser(MemberGroupPayload userGroupInfo){
+        AppGroup group;
+        GroupUser gu;
+        if(userGroupInfo == null || userGroupInfo.getGroupId() == null || userGroupInfo.getUserId() == null ||
+                (userGroupInfo.getUserName() == null || "".equals(userGroupInfo.getUserName().toLowerCase())))
+            return null;
+        group = groupService.findGroupById(userGroupInfo.getGroupId());
+        if(group == null) return null;
+        // TODO the following call should be performed without explicitly call the userService instance
+        if(! userService.containsUser(userGroupInfo.getUserId()))
+            return null;
+        return new UserGroupFound(groupService.findMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId()));
+    }
 
     //utils
 
@@ -225,5 +263,12 @@ public class RestGroupController {
         }
     }
 
-
+    protected class UserGroupFound {
+        //boolean found;
+        GroupUser gu;
+        protected UserGroupFound(GroupUser gu){
+            //found = false;
+            this.gu = gu;
+        }
+    }
 }

@@ -3,11 +3,7 @@ package com.example.togroup5.demo.servicies;
 import com.example.togroup5.demo.entities.*;
 import com.example.togroup5.demo.entities.newEntities.AppGroupNew;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
-import com.example.togroup5.demo.repositories.AppGroupRepository;
-import com.example.togroup5.demo.repositories.AppUserRepository;
-import com.example.togroup5.demo.repositories.AppTagRepository;
-import com.example.togroup5.demo.repositories.GroupTagRepository;
-import com.example.togroup5.demo.repositories.LocationRepository;
+import com.example.togroup5.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +27,9 @@ public class GroupService {
 
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private GroupUserRepository groupUserRepository;
 
     // list all
 
@@ -153,6 +152,58 @@ public class GroupService {
         return appUserRepository.listUsersByGroupId(groupId);
     }
 
+    /**
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param userId the second {@link Long} is the {@link AppUser}'s ID
+     * */
+    public GroupUser findMembership(Long groupId, Long userId){
+        return groupUserRepository.findGroupUserByGroupIdAndUserId(groupId, userId);
+    }
+
+    /**
+     * Implementor's note: it's assumed that all checks about the existence of the group and the user
+     * are performed BEFORE this call.
+     *
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param user the {@link AppUser} which desires to apply onto the given group
+     * */
+    public void addMembership(Long groupId, AppUser user){
+        addMembership(groupId, user.getUserId());
+    }
+    /**
+     * Implementor's note: it's assumed that all checks about the existence of the group and the user
+     * are performed BEFORE this call.
+     *
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param userId the second {@link Long} is the {@link AppUser}'s ID which desires to apply onto the given group
+     * */
+    public void addMembership(Long groupId, Long userId){
+        groupUserRepository.save(new GroupUser(groupId, userId) );
+    }
+    /**
+     * Implementor's note: it's assumed that all checks about the existence of the group and the user
+     * are performed BEFORE this call.
+     *
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param user the {@link AppUser} which desires to be removed from the given group
+     * */
+    public void removeMembership(Long groupId, AppUser user){
+        removeMembership(groupId, user.getUserId());
+    }
+    /**
+     * Implementor's note: it's assumed that all checks about the existence of the group and the user
+     * are performed BEFORE this call.
+     *
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param userId the second {@link Long} is the {@link AppUser}'s ID which desires to be removed from the given group
+     * */
+    public void removeMembership(Long groupId, Long userId){
+        groupUserRepository.deleteGroupUserByGroupIdAndUserId(groupId, userId);
+    }
+
+    public void removeMembershipByGroupUserId(Long groupUserId){
+        groupUserRepository.delete(groupUserId);
+    }
 
     public List<AppGroup> searchGroupAdvanced(GroupSearchAdvPayload groupSearchFilters) {
         return appGroupRepository.advancedSearch(groupSearchFilters);

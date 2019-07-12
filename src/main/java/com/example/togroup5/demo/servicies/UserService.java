@@ -54,4 +54,8 @@ public class UserService {
     public List<AppUser> findAll(){
         return appUserRepository.findAll();
     }
+
+    public AppUser findByEmailPassword(UserLoginPayload userEnailPassword){
+        return appUserRepository.findByEmailPassword(userEnailPassword);
+    }
 }

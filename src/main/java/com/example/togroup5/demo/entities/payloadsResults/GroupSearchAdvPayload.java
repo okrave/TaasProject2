@@ -1,8 +1,6 @@
 package com.example.togroup5.demo.entities.payloadsResults;
 
 import com.example.togroup5.demo.entities.GoogleLocation;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.sql.Date;
