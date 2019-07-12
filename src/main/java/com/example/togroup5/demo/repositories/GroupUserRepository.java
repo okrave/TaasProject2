@@ -70,6 +70,7 @@ public class GroupUserRepository {
         }
     }
 
+
     public void deleteGroupUserByGroupIdAndUserId(Long groupId, Long userId) {
         GroupUser gu;
         gu = findGroupUserByGroupIdAndUserId(groupId, userId);
