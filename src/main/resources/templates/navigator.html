@@ -1,0 +1,95 @@
+<html>
+<head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+</head>
+<body onload="onLoad()">
+<div id="map"></div>
+<script>
+
+
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+    var marker;
+    var lat,lng;
+    var map;
+
+    function onLoad() {
+        /*gpsPosition();
+        setInterval(function(){ updateMap(); }, 1000);
+        return;*/
+        initMap();
+    }
+    function initMap() {
+        console.log("Set Map: ");
+        console.log(lat);
+        console.log(lng);
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 45.4672384, lng: 8.7089152},
+            zoom: 13
+        });
+
+        var marker = new google.maps.Marker({
+            position: {lat: 45.4672384, lng: 8.7089152},
+            map: map,
+            title: 'Hello World!'
+        });
+
+
+    }
+
+    function gpsPosition(marker){
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(saveCurrentPosition,error,options);
+        } else {
+            div.innerHTML="Geolocation is not supported by this browser.";
+        }
+        return;
+    }
+    function saveCurrentPosition(position){
+        lat=position.coords.latitude;
+        lng=position.coords.longitude;
+        console.log(lat);
+        console.log(lng);
+    }
+
+    function error(err){
+        console.log("Gps Error"+err.code);
+    }
+
+    function updateMap(){
+
+        gpsPosition();
+        if(lat && lng){
+            if(!map){
+                setMap(lat,lng);
+            }else{
+                marker.setPosition({lat: lat, lng: lng});
+                map.panTo({lat: lat, lng: lng});
+            }
+        }
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZe4Q05ZstWsIRoUCpT14vSALyDjEWXIc"
+        async defer></script>
+</body>
+</html>
