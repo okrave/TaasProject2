@@ -20,6 +20,8 @@ public class RestGroupController {
 
     @Autowired
     GroupService groupService;
+    @Autowired
+    RestHomeController x;
 
     @Autowired
     UserService userService;
@@ -73,6 +75,13 @@ public class RestGroupController {
         groupService.createGroup(appGroupNew);
         return true;
     }
+
+    @RequestMapping(value = "/addMember", method = RequestMethod.POST)
+    public boolean addMember(@RequestBody String object){
+        System.out.println(object);
+        return true;
+    }
+
 
     @GetMapping(value = "/info/{groupId}")
     public AppGroup infoGroup(@PathVariable String groupId ){
@@ -154,6 +163,7 @@ public class RestGroupController {
     public void createDefaults() {
         createAllTag();
         createAllGroup();
+        this.x.createUsers();
     }
 
 

@@ -1,5 +1,4 @@
 window.onload = _ =>{
-
     app = new Vue({
         el:"#appGroupPage",
         data: {
@@ -13,21 +12,52 @@ window.onload = _ =>{
                 locationId: ""
             }
             ,groupInfo2: null
+            ,listElement: 0
+            ,listUser : []
         },
 
         created(){
             var currentUrl = window.location.pathname;
             this.loadGroup(currentUrl);
             this.ping();
+            this.getAllUser();
         },
 
         methods:{
-            createErrorHandler(methodName){
+            addGroupMember(userName){
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .addGroupMember(userName,this.groupInfo.groupId)
+                    .then(resp => {
+                        console.log("paginaGruppo:D");
+                        console.log(JSON.stringify(resp));
+
+                    })
+            }
+
+            ,setListElement(liNumber){
+                this.listElement = liNumber;
+                console.log(this.listElement)
+            }
+
+            ,createErrorHandler(methodName){
                 let thisVue = this;
                 return function (err) {
                     console.log("Error on method: " + methodName);
                     console.log(err);
                 }
+            }
+
+            ,getAllUser(){
+                this.toGroupAPI
+                    .getUserEndpoint()
+                    .getAllUsers()
+                    .then(resp => {
+                    console.log("tuttiGliUtenti:D");
+                    console.log(JSON.stringify(resp));
+                    this.listUser = resp;
+
+            })
             }
 
             ,loadGroup(currentUrl){
@@ -46,6 +76,7 @@ window.onload = _ =>{
                         this.groupInfo.description = resp.description;
                         this.groupInfo.groupId = resp.groupId;
                         this.groupInfo.locationId = resp.location;
+                        this.toGroupAPI.isLoaded = true;
                     })
 
             .catch(this.createErrorHandler("register"));

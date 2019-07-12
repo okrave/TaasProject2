@@ -12,7 +12,8 @@
 }
 
 .section-list{
-    margin: 3%;
+    margin : 3%;
+
 }
 
 .membersGroup h2,h3,h1{
@@ -46,10 +47,23 @@
 .groupHomeHeader-banner>img{
     border-radius: 30px 30px 30px 30px;
 }
+.change_image{
+    margin-left: 3%;
+}
+
+.change_image a{
+    padding-left: 10%;
+}
+
+
+
 
 .flex-container {
     display: flex;
-    margin: 3%;
+    margin-top: 3%;
+    margin-left: 3%;
+    margin-rigth: 3%;
+    margin-bottom: 1%;
 }
 
 

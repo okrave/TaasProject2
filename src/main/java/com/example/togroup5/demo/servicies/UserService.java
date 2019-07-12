@@ -55,7 +55,12 @@ public class UserService {
         return appUserRepository.findAll();
     }
 
-    public AppUser findByEmailPassword(UserLoginPayload userEnailPassword){
-        return appUserRepository.findByEmailPassword(userEnailPassword);
+
+    public AppUser findUserById(Long userId){ return appUserRepository.findAppUserByID(userId);}
+
+    public AppUser findByUsernameAndPassword(String userName, String password){
+        //return appUserRepository.findByUserNameAndPassword(userName,password);
+        return null;
+
     }
 }
