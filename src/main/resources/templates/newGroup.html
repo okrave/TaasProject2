@@ -16,7 +16,7 @@
     <script src="js/createGroup.js" th:src="@{/js/createGroup.js}"></script>
 
     <link rel="stylesheet" href="../static/css/crea_gruppo.css" th:href="@{/css/crea_gruppo.css}">
-
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One&display=swap" rel="stylesheet">
 </head>
 <body>
 <th:block th:replace="fragments/navbar :: navbar" />
@@ -41,31 +41,40 @@
                     <div v-if="creationProgression.actualStep == 0" class="d-flex flex-column flex-nowrap">
                         <h1 class="titolo-luogo">Per prima cosa impostiamo data e luogo del tuo Gruppo</h1>
                         <div class="gruppo-body">
-                            <div class="flexInline">
-                                <h2>Scegli Data</h2>
 
-                                <input class="calendarGroup"
-                                       type="date"
-                                       v-model="newGroupInfo.groupDate"
-                                       name="groupDate"
-                                       value="2020-01-01">
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                        <h3>Scegli Data</h3>
+
+                                        <input class="calendarGroup"
+                                               type="date"
+                                               v-model="newGroupInfo.groupDate"
+                                               name="groupDate"
+                                               value="2020-01-01">
+
+
+                                        <h3>{{locationSearch}} |     Cambia luogo</h3>
+                                        <input class="locationText"
+                                               id="locationQuery"
+                                               type="text"
+                                               name="location"
+                                               v-model="locationSearch"
+                                               placeholder="Please Enter Location">
+
+
+
+                                        <!--
+                        <button @click="getLocationFromAddress()">Cerca con Google</button>
+                    -->
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div  id="map"></div>
+                                </div>
                             </div>
-                            <div class="flexInline">
-                                <h2>{{locationSearch}} |     Cambia luogo</h2>
-                                <input class="locationText"
-                                        id="locationQuery"
-                                        type="text"
-                                        name="location"
-                                        v-model="locationSearch"
-                                        placeholder="Please Enter Location">
 
 
-
-                                                    <!--
-                                    <button @click="getLocationFromAddress()">Cerca con Google</button>
-                                -->
-                            </div>
-                            <div v-if="googleMaps" id="map-canvas">Google Maps's map</div>
                         </div>
 
 
@@ -198,6 +207,66 @@
             -->
         </div>
     </div>
+
+<script>
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+    var map;
+    var service;
+    var infowindow;
+    var myLocation = 'Torino';
+
+    function changeLocation(){
+        myLocation = document.getElementById("locationInput").value;
+        console.log(document.getElementById("locationInput").value);
+        console.log(myLocation);
+        var request = {
+            query: myLocation,
+            fields: ['name', 'geometry'],
+        };
+
+        service = new google.maps.places.PlacesService(map);
+
+        service.findPlaceFromQuery(request, function(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; i++) {
+                    createMarker(results[i]);
+                }
+
+                map.setCenter(results[0].geometry.location);
+            }
+        });
+    }
+
+    function initMap() {
+        var sydney = new google.maps.LatLng(-33.867, 151.195);
+
+        infowindow = new google.maps.InfoWindow();
+
+        map = new google.maps.Map(document.getElementById('map'),{
+            center: sydney,
+            zoom: 12,
+            autocomplite: null
+        });
+    }
+
+
+
+    function createMarker(place) {
+        var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.setContent(place.name);
+            infowindow.open(map, this);
+        });
+    }
+</script>
+
 <script
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -207,6 +276,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZe4Q05ZstWsIRoUCpT14vSALyDjEWXIc&libraries=places&callback=initMap"
+        async defer></script>
 
 </body>
 </html>
