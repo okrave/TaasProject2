@@ -69,7 +69,7 @@ window.onload = _ => {
                 if(gC == null) return [];
                 ret = [];
                 groupSize = gC.length;
-                groupEachSection = 3;
+                groupEachSection = 4;
 
                 console.log("... during groupToGroupsCarousel: groups received:");
                 console.log(JSON.stringify(gC));

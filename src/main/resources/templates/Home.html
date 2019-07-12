@@ -35,7 +35,6 @@
     <!----------------------------------------------
       CARDS
      ------------------------------------------------->
-
     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
         <div class="post__intestazione">
             <span class="post__intestazione__titolo">Popolari</span>
@@ -48,38 +47,45 @@
             <!--
             -->
             <section class="item active" >
-                
+
                 <div class="thumbnail" v-for="group in groupToGroupsCarousel[0]" @click="loadGroupPage(group.groupId)">
 
 
-            <!--
-            v-bind:href="'localhost:8080/groupPage/'+ group.groupId"
-            <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarousel" :key="indexGES" class="(indexGES == 0 ? 'item active' : 'item')" >
+                    <!--
+                    v-bind:href="'localhost:8080/groupPage/'+ group.groupId"
+                    <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarousel" :key="indexGES" class="(indexGES == 0 ? 'item active' : 'item')" >
 
-                 <div class="thumbnail" v-for="group in groupsEachSection">
-            -->
-                <img src="https://source.unsplash.com/category/nature/400x260" alt="">
+                         <div class="thumbnail" v-for="group in groupsEachSection">
+                    -->
+                    <img src="https://source.unsplash.com/category/nature/400x260" alt="">
                     <div class="post__date">
                         <span class="date">25</span>
                         <span class="month">nov</span>
                     </div>
 
                     <div class="caption">
-                        <h4 style="margin: 0">{{group.groupDate}}</h4>
-                        <h3 style="margin-top: 10px;"> <a v-bind:href="'/group_page/'+group.groupId" >{{group.groupName}}</a></h3>
-                        <p>{{group.description}}</p>
-                        <div class="row" >
-                            <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
+                        <div class="row">
+                            <div class="col-md-10"><h4>{{group.groupDate}}</h4></div>
+                            <div class="col-md-2"> <a class="link_card" href=""><i class="far fa-heart"></i></a></div>
 
-                            <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
-
-                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
                         </div>
+
+                        <h3> <a v-bind:href="'/group_page/'+group.groupId" >{{group.groupName}}</a></h3>
+                        <p>{{group.description}}</p>
+
                     </div>
+                    <div class="card__footer" >
+                        <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
+
+                        <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
+
+                        <div class="clearfix"></div>
+                    </div>
+
                 </div>
             </section>
 
-            <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarouselInactive" :key="indexGES" class="item" >
+            <section  class="item" v-for="(groupsEachSection, indexGES) in groupToGroupsCarouselInactive" :key="indexGES"  >
 
                 <div class="thumbnail" v-for="group in groupsEachSection" >
                     <img src="https://source.unsplash.com/category/nature/400x260" alt="">
@@ -89,20 +95,28 @@
                     </div>
 
                     <div class="caption">
-                        <h4 style="margin: 0">{{group.groupDate}}</h4>
-                        <h3 style="margin-top: 10px;">{{group.groupName}}</h3>
-                        <p>{{group.description}}</p>
-                        <div class="row" >
-                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
+                        <div class="row">
+                            <div class="col-md-10"><h4>{{group.groupDate}}</h4></div>
+                            <div class="col-md-2"> <a class="link_card" href=""><i class="far fa-heart"></i></a></div>
 
-                            <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
-
-                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
                         </div>
+
+                        <h3>{{group.groupName}} </h3>
+                        <p>{{group.description}}</p>
+
+
+                        
                     </div>
+                    <div class="card__footer" >
+                        <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
+
+                        <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
+                        <div class="clearfix"></div>
+                    </div>
+
                 </div>
             </section>
-            -->
+
             <!--
             <section class="item active">
 

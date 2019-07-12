@@ -1,4 +1,4 @@
-html,body{height: 100%;background-color: lightgrey;}
+html,body{height: 100%;background-color: white;}
 
 
 .dropdown-menu{
@@ -66,9 +66,9 @@ CARDS
 .post__intestazione__link{float: right;display: block; margin-top: 20px;margin-right: 25px;font-size: 15px;color: blue;}
 
 .thumbnail{
-    width: 25%;
-    max-width: 25%;
-    margin: 1.6%;
+    width: 22%;
+    max-width: 22%;
+    margin: 1.5%;
     float: left;
     padding: 0;
     box-shadow: 0 2px 10px #424242;
@@ -81,7 +81,7 @@ CARDS
     margin-right: auto;
     margin-left: auto;
     border-radius: 60px 60px 00px 40px;
-    border: 2px solid black;
+    border: 2px solid white;
     width: 100%;
 }
 .thumbnail:hover{box-shadow:
@@ -91,17 +91,18 @@ CARDS
         -2px  2px 20px #424242;
 }
 
+.caption>h3{margin-top: 10px;}
+.caption>p{margin: 5px;}
+.carousel-inner{padding: 10px 5% 10px 5%;}
 
-.carousel-inner{padding: 10px;}
-.immagine_creatore{ margin: 4%; float: left;border-style: solid;border-width: 2px;border-color: black;}
+.card__footer{padding: 9px;}
 
-.organizzato{margin-top: 2px;padding-right: 10%; padding-top: 19px; font-size: 14px;float: left;}
-
-
-.link_card{color: black; font-size: 15px;display: inline-block; padding-top: 19px;padding-right: 3%;}
+.immagine_creatore{ margin: 3%; float: left;border-style: solid;border-width: 2px;border-color: black;}
+.organizzato{ font-size: 14px;float: left;margin-top: 7%;}
+.link_card{color: black; font-size: 15px;display: inline-block;margin-top: 10px;}
 
 
-
+.clearfix{clear: both;}
 
 
 
@@ -118,7 +119,7 @@ CARDS
     border-style: solid;
     border-color: black;
     border-width: 2px;
-    border-radius: 8px;
+    border-radius: 60px;
     box-shadow: 0 6px 10px #424242;
     text-align: center;
 }
@@ -127,6 +128,7 @@ CARDS
     font-size:16px;
     color: darkred;
     font-weight: 700;
+
 }
 
 .month{
@@ -141,6 +143,7 @@ CARDS
 .carousel-indicators li.active{background-color: #212121;}
 .carousel-indicators li{background-color: #616161;}
 .indicators{padding-top: 40px;}
+
 
 
 
