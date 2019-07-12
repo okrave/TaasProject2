@@ -53,6 +53,7 @@ public class RestGroupController {
         return gfd;
     }
 
+
     @GetMapping(value = "/listLocations")
     public List<GoogleLocation> listLocations() {
         return groupService.listAllGoogleLocation();
@@ -76,19 +77,20 @@ public class RestGroupController {
         return true;
     }
 
-    @RequestMapping(value = "/addMember", method = RequestMethod.POST)
-    public boolean addMember(@RequestBody String object){
-        System.out.println(object);
-        return true;
-    }
 
 
     @GetMapping(value = "/info/{groupId}")
-    public AppGroup infoGroup(@PathVariable String groupId ){
+    public GroupFullDetail infoGroup(@PathVariable String groupId ){
+
         System.out.println("groupId:" + groupId);
         AppGroup newGroup = groupService.findGroupById(new Long(groupId));
+        if(newGroup == null)
+            return null;
+
         System.out.println("Il gruppo:"+ newGroup.getGroupName());
-        return newGroup;
+        GroupFullDetail x = fetchGroupDetails(newGroup);
+        System.out.println(x.toString());
+        return x;
     }
 
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.GET)
@@ -104,9 +106,13 @@ public class RestGroupController {
 
     @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
     public boolean addUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
+        System.out.println(userGroupInfo);
         UserGroupFound guf;
         guf = fetchGroupUser(userGroupInfo);
-        if(guf == null) return false; // error
+        if(guf == null){
+            System.out.println("errore fetchGroupUser");
+            return false; // error
+        }
         if(guf.gu != null) return true; // yet present but it's not an error. TODO: is it an error?
 
         groupService.addMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId());
@@ -139,22 +145,26 @@ public class RestGroupController {
     }
 
     //utils
-
     protected List<GroupFullDetail> groupFullDetailFromGroups(List<AppGroup> groups) {
         List<GroupFullDetail> gts;
         GroupFullDetail gfd;
         if (groups == null) return null;
         gts = new ArrayList<>(groups.size());
         for (AppGroup g : groups){
-            gfd = new GroupFullDetail(g,//
-                    groupService.listTagsByAppGroupId(g.getGroupId()),//
-                    groupService.listUsersByAppGroupId(g.getGroupId())
-                     );
+            gfd = fetchGroupDetails(g);
             gfd.setLocation(groupService.findLocationById(g.getLocation()));
             gts.add(gfd);
         }
         return gts;
     }
+
+    protected GroupFullDetail fetchGroupDetails(AppGroup g){
+        return new GroupFullDetail(g,//
+                groupService.listTagsByAppGroupId(g.getGroupId()),//
+                groupService.listUsersByAppGroupId(g.getGroupId())
+        );
+    }
+
 
     // crea i default
 

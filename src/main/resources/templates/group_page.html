@@ -39,7 +39,8 @@
                 <li id="li2" role="presentation" @click="setListElement(1)"><a href="#">Membri</a></li>
                 <li id="li3" role="presentation" @click="setListElement(2)"><a href="#">Messages <span class="badge">3</span></a></li>
                 <li id="li4" role="presentation" @click="setListElement(3)"><a href="#">Foto <span class="badge">3</span></a></li>
-                <li class = "navbar-right" role="presentation"><a class="btn btn-primary btn-lg" href="#" role="button" @click="addGroupMember(1)">Unisciti a questo gruppo</a></li>
+                <li class = "navbar-right" role="presentation"><button class="btn btn-primary btn-lg" role="button"
+                                                                  @click="addGroupMember(74,'dbuser1')">Unisciti a questo gruppo</button></li>
 
 
             </ul>
@@ -48,13 +49,17 @@
         <div class="section-list">
             <div class="membersGroup" v-if = "listElement == 1">
                 <h2>Gli utenti che parteciperanno all'evento</h2>
-                <ul>
-                    <li v-if = "listUser.length > 0" v-for="user in listUser">
+                <ul v-if = "groupInfo.members.length > 0">
+                    <li  v-for="user in groupInfo.members">
                         <a v-bind:href="'/userPage/'+user.userId"><img src="https://source.unsplash.com/random/40x40" class="profile-image img-circle"> &nbsp;{{user.userName}}</a>
 
                         <hr>
                     </li>
+
                 </ul>
+                <div v-else>
+                    Non ci sono membri in questo gruppo.
+                </div>
             </div>
             <div v-if = "listElement == 2">
                 Messaggi

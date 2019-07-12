@@ -91,7 +91,7 @@ public class AppUserRepository {
     public List<AppUser> listUsersByGroupId(Long groupId) {
         try {
             String sql = "Select u from " + AppUser.class.getName() + //
-                    " t JOIN " + GroupUser.class.getName()
+                    " u JOIN " + GroupUser.class.getName()
                     + " gu ON u.userId = gu.userId WHERE gu.groupId = :groupId";
             Query query = entityManager.createQuery(sql, AppUser.class);
             query.setParameter("groupId", groupId);
