@@ -6,9 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import com.example.togroup5.demo.entities.AppRole;
-import com.example.togroup5.demo.entities.AppUser;
-import com.example.togroup5.demo.entities.UserRole;
+import com.example.togroup5.demo.entities.*;
+import com.example.togroup5.demo.entities.payloadsResults.UserLoginPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +32,7 @@ public class AppUserRepository {
 
     @Autowired
     private AppUserRoleRepository appUserRoleRepository;
+    private UserLoginPayload userEnailPassword;
 
     // basic methods
 
@@ -87,6 +87,33 @@ public class AppUserRepository {
         return appUserJpa.findAll();
     }
 
+
+    public List<AppUser> listUsersByGroupId(Long groupId) {
+        try {
+            String sql = "Select u from " + AppUser.class.getName() + //
+                    " t JOIN " + GroupUser.class.getName()
+                    + " gu ON u.userId = gu.userId WHERE gu.groupId = :groupId";
+            Query query = entityManager.createQuery(sql, AppUser.class);
+            query.setParameter("groupId", groupId);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public AppUser findByEmailPassword(UserLoginPayload userEnailPassword){
+        //return appUserJpa.findAppUserByUserName()
+        try {
+            String sql = "Select u from " + AppUser.class.getName() + //
+                   " WHERE u.email = :email AND u.password = :pwd";
+            Query query = entityManager.createQuery(sql, AppUser.class);
+            query.setParameter("email", userEnailPassword.getEmail());
+            query.setParameter("pwd", userEnailPassword.getPassword());
+            return  (AppUser) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
 
 }

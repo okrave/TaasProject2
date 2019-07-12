@@ -292,7 +292,9 @@ function initAll() {
                     .getGroupEndpoint()
                     .listAllTags()
                     .then(response => {
-                        thisVue.allTags = thisVue.filteredTags = response;
+                        if(response != null && response !== undefined && response.length > 0) {
+                            thisVue.allTags = thisVue.filteredTags = response;
+                        }
                     })
                     .catch(this.createErrorHandler("list all tags"));
             }

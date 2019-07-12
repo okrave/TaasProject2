@@ -1,12 +1,12 @@
 package com.example.togroup5.demo.controllers;
 
-import com.example.togroup5.demo.entities.AppGroup;
-import com.example.togroup5.demo.entities.AppTag;
-import com.example.togroup5.demo.entities.GoogleLocation;
+import com.example.togroup5.demo.entities.*;
 import com.example.togroup5.demo.entities.newEntities.AppGroupNew;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
-import com.example.togroup5.demo.entities.payloadsResults.GroupWithTags;
+import com.example.togroup5.demo.entities.payloadsResults.GroupFullDetail;
+import com.example.togroup5.demo.entities.payloadsResults.MemberGroupPayload;
 import com.example.togroup5.demo.servicies.GroupService;
+import com.example.togroup5.demo.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +22,9 @@ public class RestGroupController {
     GroupService groupService;
     @Autowired
     RestHomeController x;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping(value = "/listGroupSimple")
     public List<AppGroup> listGroup() {
@@ -42,13 +45,12 @@ public class RestGroupController {
 
 
     @GetMapping(value = "/listGroupRest")
-    public List<GroupWithTags> listGroupWithTags() {
+    public List<GroupFullDetail> listGroupFullDetail() {
         List<AppGroup> groups;
-        List<GroupWithTags> gts;
-        GroupWithTags gt;
+        List<GroupFullDetail> gfd;
         groups = this.listGroup();
-        gts = groupWithTagsFromGroups(groups);
-        return gts;
+        gfd = groupFullDetailFromGroups(groups);
+        return gfd;
     }
 
     @GetMapping(value = "/listLocations")
@@ -90,28 +92,66 @@ public class RestGroupController {
     }
 
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.GET)
-    public List<GroupWithTags> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
+    public List<GroupFullDetail> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
         List<AppGroup> groups;
         //groupService.saveGroup(appGroupNew.toAppGrou());
         System.out.println("search filters: ");
         System.out.println(groupSearchFilters);
         groups = groupService.searchGroupAdvanced(groupSearchFilters);
         System.out.println("found " + groups.size() + " groups, now add tags");
-        return groupWithTagsFromGroups(groups);
+        return groupFullDetailFromGroups(groups);
     }
 
+    @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
+    public boolean addUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
+        UserGroupFound guf;
+        guf = fetchGroupUser(userGroupInfo);
+        if(guf == null) return false; // error
+        if(guf.gu != null) return true; // yet present but it's not an error. TODO: is it an error?
+
+        groupService.addMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId());
+        return true;
+    }
+
+    @RequestMapping(value = "/removeMember", method = RequestMethod.PATCH)
+    public boolean removeUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
+        UserGroupFound guf;
+        guf = fetchGroupUser(userGroupInfo);
+        if(guf == null) return false; // error
+        if(guf.gu == null) return true; // not present but it's not an error. TODO: is it an error?
+
+        groupService.removeMembershipByGroupUserId(guf.gu.getId());
+        return true;
+    }
+
+    protected UserGroupFound fetchGroupUser(MemberGroupPayload userGroupInfo){
+        AppGroup group;
+        GroupUser gu;
+        if(userGroupInfo == null || userGroupInfo.getGroupId() == null || userGroupInfo.getUserId() == null ||
+                (userGroupInfo.getUserName() == null || "".equals(userGroupInfo.getUserName().toLowerCase())))
+            return null;
+        group = groupService.findGroupById(userGroupInfo.getGroupId());
+        if(group == null) return null;
+        // TODO the following call should be performed without explicitly call the userService instance
+        if(! userService.containsUser(userGroupInfo.getUserId()))
+            return null;
+        return new UserGroupFound(groupService.findMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId()));
+    }
 
     //utils
 
-    protected List<GroupWithTags> groupWithTagsFromGroups(List<AppGroup> groups) {
-        List<GroupWithTags> gts;
-        GroupWithTags gwt;
+    protected List<GroupFullDetail> groupFullDetailFromGroups(List<AppGroup> groups) {
+        List<GroupFullDetail> gts;
+        GroupFullDetail gfd;
         if (groups == null) return null;
         gts = new ArrayList<>(groups.size());
         for (AppGroup g : groups){
-            gwt = new GroupWithTags(g, groupService.listTagsByAppGroupId(g.getGroupId()));
-            gwt.setLocation(groupService.findLocationById(g.getLocation()));
-            gts.add(gwt);
+            gfd = new GroupFullDetail(g,//
+                    groupService.listTagsByAppGroupId(g.getGroupId()),//
+                    groupService.listUsersByAppGroupId(g.getGroupId())
+                     );
+            gfd.setLocation(groupService.findLocationById(g.getLocation()));
+            gts.add(gfd);
         }
         return gts;
     }
@@ -233,5 +273,12 @@ public class RestGroupController {
         }
     }
 
-
+    protected class UserGroupFound {
+        //boolean found;
+        GroupUser gu;
+        protected UserGroupFound(GroupUser gu){
+            //found = false;
+            this.gu = gu;
+        }
+    }
 }

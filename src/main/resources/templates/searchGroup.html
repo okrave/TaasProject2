@@ -21,7 +21,7 @@
             max-height: 100px;
         }
 
-        .listTags{
+        .listTagsUsers{
             max-width: 400px;
             max-height: 100px;
             overflow-y: scroll;
@@ -164,6 +164,7 @@
                 <th>Location</th>
                 <th>Description</th>
                 <th>Tags</th>
+                <th>Members</th>
             </tr>
             <tr v-for="group in groups">
                 <td><button @click="deleteGroup(group.groupId)">X</button></td>
@@ -176,9 +177,16 @@
                     <textarea rows="5" cols="25">{{group.description}}</textarea>
                 </td>
                 <td>
-                    <div class="listTags">
+                    <div class="listTagsUsers">
                         <div v-for="tag in group.tags">
                             {{tag.name}}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="listTagsUsers">
+                        <div v-for="user in group.members">
+                            {{tag.userName}}
                         </div>
                     </div>
                 </td>

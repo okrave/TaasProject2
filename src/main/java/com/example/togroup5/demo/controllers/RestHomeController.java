@@ -2,6 +2,8 @@ package com.example.togroup5.demo.controllers;
 
 import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.entities.newEntities.AppUserRegistration;
+import com.example.togroup5.demo.entities.payloadsResults.UserLoginPayload;
+import com.example.togroup5.demo.entities.payloadsResults.UserIDName;
 import com.example.togroup5.demo.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -41,6 +43,17 @@ public class RestHomeController{
             return true;
         }
         return false;
+    }
+
+    @GetMapping(value = "/User/login")
+    public UserIDName logIn(@RequestParam String email, @RequestParam String password){
+        AppUser user;
+        UserLoginPayload userPayload;
+        userPayload = new UserLoginPayload(email, password);
+        user = userService.findByEmailPassword(userPayload);
+        if(user == null )
+            return null;
+        return new UserIDName(user.getUserId(), user.getUserName());
     }
 
 
