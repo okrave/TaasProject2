@@ -21,4 +21,11 @@ public class MemberGroupPayload extends UserIDName {
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
+
+    @Override
+    public String toString() {
+        return "MemberGroupPayload{" + super.toString() +
+                "groupId=" + groupId +
+                '}';
+    }
 }

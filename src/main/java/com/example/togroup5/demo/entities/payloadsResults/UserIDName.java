@@ -29,4 +29,12 @@ public class UserIDName implements Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    @Override
+    public String toString() {
+        return "UserIDName{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                '}';
+    }
 }

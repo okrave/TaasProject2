@@ -9,30 +9,40 @@ window.onload = _ =>{
                 groupDate: "",
                 creator: "",
                 description: "",
-                locationId: ""
+                locationId: "",
+                tags: [],
+                members: []
             }
             ,groupInfo2: null
             ,listElement: 0
             ,listUser : []
+            ,currentUrl : ""
         },
 
         created(){
-            var currentUrl = window.location.pathname;
-            this.loadGroup(currentUrl);
+            this.currentUrl = window.location.pathname;
+            this.loadGroup();
             this.ping();
             this.getAllUser();
         },
 
         methods:{
-            addGroupMember(userName){
+
+            addGroupMember(userId,userName){
+                console.log(userId,userName,this.groupInfo.groupId)
+                groupMember = new MemberGroupPayload(userId,userName,this.groupInfo.groupId);
                 this.toGroupAPI
                     .getGroupEndpoint()
-                    .addGroupMember(userName,this.groupInfo.groupId)
+                    .addGroupMember(groupMember)
                     .then(resp => {
                         console.log("paginaGruppo:D");
                         console.log(JSON.stringify(resp));
+                        console.log(resp.members);
+                        this.loadGroup();
+                        //this.groupInfo.members = resp.members;
 
                     })
+
             }
 
             ,setListElement(liNumber){
@@ -60,8 +70,8 @@ window.onload = _ =>{
             })
             }
 
-            ,loadGroup(currentUrl){
-                piecesUrl = currentUrl.split("/");
+            ,loadGroup(){
+                piecesUrl = this.currentUrl.split("/");
                 groupId = piecesUrl[piecesUrl.length-1];
                 console.log(groupId);
                 this.toGroupAPI
@@ -76,6 +86,8 @@ window.onload = _ =>{
                         this.groupInfo.description = resp.description;
                         this.groupInfo.groupId = resp.groupId;
                         this.groupInfo.locationId = resp.location;
+                        this.groupInfo.members = resp.members;
+                        this.groupInfo.tags = resp.tags;
                         this.toGroupAPI.isLoaded = true;
                     })
 

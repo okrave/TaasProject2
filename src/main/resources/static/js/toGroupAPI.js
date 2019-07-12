@@ -155,10 +155,12 @@ class UserAPI {
 			})
 				.then(response => response.json())
 				.then(response => {
+
 					if (checkResponseHoldsErrors(response)) {
 						reject(response);
 					}
 					resolve(response);
+					console.log(response);
 				})
 				.catch(reject);
 		});
@@ -196,26 +198,26 @@ class GroupAPI {
 	constructor(url = null) {
 		if (url === null)
 			throw new Error("Cannot get base URL of Group API");
-		this.baseURL = url + `/Group`;
+		this.baseURL = url + '/Group';
 		//this.alternativeURL = `https://blabla qualcos'altro.com`;
 	}
 
-	addGroupMember(userName,groupId){
-        return new Promise((resolve, reject) => {
-            fetch(this.baseURL + `/addMember`, {
-                methods: "POST",
-                headers: { 'content-type': 'application/json' },
-                body: {}
-            })
-            .then(response => response.json())
-            .then(response => {
-                    if (checkResponseHoldsErrors(response)) {
-                    reject(response);
-                }
-                resolve(response);
-            })
-            .catch(reject);
-    });
+	addGroupMember(groupMember){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/addMember`, {
+				method: "PATCH",
+					headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(groupMember)
+			})
+			.then(response => response.json())
+			.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+					reject(response);
+				}
+			resolve(response);
+			}).catch(reject);
+		});
+
     }
 
 	getGroupInfo(groupID) {
@@ -338,6 +340,17 @@ class UserRegistration {
 		this.passwordRepeat = passwordRepeat;
 		this.email = email;
 	}
+}
+
+class MemberGroupPayload{
+
+	constructor(userId,userName,groupId){
+		this.userName = userName;
+		this.userId = userId;
+		this.groupId = groupId;
+
+	}
+
 }
 /** Represents a User */
 class User {

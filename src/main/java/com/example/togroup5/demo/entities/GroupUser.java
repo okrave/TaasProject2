@@ -17,6 +17,8 @@ public class GroupUser implements Serializable {
     @Column(name = "user_id")
     private Long userId;
 
+    public GroupUser(){}
+
     public GroupUser(Long groupId, Long userId) {
         this.setGroupId(groupId);
         this.setUserId(userId);
