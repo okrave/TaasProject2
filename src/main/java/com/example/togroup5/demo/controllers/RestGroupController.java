@@ -84,7 +84,7 @@ public class RestGroupController {
         AppGroup newGroup ;
         GroupFullDetail gfd;
         System.out.println("groupId:" + groupId);
-        newGroup = groupService.findGroupById(Long.valueOf(groupId);
+        newGroup = groupService.findGroupById(Long.valueOf(groupId));
         if(newGroup == null)
             return null;
 

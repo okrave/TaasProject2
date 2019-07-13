@@ -509,7 +509,7 @@ class GroupSearch extends GroupBasic{
 }
 
 class GroupFullDetail extends GroupNew {
-	function
+	/*function
 
 	constructor( groupId = null, //
 		, creator = "", groupName = "", location = null, tags = null, groupDate = null, description = ""//
@@ -518,5 +518,5 @@ class GroupFullDetail extends GroupNew {
 		this.groupId = groupId;
 		this.locationId = locationId;
 		this.members = members;
-	}
+	}*/
 }
