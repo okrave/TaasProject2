@@ -469,6 +469,17 @@ class GoogleLocation{
 		text = text.replace("(", "");
 		text = text.replace(")", "");
 		text = text.replace("\'", "");
+		/*
+			La stringa ora e' composta da due numeri, con notazione americana
+			(la nostra virgola e' il loro punto), separati da una virgola.
+			Separo quindi i due numeri con uno split, che fornisce un array
+			di stringhe, e mappo tali stringhe in qualcos'altro, ossia un
+			numero, che sono i valori desiderati.
+			L'espressione (+(x.trim())) serve ad effettuare la conversione,
+			eliminando gli spazi e convertendo la stringa "purificata" in un numero
+			tramite l'operatore "+", che induce il motore Javascript a parsificare
+			la stringa in un numero.
+		*/
 		var numbers = text.split(",").map(x => (+(x.trim())));
 		return new GoogleLocation(numbers[0], numbers[1]);
 	}
@@ -486,7 +497,7 @@ class GroupNew extends GroupBasic{
 }
 
 /** Represents a search-Group informations*/
-class GroupSearch  extends GroupBasic{
+class GroupSearch extends GroupBasic{
 //it's the API response
 	constructor(creator="", groupName="", location=null, tags=null,
 				dateStartRange=null, dateEndRange=null, maxDistance="0.0") {
@@ -494,5 +505,18 @@ class GroupSearch  extends GroupBasic{
 		this.dateStartRange = dateStartRange;
 		this.dateEndRange = dateEndRange;
 		this.maxDistance = maxDistance; // only for search o.o
+	}
+}
+
+class GroupFullDetail extends GroupNew {
+	function
+
+	constructor( groupId = null, //
+		, creator = "", groupName = "", location = null, tags = null, groupDate = null, description = ""//
+		, locationId = null, members = [], ) {
+		super.constructor(creator, groupName, location, tags, groupDate, description);
+		this.groupId = groupId;
+		this.locationId = locationId;
+		this.members = members;
 	}
 }
