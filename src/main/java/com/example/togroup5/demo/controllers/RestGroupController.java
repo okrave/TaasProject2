@@ -81,16 +81,17 @@ public class RestGroupController {
 
     @GetMapping(value = "/info/{groupId}")
     public GroupFullDetail infoGroup(@PathVariable String groupId ){
-
+        AppGroup newGroup ;
+        GroupFullDetail gfd;
         System.out.println("groupId:" + groupId);
-        AppGroup newGroup = groupService.findGroupById(new Long(groupId));
+        newGroup = groupService.findGroupById(Long.valueOf(groupId);
         if(newGroup == null)
             return null;
 
         System.out.println("Il gruppo:"+ newGroup.getGroupName());
-        GroupFullDetail x = fetchGroupDetails(newGroup);
+        gfd = fetchGroupDetails(newGroup);
         System.out.println(x.toString());
-        return x;
+        return gfd;
     }
 
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.GET)

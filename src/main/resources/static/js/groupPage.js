@@ -3,7 +3,7 @@ window.onload = _ =>{
         el:"#appGroupPage",
         data: {
             toGroupAPI : new ToGroup()
-            ,groupInfo:{
+            ,groupInfo: new GroupFullDetail() /*{
                 groupId: "",
                 groupName: "",
                 groupDate: "",
@@ -12,7 +12,7 @@ window.onload = _ =>{
                 locationId: "",
                 tags: [],
                 members: []
-            }
+            }*/
             ,groupInfo2: null
             ,listElement: 0
             ,listUser : []
