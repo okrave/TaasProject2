@@ -43,6 +43,8 @@
                     for (var i = 0; i < results.length; i++) {
                         createMarker(results[i]);
                     }
+                    console.log("google location")
+                    console.log("latitude:" + results[0].geometry.location);
 
                     map.setCenter(results[0].geometry.location);
                 }
@@ -56,7 +58,8 @@
 
             map = new google.maps.Map(document.getElementById('map'),{
                 center: sydney,
-                zoom: 12
+                zoom: 12,
+                disableDefaultUI: true
             });
         }
 
@@ -67,6 +70,7 @@
                 map: map,
                 position: place.geometry.location
             });
+
 
             google.maps.event.addListener(marker, 'click', function() {
                 infowindow.setContent(place.name);
