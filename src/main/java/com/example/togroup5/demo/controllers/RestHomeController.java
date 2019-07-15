@@ -6,9 +6,16 @@ import com.example.togroup5.demo.entities.payloadsResults.UserLoginPayload;
 import com.example.togroup5.demo.entities.payloadsResults.UserIDName;
 import com.example.togroup5.demo.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -18,6 +25,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 public class RestHomeController{
+
+    @Resource(name="authenticationManager")
+    private AuthenticationManager authManager;
 
     @Autowired
     private UserService userService;
@@ -44,13 +54,20 @@ public class RestHomeController{
     }
 
     @RequestMapping(value = "/User/customLogin", method = POST)
-    public AppUser login(@RequestBody AppUserRegistration newUser, HttpSession session){
+    public AppUser login(@RequestBody AppUserRegistration newUser,  final HttpServletRequest request){
         //Ricevo la password già criptata
         System.out.println(newUser);
+/*
+        UsernamePasswordAuthenticationToken authReq =
+                new UsernamePasswordAuthenticationToken(newUser.getUserName(), newUser.getPassword());
+        Authentication auth = authManager.authenticate(authReq);
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(auth);
+        HttpSession session = request.getSession(true);
+        session.setAttribute("SPRING_SECURITY_CONTEXT", sc);*/
 
         AppUser x = userService.findAppUserByUserName(newUser.getUserName());
-        session.setAttribute("username",x.getUserName());
-        session.setAttribute("userId",x.getUserId());
+
         System.out.println("Trovato L'utente: " + x) ;
         return x;
     }
