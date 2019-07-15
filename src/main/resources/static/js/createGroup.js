@@ -107,6 +107,12 @@ function initAll() {
         },
         methods: {
 
+            setLocation(location){
+                console.log("dentro SetLocation");
+                console.log(location);
+                this.newGroupInfo.location = location;
+            },
+
             activateMaps(){
                 this.googleMaps = true;
             },
@@ -256,7 +262,7 @@ function initAll() {
                 }
 
                 //get location, in some way
-                this.newGroupInfo.location = GoogleLocation.fromString(this.locationSearch);
+                //this.newGroupInfo.location = GoogleLocation.fromString(this.locationSearch);
 
                 //now the date
                 //this.newGroupInfo.groupDate = this.formatDateGroup(this.newGroupInfo.groupDate);
@@ -269,7 +275,7 @@ function initAll() {
                 if((ngi.creator == null || ngi.creator === '')
                     || (ngi.groupName == null || ngi.groupName === '')
                     || (ngi.description == null || ngi.description === '')
-                    // (|| ngi.location == null || ngi.location === '')
+                    || (ngi.location == null || ngi.location === '')
                     || (ngi.tags == null || ngi.tags.size <= 0)
                    ){
                     alert("fill all new group info");
