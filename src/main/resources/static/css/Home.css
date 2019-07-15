@@ -68,6 +68,7 @@ CARDS
 .thumbnail{
     width: 22%;
     max-width: 22%;
+    max-height: 500px;
     margin: 1.5%;
     float: left;
     padding: 0;

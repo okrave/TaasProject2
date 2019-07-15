@@ -23,7 +23,7 @@
                 <div class="groupHomeHeader-groupName"><h1>{{this.groupInfo.groupName}}</h1></div>
                 <div class="groupHomeHeader-info">
                     <div class="groupHomeHeader-groupData"><i class="far fa-calendar-alt"></i> {{this.groupInfo.data}}</div>
-                    <div ><i class="fas fa-map-marker-alt"></i> location</div>
+                    <div  ><i class="fas fa-map-marker-alt"></i> location</div>
                     <div><i class="fas fa-users"></i> 686 membri</div>
                     <div class="groupHomeHeader-groupCreator"><i class="far fa-user"></i> Organizzato da <a href="#">{{this.groupInfo.creator}}</a></div>
                     <hr style="margin-top: 10px;margin-bottom: 10px">
@@ -38,9 +38,9 @@
             <ul class="nav nav-pills" role="tablist">
                 <li id="li2" role="presentation" @click="setListElement(1)"><a href="#">Membri</a></li>
                 <li id="li3" role="presentation" @click="setListElement(2)"><a href="#">Messages <span class="badge">3</span></a></li>
-                <li id="li4" role="presentation" @click="setListElement(3)"><a href="#">Foto <span class="badge">3</span></a></li>
+                <li id="li4" role="presentation" @click="setListElement(3)"><a href="#">Foto <span class="badge">5</span></a></li>
                 <li class = "navbar-right" role="presentation"><button class="btn btn-primary btn-lg" role="button"
-                                                                  @click="addGroupMember(74,'dbuser1')">Unisciti a questo gruppo</button></li>
+                                                                       @click="addGroupMember(74,'dbuser1')">Unisciti a questo gruppo</button></li>
 
 
             </ul>
@@ -65,7 +65,15 @@
                 Messaggi
             </div>
             <div v-if = "listElement == 3">
-                Foto
+                <div class="Foto">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/random/400x260" alt="">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/category/food/200x260 " alt="">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/category/people/420x260" alt="">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/random/616x260" alt="">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/user/erondu/420x260 " alt="">
+
+                </div>
+
             </div>
 
         </div>
@@ -78,9 +86,6 @@
 </div>
 
 
-<script>
-
-</script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
