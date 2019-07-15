@@ -106,6 +106,8 @@ public class AppUserRepository {
         try {
             String sql = "Select u from " + AppUser.class.getName() + //
                    " WHERE u.email = :email AND u.password = :pwd";
+
+            System.out.println("Query: " + sql);
             Query query = entityManager.createQuery(sql, AppUser.class);
             query.setParameter("email", userEnailPassword.getEmail());
             query.setParameter("pwd", userEnailPassword.getPassword());
@@ -114,6 +116,23 @@ public class AppUserRepository {
             return null;
         }
     }
+
+    public AppUser findByUserNameAndPassword(String userName, String password){
+        try {
+            String sql= "Select u from " + AppUser.class.getName() + //
+                    " WHERE u.userName = :username AND u.encrytedPassword = :pwd";
+
+            System.out.println("Query: " + sql);
+            Query query = entityManager.createQuery(sql, AppUser.class);
+            query.setParameter("username", userName);
+            query.setParameter("pwd", password);
+            return  (AppUser) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+
 
 
 }

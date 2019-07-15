@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static com.example.togroup5.demo.utils.EncryptedPasswordUtils.encryptePassword;
@@ -31,10 +32,7 @@ public class RestHomeController{
         return "[\"greetings\", 7, \"ciao\"]";
     }
 
-    @RequestMapping(
-            value = "/User/register",
-            method = POST
-    )
+    @RequestMapping(value = "/User/register", method = POST)
     public boolean register(@RequestBody AppUserRegistration newUser){
         AppUser user;
         user = newUser.toAppUser();
@@ -44,6 +42,20 @@ public class RestHomeController{
         }
         return false;
     }
+
+    @RequestMapping(value = "/User/customLogin", method = POST)
+    public AppUser login(@RequestBody AppUserRegistration newUser, HttpSession session){
+        //Ricevo la password già criptata
+        System.out.println(newUser);
+
+        AppUser x = userService.findAppUserByUserName(newUser.getUserName());
+        session.setAttribute("username",x.getUserName());
+        session.setAttribute("userId",x.getUserId());
+        System.out.println("Trovato L'utente: " + x) ;
+        return x;
+    }
+
+
 
     @GetMapping(value = "/User/login")
     public UserIDName logIn(@RequestParam String email, @RequestParam String password){

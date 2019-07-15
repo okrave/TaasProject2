@@ -82,6 +82,6 @@ public class AppUser implements Serializable {
     }
 
     public String toString(){
-        return "{userName:"+ this.userEmail+ ", password: "+ this.encrytedPassword  +"}";
+        return "{id:"+ userId + "userName:"+ this.userEmail+ ", password: "+ this.encrytedPassword  +"}";
     }
 }

@@ -144,6 +144,27 @@ class UserAPI {
 
 	// aggiungere anche login, register, ..
 
+	login(newUserInfo){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/customLogin`, {
+				method: "POST",
+					headers: {
+					'content-type': 'application/json'
+				},
+				body: JSON.stringify(newUserInfo)
+			})
+			.then(response => response.json())
+			.then(response => {
+				if (checkResponseHoldsErrors(response)) {
+					reject(response);
+				}
+				resolve(response);
+				console.log(response);
+			}).catch(reject);
+		});
+
+	}
+
 	register(newUserInfo){
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/register`, {

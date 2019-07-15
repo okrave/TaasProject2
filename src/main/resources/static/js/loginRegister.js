@@ -53,6 +53,11 @@ window.onload = _ => {
                 email               : "",
                 passwordConfirmation: ""
             }
+            , userLogged:{
+                isLogged: false,
+                username: "",
+                id: 0
+            }
             , messages: new NotificationsMessage()
 
             , groupsCarousel: null
@@ -107,8 +112,27 @@ window.onload = _ => {
         },
 
         methods: {
-            normalLogin(){
+
+            customLogin(){
+                console.log(this.userInfo.username);
                 console.log(this.userInfo.password);
+                userInfo = new UserRegistration(this.userInfo.username, this.userInfo.password, this.userInfo.password, "asdasd");
+
+                this.toGroupAPI
+                    .getUserEndpoint()
+                    .login(userInfo)
+                    .then(resp => {
+                        this.userLogged.username = resp.userName;
+                        this.userLogged.id = resp.userId;
+                        this.userLogged.isLogged = true;
+                        console.log(this.userLogged.id);
+                        console.log("logged :D");
+                        console.log(resp);
+
+                    }).catch(this.createErrorHandler("register"));
+
+
+
             }
             ,facebookLogin(){
                 console.log(this.userInfo.username);

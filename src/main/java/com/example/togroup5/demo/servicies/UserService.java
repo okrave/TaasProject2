@@ -52,6 +52,9 @@ public class UserService {
         return appUserRepository.findUserAccount(userName);
     }
 
+    public AppUser findAppUserByUserName(String userName){
+        return appUserRepository.findAppUserByUserName(userName);
+    }
     public List<AppUser> findAll(){
         return appUserRepository.findAll();
     }
@@ -62,8 +65,7 @@ public class UserService {
     public AppUser findUserById(Long userId){ return appUserRepository.findAppUserByID(userId);}
 
     public AppUser findByUsernameAndPassword(String userName, String password){
-        //return appUserRepository.findByUserNameAndPassword(userName,password);
-        return null;
+        return appUserRepository.findByUserNameAndPassword(userName,password);
 
     }
 }
