@@ -43,4 +43,12 @@ public class GoogleLocation implements Serializable {
         this.lng = lng;
     }
 
+    @Override
+    public String toString() {
+        return "GoogleLocation{" +
+                "locationId=" + locationId +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                '}';
+    }
 }
