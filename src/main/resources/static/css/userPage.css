@@ -18,6 +18,16 @@
 .user__body__description{padding: 20%;padding-top: 20px;padding-bottom: 20px;}
 .user__body__description>p{padding: 2%;}
 
+.descriptionInput{
+    padding: 2%;
+    width: 100%;
+    min-height: 110px;
+    max-height: 110px;
+    border: 0px;
+}
 
+#descriptionButton{
+
+}
 .fa-calendar-alt{padding-right: 4px;font-size: 20px;margin-right: 5%;font-size: medium;text-align: right;}
 .fa-users{font-size: 20px;margin-right: 5%;font-size: medium;}

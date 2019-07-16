@@ -7,10 +7,13 @@ window.onload = _ => {
             userInfo:{
                 userId : "",
                 userName : "",
-                userEmail : ""
+                userEmail : "",
+                description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos veniam numquam amet aspernatur aliquid, dicta laborum blanditiis alias et labore ratione tempora porro laboriosam iusto temporibus impedit obcaecati! Impedit, iusto."
             },
             urlImage : "https://source.unsplash.com/category/nature/400x260",
-            imgChange : false
+            imgChange : false,
+            descriptionButton : "Cambia",
+            descriptionRead: false
 
 
 
@@ -24,7 +27,21 @@ window.onload = _ => {
 
         methods:{
 
-            changeImageUser(){
+            changeUserDescription(){
+                if(this.descriptionRead == true) {
+                    document.getElementById("descriptionInput").readOnly = false;
+                    document.getElementById("descriptionInput").style.cssText = "box-shadow: 0 0 1px 0px black;"
+                    this.descriptionButton = "Salva";
+                }else{
+                    document.getElementById("descriptionInput").readOnly = true;
+                    document.getElementById("descriptionInput").style.cssText = "box-shadow: 0 0 0px 0px black;"
+                    this.descriptionButton = "Cambia";
+                }
+
+                this.descriptionRead = !this.descriptionRead;
+            }
+
+            ,changeImageUser(){
 
                 if(!this.imgChange)
                     this.urlImage = "https://source.unsplash.com/random/400x260";

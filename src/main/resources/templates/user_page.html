@@ -38,8 +38,16 @@
     <div class ="container-fluid user__body"  >
         <div class="user__body__description"><h3>Descrizione</h3>
 
+            <textarea id="descriptionInput"
+                      cols="50"
+                      rows="10"
+                      placeholder="Description"
+                      v-model = "userInfo.description"
+                      class = "descriptionInput"
+                ></textarea>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos veniam numquam amet aspernatur aliquid, dicta laborum blanditiis alias et labore ratione tempora porro laboriosam iusto temporibus impedit obcaecati! Impedit, iusto.</p>
+            <button class ="btn btn-default" id="descriptionButton" @click="changeUserDescription()">{{descriptionButton}}</button>
+
         </div>
 
     </div>
