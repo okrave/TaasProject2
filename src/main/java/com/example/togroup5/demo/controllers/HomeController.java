@@ -46,6 +46,12 @@ public class HomeController {
     }
 
 
+    @GetMapping(value="/esplora")
+    public String esplora(){
+        return "esplora";
+    }
+
+
     @GetMapping(value = "/group_page/{id}")
     public String group_page(@PathVariable(required = false) String id){
         System.out.println(id);
