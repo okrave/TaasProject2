@@ -61,10 +61,23 @@ window.onload = _ => {
             , messages: new NotificationsMessage()
 
             , groupsCarousel: null
-},
+        },
+
+        mounted(){
+
+            if (localStorage.getItem('connectedUserName')) {
+                console.log("Utente loggato: " + localStorage.getItem('connectedUserName'));
+            }else{
+                localStorage.setItem('name','Luca');
+                console.log("in mounted: "+ localStorage.getItem('name') );
+            }
+        },
         created() {
             this.ping();
             this.fetchGroupSimple();
+            user1 = "luca";
+            window.userNameHeader = "Luca";
+            console.log("window.userName: " + window.userNameHeader);
         },
 
         computed: {
@@ -125,7 +138,7 @@ window.onload = _ => {
                         this.userLogged.username = resp.userName;
                         this.userLogged.id = resp.userId;
                         this.userLogged.isLogged = true;
-                        console.log(this.userLogged.id);
+                        localStorage.setItem('connectedUserName',resp.userName);
                         console.log("logged :D");
                         console.log(resp);
 

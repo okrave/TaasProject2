@@ -41,5 +41,32 @@
     </div>
 </div>
 
+<script>
+    var user1 = "";
+    window.userNameHeader;
+    window.userIdHeader;
+    window.isLoggedHeader = false;
+
+
+    window.setLoggedUser = function (userName,userId){
+        console.log("Dentro header");
+        this.userNameHeader = userName;
+        this.userIDHeader = userId;
+        isLogged = true;
+    }
+
+
+
+    window.toStringLogged = function (){
+        console.log("username: " + this.userNameHeader + "userID: " + this.userIdHeader);
+    }
+
+    window.isLogged = function(){
+        return this.isLoggedHeader;
+    }
+
+
+</script>
+
 </body>
 </html>

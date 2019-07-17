@@ -1,3 +1,4 @@
+
 window.onload = _ =>{
     app = new Vue({
         el:"#appGroupPage",
@@ -17,6 +18,14 @@ window.onload = _ =>{
             ,listElement: 0
             ,listUser : []
             ,currentUrl : ""
+        },
+        mounted(){
+            console.log("Utente loggato: " + localStorage.getItem('connectedUserName'));
+            /*if (localStorage.getItem('connectedUserName')) {
+                console.log("in mounted groupPage: " + localStorage.getItem('connectedUserName'));
+            }else{
+                console.log("Non entra nell'if");
+            }*/
         },
 
         created(){
