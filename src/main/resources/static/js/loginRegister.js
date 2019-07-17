@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -47,10 +48,7 @@ window.onload = _ => {
         mounted(){
 
             if (localStorage.getItem('connectedUserName')) {
-                console.log("Utente loggato: " + localStorage.getItem('connectedUserName'));
-            }else{
-                localStorage.setItem('name','Luca');
-                console.log("in mounted: "+ localStorage.getItem('name') );
+                console.log("In home page user loggato: "+ this.userLogged.username);
             }
         },
         created() {
@@ -106,8 +104,16 @@ window.onload = _ => {
         },
 
         methods: {
+            setLoggerUser(resp){
+                this.userLogged.username = resp.userName;
+                this.userLogged.id = resp.userId;
+                this.userLogged.isLogged = true;
+                localStorage.setItem('connectedUserName',resp.userName);
+                localStorage.setItem('connectedUserId',resp.userName);
 
-            customLogin(){
+            }
+
+            ,customLogin(){
                 console.log(this.userInfo.username);
                 console.log(this.userInfo.password);
                 userInfo = new UserRegistration(this.userInfo.username, this.userInfo.password, this.userInfo.password, "asdasd");
@@ -116,14 +122,8 @@ window.onload = _ => {
                     .getUserEndpoint()
                     .login(userInfo)
                     .then(resp => {
-                        this.userLogged.username = resp.userName;
-                        this.userLogged.id = resp.userId;
-                        this.userLogged.isLogged = true;
-                        localStorage.setItem('connectedUserName',resp.userName);
-                        console.log("logged :D");
-                        console.log(resp);
-
-                    }).catch(this.createErrorHandler("register"));
+                    this.setLoggerUser(resp);
+            }).catch(this.createErrorHandler("register"));
 
 
 
@@ -157,17 +157,17 @@ window.onload = _ => {
                     .getUserEndpoint()
                     .register(userInfo)
                     .then(resp => {
-                        console.log("registered :D");
-                        console.log(resp);
-                        if(resp){
-                            thisVue.messages.setSuccessMessage("registration successful");
-                            thisVue.messages.clearMessagesAfter(3000);
-                        } else {
-                            thisVue.messages.setErrorMessage("username yet present");
-                            thisVue.messages.clearMessagesAfter(5000);
-                        }
-                    })
-                    .catch(this.createErrorHandler("register"));
+                    console.log("registered :D");
+                console.log(resp);
+                if(resp){
+                    thisVue.messages.setSuccessMessage("registration successful");
+                    thisVue.messages.clearMessagesAfter(3000);
+                } else {
+                    thisVue.messages.setErrorMessage("username yet present");
+                    thisVue.messages.clearMessagesAfter(5000);
+                }
+            })
+            .catch(this.createErrorHandler("register"));
             }
 
             // group
@@ -178,8 +178,8 @@ window.onload = _ => {
                     .getGroupEndpoint()
                     .listAllGroupsSimple()
                     .then(resp => {
-                        if(resp.length == 0){
-                            resp = /*JSON.parse(//"[{\"groupId\":2,\"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1},{\"groupId\":10,\"creator\":\"lonevetad\",\"groupName\":\"Cucina itinerante\",\"groupDate\":\"0019-12-10\",\"description\":\"CIBOOOOOOOOOOOOOOOOOOOOOOOO\",\"location\":9},{\"groupId\":16,\"creator\":\"calo\",\"groupName\":\"Front-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo alle pagine html\",\"location\":15},{\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}]")
+                    if(resp.length == 0){
+                    resp = /*JSON.parse(//"[{\"groupId\":2,\"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1},{\"groupId\":10,\"creator\":\"lonevetad\",\"groupName\":\"Cucina itinerante\",\"groupDate\":\"0019-12-10\",\"description\":\"CIBOOOOOOOOOOOOOOOOOOOOOOOO\",\"location\":9},{\"groupId\":16,\"creator\":\"calo\",\"groupName\":\"Front-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo alle pagine html\",\"location\":15},{\"groupId\":22,\"creator\":\"calo\",\"groupName\":\"Beviamoci su\",\"groupDate\":\"0019-12-10\",\"description\":\"Birra in compagnia\",\"location\":21}]")
                                 "[" +
                                     "[" +
                                     " {\"groupId\":2 ,\"creator\":\"lonevetad\",\"groupName\":\"Ciao\",\"groupDate\":\"0017-12-10\",\"description\":\"tanti saluti\",\"location\":1}" +
@@ -190,55 +190,55 @@ window.onload = _ => {
                                     ", {\"groupId\":23,\"creator\":\"luca\",\"groupName\":\"Back-end TAASS\",\"groupDate\":\"0020-12-09\",\"description\":\"Lavoriamo al back\",\"location\":22}" +
                                     "]" +
                                     "]")*/
-                                [ //
-                                    //[
-                                        {
-                                            "groupId":2 ,
-                                            "creator":"lonevetad",
-                                            "groupName":"Ciao",
-                                            "groupDate":"0017-12-10",
-                                            "description":"tanti saluti",
-                                            "location":1
-                                        }, {
-                                            "groupId":10,
-                                            "creator":"lonevetad",
-                                            "groupName":"Cucina itinerante",
-                                            "groupDate":"0019-12-10",
-                                            "description":"CIBOOOOOOOOOOOOOOOOOOOOOOOO",
-                                            "location":9
-                                        }, {
-                                            "groupId":16,
-                                            "creator":"calo",
-                                            "groupName":"Front-end TAASS",
-                                            "groupDate":"0020-12-09",
-                                            "description":"Lavoriamo alle pagine html",
-                                            "location":15
-                                        }
-                                    ,//], [
-
-                                        {
-                                            "groupId":22,
-                                            "creator":"calo",
-                                            "groupName":"Beviamoci su",
-                                            "groupDate":"0019-12-10",
-                                            "description":"Birra in compagnia",
-                                            "location":21
-                                        }, {
-                                            "groupId":23,
-                                            "creator":"luca",
-                                            "groupName":"Back-end TAASS",
-                                            "groupDate":"0020-12-09",
-                                            "description":"Lavoriamo al back",
-                                            "location":22
-                                        }
-                                    //]
-                                ];
-
+                        [ //
+                            //[
+                            {
+                                "groupId":2 ,
+                                "creator":"lonevetad",
+                                "groupName":"Ciao",
+                                "groupDate":"0017-12-10",
+                                "description":"tanti saluti",
+                                "location":1
+                            }, {
+                            "groupId":10,
+                            "creator":"lonevetad",
+                            "groupName":"Cucina itinerante",
+                            "groupDate":"0019-12-10",
+                            "description":"CIBOOOOOOOOOOOOOOOOOOOOOOOO",
+                            "location":9
+                        }, {
+                            "groupId":16,
+                            "creator":"calo",
+                            "groupName":"Front-end TAASS",
+                            "groupDate":"0020-12-09",
+                            "description":"Lavoriamo alle pagine html",
+                            "location":15
                         }
-                        console.log("resp is:\n" + JSON.stringify(resp));
-                        thisVue.groupsCarousel = resp; //thisVue.groupToGroupsCarousel(resp);
-                    })
-                    .catch(this.createErrorHandler("fetchGroupSimple"))
+                            ,//], [
+
+                            {
+                                "groupId":22,
+                                "creator":"calo",
+                                "groupName":"Beviamoci su",
+                                "groupDate":"0019-12-10",
+                                "description":"Birra in compagnia",
+                                "location":21
+                            }, {
+                            "groupId":23,
+                            "creator":"luca",
+                            "groupName":"Back-end TAASS",
+                            "groupDate":"0020-12-09",
+                            "description":"Lavoriamo al back",
+                            "location":22
+                        }
+                            //]
+                        ];
+
+                }
+                console.log("resp is:\n" + JSON.stringify(resp));
+                thisVue.groupsCarousel = resp; //thisVue.groupToGroupsCarousel(resp);
+            })
+            .catch(this.createErrorHandler("fetchGroupSimple"))
             }
         }
     });

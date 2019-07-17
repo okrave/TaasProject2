@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:https="http://www.w3.org/1999/xhtml"
       xmlns:v-bind="http://www.w3.org/1999/xhtml">
@@ -11,10 +12,11 @@
 
 </head>
 <body>
-<th:block th:replace="fragments/navbar :: navbar" />
 
-<div id="appGroupPage" class="container">
-    <div>
+
+<div id="appGroupPage">
+    <th:block th:replace="fragments/navbar :: navbar" />
+    <div class="container">
         <div class = "flex-container">
             <div class="groupHomeHeader-banner">
                 <img src="https://source.unsplash.com/category/nature/400x260" alt="">

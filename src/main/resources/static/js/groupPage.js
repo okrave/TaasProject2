@@ -1,4 +1,3 @@
-
 window.onload = _ =>{
 
     $(document).ready(function(){
@@ -30,14 +29,20 @@ window.onload = _ =>{
             ,listElement: 0
             ,listUser : []
             ,currentUrl : ""
+            ,userLogged:{
+                isLogged: false,
+                username: "",
+                id: 0
+            }
         },
         mounted(){
-            console.log("Utente loggato: " + localStorage.getItem('connectedUserName'));
-            /*if (localStorage.getItem('connectedUserName')) {
-                console.log("in mounted groupPage: " + localStorage.getItem('connectedUserName'));
-            }else{
-                console.log("Non entra nell'if");
-            }*/
+
+            if (localStorage.getItem('connectedUserName')) {
+                this.userLogged.isLogged = true;
+                this.userLogged.username = localStorage.getItem('connectedUserName');
+                this.userLogged.id = localStorage.getItem('connectedUserId');
+                console.log("In group page user loggato: "+ this.userLogged.username);
+            }
         },
 
         created(){
@@ -56,13 +61,13 @@ window.onload = _ =>{
                     .getGroupEndpoint()
                     .addGroupMember(groupMember)
                     .then(resp => {
-                        console.log("paginaGruppo:D");
-                        console.log(JSON.stringify(resp));
-                        console.log(resp.members);
-                        this.loadGroup();
-                        //this.groupInfo.members = resp.members;
+                    console.log("paginaGruppo:D");
+                console.log(JSON.stringify(resp));
+                console.log(resp.members);
+                this.loadGroup();
+                //this.groupInfo.members = resp.members;
 
-                    })
+            })
 
             }
 
@@ -85,8 +90,8 @@ window.onload = _ =>{
                     .getAllUsers()
                     .then(resp => {
                     console.log("tuttiGliUtenti:D");
-                    console.log(JSON.stringify(resp));
-                    this.listUser = resp;
+                console.log(JSON.stringify(resp));
+                this.listUser = resp;
 
             })
             }
@@ -99,18 +104,18 @@ window.onload = _ =>{
                     .getGroupEndpoint()
                     .getGroupInfo(groupId)
                     .then(resp => {
-                        console.log("paginaGruppo:D");
-                        console.log(JSON.stringify(resp));
-                        this.groupInfo.creator = resp.creator;
-                        this.groupInfo.groupName = resp.groupName;
-                        this.groupInfo.data = resp.groupDate;
-                        this.groupInfo.description = resp.description;
-                        this.groupInfo.groupId = resp.groupId;
-                        this.groupInfo.locationId = resp.location;
-                        this.groupInfo.members = resp.members;
-                        this.groupInfo.tags = resp.tags;
-                        this.toGroupAPI.isLoaded = true;
-                    })
+                    console.log("paginaGruppo:D");
+                console.log(JSON.stringify(resp));
+                this.groupInfo.creator = resp.creator;
+                this.groupInfo.groupName = resp.groupName;
+                this.groupInfo.data = resp.groupDate;
+                this.groupInfo.description = resp.description;
+                this.groupInfo.groupId = resp.groupId;
+                this.groupInfo.locationId = resp.location;
+                this.groupInfo.members = resp.members;
+                this.groupInfo.tags = resp.tags;
+                this.toGroupAPI.isLoaded = true;
+            })
 
             .catch(this.createErrorHandler("register"));
 

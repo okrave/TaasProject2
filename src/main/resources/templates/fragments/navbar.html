@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.w3.org/1999/xhtml">
@@ -10,145 +12,54 @@
 
 <body>
 <div id = "appNav">
-<th:block th:fragment="navbar">
-    <nav class="navbar navbar-inverse ">
-        <div class="container" >
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" th:href="@{/}" >ToGroup</a>
-            </div>
+    <th:block th:fragment="navbar">
+        <nav class="navbar navbar-inverse ">
+            <div class="container" >
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" th:href="@{/}" >ToGroup</a>
+                </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                <ul class="nav navbar-nav navbar-right">
-                    <form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                            <button type="submit" id="button__search" class="btn "><i class="fas fa-search"></i></button>
-                        </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <form class="navbar-form navbar-left">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search">
+                                <button type="submit" id="button__search" class="btn "><i class="fas fa-search"></i></button>
+                            </div>
 
-                    </form>
-                    <li><a class="creaNuovoGruppo"th:href="@{/newGroup}">Crea un nuovo gruppo</a></li>
-                    <li><a th:if="${#request.userPrincipal == null}"type="button"  data-toggle="modal" data-target="#registerModal" style="cursor: pointer;">Registrati</a></li>
-                    <li><a th:if="${#request.userPrincipal == null}"type="button"  data-toggle="modal" data-target="#loginModal" style="cursor: pointer;">Accedi</a></li>
-                    <li><a th:if="${#request.userPrincipal != null}" >Esplora</a></li>
+                        </form>
+                        <li><a class="creaNuovoGruppo"th:href="@{/newGroup}">Crea un nuovo gruppo</a></li>
+                        <li><a v-if = "userLogged.isLogged == false" type="button"  data-toggle="modal" data-target="#registerModal" style="cursor: pointer;">Registrati</a></li>
+                        <li><a v-if = "userLogged.isLogged == false" type="button"  data-toggle="modal" data-target="#loginModal" style="cursor: pointer;">Accedi</a></li>
+                        <li><a v-if = "userLogged.isLogged == true" >Esplora</a></li>
 
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="https://source.unsplash.com/random/20x20" class="profile-image img-circle"> Username <b class="caret"></b></a>
-                        <ul class="dropdown-menu dropdown-navbar">
-                            <li><a  th:href="@{/userPage/74}"><i class="fa fa-user"></i> &nbsp  Profilo</a></li>
-                            <li><a ><i class="fa fa-cog"></i> &nbsp Impostazioni</a></li>
-                            <li class="divider"></li>
-                            <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+                        <li class="dropdown" v-if = "userLogged.isLogged == true">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="https://source.unsplash.com/random/20x20" class="profile-image img-circle"> Username <b class="caret"></b></a>
+                            <ul class="dropdown-menu dropdown-navbar">
+                                <li><a  th:href="@{/userPage/74}"><i class="fa fa-user"></i> &nbsp  Profilo</a></li>
+                                <li><a ><i class="fa fa-cog"></i> &nbsp Impostazioni</a></li>
+                                <li class="divider"></li>
+                                <li><a th:href="@{/logout}" onclick = "logoutCustom()"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
 
-                        </ul>
-                    </li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
         </nav>
-        <div id="loginModal" class="modal animated bounceInUp">
-            <div class="modal-dialog" id="modal-login">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title scritta-accedi">Accedi</h4>
-                    </div>
-
-                    <div class="modal-body" >
-
-                        <!--
-                        <th:block th:insert="fragments/header.html :: notificationMessages" />
-                        -->
-
-                        <input type="text" id="username" name="username" class="form-control login-input " placeholder= "Username"
-                               v-model="userInfo.username"
-                        />
-                        <br />
-                        <input type="password" id="password" name="password" class="form-control control login-input " placeholder="Password"
-                               v-model="userInfo.password"
-                        />
-                        <br />
-                        <button type="submit" name="submit" value="submit" class="btn-l" @click="customLogin()">Login</button>
-                        <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" role="button" > Registrati qui </a></h5>
 
 
-
-                    </div>
-
-                    <form  role="form" method="POST" th:action="@{/j_spring_security_check}">
-                        <div class="modal-footer">
-                            <h4 style="text-align: center;">Or</h4>
-                            <div class="col-sm-6">
-                                <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-        <!-- Modal Registrazione-->
-
-        <div th:action="@{/registration}" id="registerModal" class="modal  animated bounceInUp" role="form" method="POST" >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title scritta-accedi">Registrati</h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <th:block th:insert="fragments/header.html :: notificationMessages" />
-                        <!--
-                       <input type="text" class="form-control registration-input-input " id="errorMessageSection" v-if="messages.errorMessage != null" v-model="messages.errorMessage" >
-                       <input type="text" class="form-control registration-input-input " id="infoMessageSection" v-if="messages.infoMessage != null" v-model="messages.infoMessage" >
-                       <input type="text" class="form-control registration-input-input " id="successMessageSection" v-if="messages.successMessage != null" v-model="messages.successMessage" >
-                       -->
-
-
-                        <input type="text" name="username"   class="form-control registration-input " placeholder= "Username" required
-                               v-model="userInfo.username"
-                        />
-                        <br />
-
-                        <input type="email" name="email" class="form-control control registration-input " placeholder="Email" required
-                               v-model="userInfo.email"
-                        />
-                        <br />
-                        <input type="password" name="password"  class="form-control control registration-input " placeholder="Password" required
-                               v-model="userInfo.password"
-                        />
-                        <br />
-                        <input type="password" name="repeatPassword"  id="repeatPassword" class="form-control control registration-input " placeholder="Reinserisci la password" required
-                               v-model="userInfo.passwordConfirmation"
-                        />
-                        <br />
-                        <div class="div_button">
-                            <button type="button" name="login_button" id="login_button" class="btn-l" @click="register()">Registrati</button>
-                        </div>
-                        <div class="link_registrazione">
-
-                            <h5 >Hai già un account ? <a  id="linkToLogin" role="button" > Accedi </a></h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-</th:block>
+    </th:block>
 </div>
 
 

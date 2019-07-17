@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
@@ -14,50 +16,7 @@
 
 <body>
 <div id="appLoginRegister">
-<nav class="navbar navbar-inverse ">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" th:href="@{/}" >ToGroup</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-            <ul class="nav navbar-nav navbar-right">
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                        <button type="submit" id="button__search" class="btn "><i class="fas fa-search"></i></button>
-                    </div>
-
-                </form>
-                <li><a class="creaNuovoGruppo"th:href="@{/newGroup}">Crea un nuovo gruppo</a></li>
-                <li><a v-if = "userLogged.isLogged == false" type="button"  data-toggle="modal" data-target="#registerModal" style="cursor: pointer;">Registrati</a></li>
-                <li><a v-if = "userLogged.isLogged == false" type="button"  data-toggle="modal" data-target="#loginModal" style="cursor: pointer;">Accedi</a></li>
-                <li><a th:href="@{/esplora}">Esplora</a></li>
-
-                <li class="dropdown">
-                    <a  v-if = "userLogged.isLogged == true"  class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="https://source.unsplash.com/random/20x20" class="profile-image img-circle"> {{userLogged.username}} <b class="caret"></b></a>
-                    <ul class="dropdown-menu dropdown-navbar">
-                        <li><a v-bind:href="'/userPage/'+userLogged.id"><i class="fa fa-user"></i> &nbsp  Profilo</a></li>
-                        <li><a href="#"><i class="fa fa-cog"></i> &nbsp Impostazioni</a></li>
-                        <li class="divider"></li>
-                        <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
-
-                    </ul>
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+    <th:block th:replace="fragments/navbar :: navbar" />
 
 
     <!----------------------------------------------
@@ -148,7 +107,7 @@
                         <p>{{group.description}}</p>
 
 
-                        
+
                     </div>
                     <div class="card__footer" >
                         <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
@@ -255,13 +214,13 @@
 
 
     <div class="Wrapper">
-               <div class="unauthenticated">
-                 <a class="btn" href="/login">Login</a>
-               </div>
-               <div class="authenticated" style="display: none">
-                 Logged in as: <span id="user"></span>
-                 <div><button onClick="logout()" class="btn">Logout</button></div>
-               </div>
+        <div class="unauthenticated">
+            <a class="btn" href="/login">Login</a>
+        </div>
+        <div class="authenticated" style="display: none">
+            Logged in as: <span id="user"></span>
+            <div><button onClick="logout()" class="btn">Logout</button></div>
+        </div>
     </div>
 
 
@@ -270,47 +229,47 @@
         Launch demo modal
     </button>
     <div id="loginModal" class="modal animated bounceInUp">
-            <div class="modal-dialog" id="modal-login">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title scritta-accedi">Accedi</h4>
-                    </div>
-
-                        <div class="modal-body" >
-
-                            <!--
-                            <th:block th:insert="fragments/header.html :: notificationMessages" />
-                            -->
-
-                            <input type="text" id="username" name="username" class="form-control login-input " placeholder= "Username"
-                                   v-model="userInfo.username"
-                            />
-                            <br />
-                            <input type="password" id="password" name="password" class="form-control control login-input " placeholder="Password"
-                                   v-model="userInfo.password"
-                            />
-                            <br />
-                            <button type="submit" name="submit" value="submit" class="btn-l" @click="customLogin()">Login</button>
-                            <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" href="#" role="button" > Registrati qui </a></h5>
-
-
-
-                        </div>
-
-                    <form  role="form" method="POST" th:action="@{/j_spring_security_check}">
-                        <div class="modal-footer">
-                            <h4 style="text-align: center;">Or</h4>
-                            <div class="col-sm-6">
-                                <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
-                            </div>
-                        </div>
-                    </form>
+        <div class="modal-dialog" id="modal-login">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title scritta-accedi">Accedi</h4>
                 </div>
+
+                <div class="modal-body" >
+
+                    <!--
+                    <th:block th:insert="fragments/header.html :: notificationMessages" />
+                    -->
+
+                    <input type="text" id="username" name="username" class="form-control login-input " placeholder= "Username"
+                           v-model="userInfo.username"
+                    />
+                    <br />
+                    <input type="password" id="password" name="password" class="form-control control login-input " placeholder="Password"
+                           v-model="userInfo.password"
+                    />
+                    <br />
+                    <button type="submit" name="submit" value="submit" class="btn-l" @click="customLogin()">Login</button>
+                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" href="#" role="button" > Registrati qui </a></h5>
+
+
+
+                </div>
+
+                <form  role="form" method="POST" th:action="@{/j_spring_security_check}">
+                    <div class="modal-footer">
+                        <h4 style="text-align: center;">Or</h4>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
+                        </div>
+                    </div>
+                </form>
             </div>
+        </div>
 
     </div>
     <!-- Modal Registrazione-->
@@ -373,10 +332,10 @@
 <script>
 
     if (window.location.hash == '#_=_'){
-          history.replaceState
-              ? history.replaceState(null, null, window.location.href.split('#')[0])
-              : window.location.hash = '';
-      }
+        history.replaceState
+            ? history.replaceState(null, null, window.location.href.split('#')[0])
+            : window.location.hash = '';
+    }
 
     $.get("/user", function(data) {
         if(data != undefined && data != null && data.userAuthentication != undefined && data.userAuthentication != null){
@@ -385,16 +344,16 @@
         $(".unauthenticated").hide();
         $(".authenticated").show();
 
-      });
+    });
 
     var logout = function() {
         $.post("/logout", function() {
-          $("#user").html('');
-          $(".unauthenticated").show();
-          $(".authenticated").hide();
+            $("#user").html('');
+            $(".unauthenticated").show();
+            $(".authenticated").hide();
         });
         return true;
-      }
+    }
 </script>
 
 
