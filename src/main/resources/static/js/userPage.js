@@ -27,9 +27,22 @@ window.onload = _ => {
             imgChange : false,
             descriptionButton : "Cambia",
             descriptionRead: false
+            ,userLogged:{
+                isLogged: false,
+                username: "",
+                id: 0
+            }
 
 
 
+        },
+        mounted(){
+            if (localStorage.getItem('connectedUserName')) {
+                this.userLogged.isLogged = true;
+                this.userLogged.username = localStorage.getItem('connectedUserName');
+                this.userLogged.id = localStorage.getItem('connectedUserId');
+                console.log("In group page user loggato: "+ this.userLogged.username);
+            }
         },
 
         created(){

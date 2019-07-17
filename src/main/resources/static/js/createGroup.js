@@ -78,10 +78,20 @@ function initAll() {
                 defaultBounds : null,
                 optionsAutocomplete: null,
                 autocomplete: null
+                ,userLogged:{
+                    isLogged: false,
+                    username: "",
+                    id: 0
+                }
             }
         },
         mounted(){
-            //this.setUpGoogleMapsStuffs();
+            if (localStorage.getItem('connectedUserName')) {
+                this.userLogged.isLogged = true;
+                this.userLogged.username = localStorage.getItem('connectedUserName');
+                this.userLogged.id = localStorage.getItem('connectedUserId');
+                console.log("In group page user loggato: "+ this.userLogged.username);
+            }
         },
         created() {
             let thisVue = this;
