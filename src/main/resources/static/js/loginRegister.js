@@ -6,26 +6,7 @@
 
 let app;
 
-function removeAllModalBackdrop() {
-    document.querySelectorAll(".modal-backdrop").forEach(e => {
-        e.remove();
-        e.parentNode.removeChild(e);
-    })
-}
 
-function switchFromRegistModalToLogin(){
-    $('#registerModal').modal('hide');
-    removeAllModalBackdrop();
-    $('#loginModal').modal('show');
-    return false;
-}
-
-function switchFromLoginModalToRegistration(){
-    $('#loginModal').modal('hide');
-    removeAllModalBackdrop();
-    $('#registerModal').modal('show');
-    return false;
-}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -147,9 +128,7 @@ window.onload = _ => {
 
 
             }
-            ,facebookLogin(){
-                console.log(this.userInfo.username);
-            }
+
             ,createErrorHandler(methodName){
                 let thisVue = this;
                 return function (err) {
@@ -162,19 +141,12 @@ window.onload = _ => {
                 }
             }
 
-            ,loadGroupPage(groupId){
-                console.log(groupId);
-            }
 
             , ping(){
                 this.toGroupAPI.ping().then( resp => console.log("pinged :D " + resp) );
             }
 
-            , login(){
-                console.log("Loggin: " + this.userInfo);
-                //this.toGroupAPI
-                //    .getUserEndpoint()
-            }
+
 
             , register(){
 
