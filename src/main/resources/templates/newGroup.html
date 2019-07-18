@@ -179,8 +179,8 @@
 
                 <div v-if="creationProgression.actualStep < 3" class ="buttonAvanti">
                     <ul class="pager">
-                        <li v-if="creationProgression.actualStep > 0"><a @click="toPreviousStep()">Prev</a></li>
-                        <li><a @click="toNextStep()">Next</a></li>
+                        <li v-if="creationProgression.actualStep > 0" ><a onclick="toPreviousStep()">Prev</a></li>
+                        <li><a onclick="toNextStep()" >Next</a></li>
                     </ul>
                 </div>
 
@@ -220,6 +220,34 @@
     var service;
     var infowindow;
     var myLocation = 'Torino';
+
+    var actualStep = 0;
+
+    function toPreviousStep(){
+        app.toPreviousStep();
+        actualStep += 1;
+        checkActualStep()
+
+
+    }
+
+    function toNextStep(){
+        app.toNextStep();
+        actualStep -=1;
+        checkActualStep()
+    }
+
+
+
+    function checkActualStep(){
+        console.log("Entrato checkActual");
+        if(actualStep == 0){
+            document.getElementById('map').style.visibility = 'visible';
+        }else{
+            document.getElementById('map').style.visibility = 'hidden';
+
+        }
+    }
 
     function changeLocation(){
         myLocation = document.getElementById("locationQuery").value;
