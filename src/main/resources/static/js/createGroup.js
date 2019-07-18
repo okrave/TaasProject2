@@ -118,7 +118,7 @@ function initAll() {
         methods: {
 
             removeLoader(){
-                document.getElementById('loader').style.visibility = 'hidden';
+                document.getElementById('loaderCustom').style.visibility = 'hidden';
                 document.getElementById('appNewGroup').style.visibility = 'visible';
                 document.getElementById('map').style.visibility = 'visible';
             },
