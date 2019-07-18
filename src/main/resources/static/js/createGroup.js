@@ -97,9 +97,9 @@ function initAll() {
             let thisVue = this;
             this.ping();
             setTimeout( ()=>{thisVue.fetchYetExistingTags();}, 1000);
-
             // TODO: ottenere il nome (e/o ID?) dell'utente: questa operazione dovrebbe richiedere l'essere loggati
             this.newGroupInfo.creator = "lonevetad";
+            this.removeLoader();
         },
         computed: {
             isDisabled:function(){
@@ -116,6 +116,12 @@ function initAll() {
           }
         },
         methods: {
+
+            removeLoader(){
+                document.getElementById('loader').style.visibility = 'hidden';
+                document.getElementById('appNewGroup').style.visibility = 'visible';
+                document.getElementById('map').style.visibility = 'visible';
+            },
 
             setLocation(location){
                 console.log("dentro SetLocation");
