@@ -46,8 +46,10 @@ window.onload = _ => {
         },
 
         mounted(){
-
             if (localStorage.getItem('connectedUserName')) {
+                this.userLogged.isLogged = true;
+                this.userLogged.username = localStorage.getItem('connectedUserName');
+                //this.userLogged.id = localStorage.getItem('connectedUserId');
                 console.log("In home page user loggato: "+ this.userLogged.username);
             }
         },
@@ -57,6 +59,8 @@ window.onload = _ => {
             user1 = "luca";
             window.userNameHeader = "Luca";
             console.log("window.userName: " + window.userNameHeader);
+            //this.getFacebookUserInfo();
+            this.removeLoader();
         },
 
         computed: {
@@ -104,12 +108,37 @@ window.onload = _ => {
         },
 
         methods: {
+            getFacebookUserInfo(){
+                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                this.toGroupAPI
+                    .getUserEndpoint()
+                    .getFacebookUserInfo()
+                    .then(resp => {
+                        console.log("dentro getFacebookUserInfo");
+                        console.log(resp.userAuthentication.details.name);
+                        this.setLoggedUsername(resp.userAuthentication.details.name);
+            }).catch(this.createErrorHandler("getFacebookUserInfo"));
+
+            },
+            removeLoader(){
+                document.getElementById('loaderCustom').style.visibility = 'hidden';
+                document.getElementById('appLoginRegister').style.visibility = 'visible';
+
+            },
             setLoggerUser(resp){
                 this.userLogged.username = resp.userName;
                 this.userLogged.id = resp.userId;
                 this.userLogged.isLogged = true;
                 localStorage.setItem('connectedUserName',resp.userName);
                 localStorage.setItem('connectedUserId',resp.userName);
+
+            },
+
+            setLoggedUsername(username){
+                console.log("Dentro setLogged: "+ username);
+                this.userLogged.username = username;
+                this.userLogged.isLogged = true;
+                localStorage.setItem('connectedUserName',username);
 
             }
 
@@ -242,4 +271,30 @@ window.onload = _ => {
             }
         }
     });
+
+    function setLoggedUsername(){
+        app.getFacebookUserInfo();
+    }
+
+    var myusername = ""
+    $.get("/user", function(data) {
+        if(data != undefined && data != null && data.userAuthentication != undefined && data.userAuthentication != null){
+            myusername = data.userAuthentication.details.name;
+            app.setLoggedUsername(myusername);
+            $("#user").html(myusername);
+        }
+        $(".unauthenticated").hide();
+        $(".authenticated").show();
+    });
+
+
+
+    var logout = function() {
+        $.post("/logout", function() {
+            $("#user").html('');
+            $(".unauthenticated").show();
+            $(".authenticated").hide();
+        });
+        return true;
+    }
 };

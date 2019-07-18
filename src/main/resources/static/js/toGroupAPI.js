@@ -88,6 +88,25 @@ class UserAPI {
 		//this.alternativeURL = `https://blabla qualcos'altro.com`;
 	}
 
+	getFacebookUserInfo(){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/facebookUser/`, {
+			method: "GET"
+			})
+			.then(response => response.json())
+			.then(response => {
+				console.log("asdasdads");
+				console.log(JSON.stringify(response));
+				if (checkResponseHoldsErrors(response)) {
+					reject(response);
+				}
+				console.log("entra in resolve");
+				resolve(response);
+			}).catch(reject);
+
+		});
+
+	}
 	getUserInfo2(userID) {
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/info/` + userID, {

@@ -6,6 +6,9 @@
 
 .Foto>img{margin: 1px}
 
+#appGroupPage{
+    visibility: hidden;
+}
 .groupHomeHeader-info{
     margin-top: 10%;
     margin-bottom: 5%;

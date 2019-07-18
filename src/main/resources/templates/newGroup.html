@@ -19,13 +19,14 @@
     <link href="https://fonts.googleapis.com/css?family=Fjalla+One&display=swap" rel="stylesheet">
 </head>
 <body>
-<th:block th:replace="fragments/navbar :: navbar" />
 
     <div id="loaderCustom">
 
     </div>
 
     <div id="appNewGroup">
+
+        <th:block th:replace="fragments/navbar :: navbar" />
 
         <th:block th:insert="fragments/header.html :: notificationMessages"/>
 

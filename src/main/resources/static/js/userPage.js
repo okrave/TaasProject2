@@ -49,9 +49,14 @@ window.onload = _ => {
             var currentUrl = window.location.pathname;
             this.ping();
             this.loadUser(currentUrl);
+            this.removeLoader();
         },
 
         methods:{
+            removeLoader(){
+                document.getElementById('loaderCustom').style.visibility = 'hidden';
+                document.getElementById('appUserPage').style.visibility = 'visible';
+            },
 
             changeUserDescription(){
                 if(this.descriptionRead == true) {

@@ -1,5 +1,8 @@
 html,body{height: 100%;background-color: white;}
 
+#appLoginRegister{
+    visibility: hidden;
+}
 
 .dropdown-menu{
     min-width: 132px;

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 
 import static com.example.togroup5.demo.utils.EncryptedPasswordUtils.encryptePassword;
@@ -73,6 +74,10 @@ public class RestHomeController{
     }
 
 
+    @RequestMapping("/User/facebookUser")
+    public Principal user (Principal principal) {
+        return principal;
+    }
 
     @GetMapping(value = "/User/login")
     public UserIDName logIn(@RequestParam String email, @RequestParam String password){

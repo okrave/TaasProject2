@@ -18,6 +18,9 @@
 .user__body__description{padding: 20%;padding-top: 20px;padding-bottom: 20px;}
 .user__body__description>p{padding: 2%;}
 
+#appUserPage{
+    visibility: hidden;
+}
 .descriptionInput{
     padding: 2%;
     width: 100%;

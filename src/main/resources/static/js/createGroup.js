@@ -67,6 +67,11 @@ function initAll() {
             , deactiveClass: 'btn deactiveButton'
             , googleMaps: false
             , selectedTag: []
+            ,userLogged:{
+                isLogged: false,
+                username: "",
+                id: 0
+            }
 
             //google maps
             , gMapData: {
@@ -78,11 +83,7 @@ function initAll() {
                 defaultBounds : null,
                 optionsAutocomplete: null,
                 autocomplete: null
-                ,userLogged:{
-                    isLogged: false,
-                    username: "",
-                    id: 0
-                }
+
             }
         },
         mounted(){

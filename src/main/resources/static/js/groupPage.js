@@ -50,10 +50,17 @@ window.onload = _ =>{
             this.loadGroup();
             this.ping();
             this.getAllUser();
+            this.removeLoader();
+
         },
 
         methods:{
 
+            removeLoader(){
+                document.getElementById('loaderCustom').style.visibility = 'hidden';
+                document.getElementById('appGroupPage').style.visibility = 'visible';
+
+            },
             addGroupMember(userId,userName){
                 console.log(userId,userName,this.groupInfo.groupId)
                 groupMember = new MemberGroupPayload(userId,userName,this.groupInfo.groupId);

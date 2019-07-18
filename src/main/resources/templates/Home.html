@@ -15,6 +15,8 @@
 </head>
 
 <body>
+
+<div id="loaderCustom"></div>
 <div id="appLoginRegister">
     <th:block th:replace="fragments/navbar :: navbar" />
 
@@ -337,23 +339,6 @@
             : window.location.hash = '';
     }
 
-    $.get("/user", function(data) {
-        if(data != undefined && data != null && data.userAuthentication != undefined && data.userAuthentication != null){
-            $("#user").html(data.userAuthentication.details.name);
-        }
-        $(".unauthenticated").hide();
-        $(".authenticated").show();
-
-    });
-
-    var logout = function() {
-        $.post("/logout", function() {
-            $("#user").html('');
-            $(".unauthenticated").show();
-            $(".authenticated").hide();
-        });
-        return true;
-    }
 </script>
 
 
