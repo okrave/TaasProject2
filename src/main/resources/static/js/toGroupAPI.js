@@ -165,8 +165,8 @@ class UserAPI {
 
 	login(newUserInfo){
 		return new Promise((resolve, reject) => {
-			fetch(this.baseURL + `/customLogin`, {
-				method: "POST",
+			fetch(this.baseURL + `/login`, {
+				method: "PATCH",
 					headers: {
 					'content-type': 'application/json'
 				},
@@ -183,6 +183,8 @@ class UserAPI {
 		});
 
 	}
+
+
 
 	register(newUserInfo){
 		return new Promise((resolve, reject) => {
@@ -240,6 +242,45 @@ class GroupAPI {
 			throw new Error("Cannot get base URL of Group API");
 		this.baseURL = url + '/Group';
 		//this.alternativeURL = `https://blabla qualcos'altro.com`;
+	}
+
+	isMember(groupMember){
+		console.log("Entra in isMember APIgroup");
+		console.log(groupMember);
+
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/isMember`, {
+			method: "PATCH",
+				headers: { 'content-type': 'application/json' },
+			body: JSON.stringify(groupMember)
+		})
+		.then(response => response.json())
+		.then(response => {
+				if (checkResponseHoldsErrors(response)) {
+				reject(response);
+			}
+			resolve(response);
+		}).catch(reject);
+		});
+
+
+	}
+
+	removeGroupMember(groupMember){
+		return new Promise((resolve, reject) => {
+				fetch(this.baseURL + `/removeMember`, {
+				method: "PATCH",
+					headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(groupMember)
+			})
+			.then(response => response.json())
+			.then(response => {
+				if (checkResponseHoldsErrors(response)) {
+					reject(response);
+				}
+				resolve(response);
+			}).catch(reject);
+		});
 	}
 
 	addGroupMember(groupMember){

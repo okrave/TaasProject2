@@ -5,12 +5,14 @@ import com.example.togroup5.demo.entities.newEntities.AppUserRegistration;
 import com.example.togroup5.demo.entities.payloadsResults.UserLoginPayload;
 import com.example.togroup5.demo.entities.payloadsResults.UserIDName;
 import com.example.togroup5.demo.servicies.UserService;
+import com.example.togroup5.demo.utils.EncryptedPasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +24,12 @@ import java.security.Principal;
 import java.util.List;
 
 import static com.example.togroup5.demo.utils.EncryptedPasswordUtils.encryptePassword;
+import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 public class RestHomeController{
+
 
     @Resource(name="authenticationManager")
     private AuthenticationManager authManager;
@@ -68,9 +72,13 @@ public class RestHomeController{
         session.setAttribute("SPRING_SECURITY_CONTEXT", sc);*/
 
         AppUser x = userService.findAppUserByUserName(newUser.getUserName());
+        if(x != null  && newUser.getPassword() == x.getEncrytedPassword()){
+            return x;
 
-        System.out.println("Trovato L'utente: " + x) ;
-        return x;
+        }
+        return null;
+        //System.out.println("Trovato L'utente: " + x) ;
+        //return x;
     }
 
 
@@ -79,15 +87,21 @@ public class RestHomeController{
         return principal;
     }
 
-    @GetMapping(value = "/User/login")
-    public UserIDName logIn(@RequestParam String email, @RequestParam String password){
+    @RequestMapping(value = "/User/login",method = PATCH)
+    public AppUser logIn(//@RequestParam String email, @RequestParam String password OLD VERSION
+                     @RequestBody UserLoginPayload logInInfo
+        ){
+
         AppUser user;
         UserLoginPayload userPayload;
-        userPayload = new UserLoginPayload(email, password);
-        user = userService.findByEmailPassword(userPayload);
+        //userPayload = new UserLoginPayload(email, password);
+
+        System.out.println(logInInfo);
+        user = userService.findByEmailOrUsernameAndPassword(logInInfo);
+        System.out.println("Dentro login controller: " + user);
         if(user == null )
             return null;
-        return new UserIDName(user.getUserId(), user.getUserName());
+        return user; // new UserIDName(user.getUserId(), user.getUserName());
     }
 
 

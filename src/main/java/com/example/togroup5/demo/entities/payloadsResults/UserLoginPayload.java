@@ -35,6 +35,16 @@ public class UserLoginPayload implements Serializable {
     public void setPassword(String password) { this.password = password; }
 
     public void setAndEncryptPassword(String password) {
+
         this.password = EncryptedPasswordUtils.encryptePassword(password);
+
+    }
+
+    @Override
+    public String toString() {
+        return "UserLoginPayload{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

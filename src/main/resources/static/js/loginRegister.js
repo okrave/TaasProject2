@@ -130,7 +130,7 @@ window.onload = _ => {
                 this.userLogged.id = resp.userId;
                 this.userLogged.isLogged = true;
                 localStorage.setItem('connectedUserName',resp.userName);
-                localStorage.setItem('connectedUserId',resp.userName);
+                localStorage.setItem('connectedUserId',resp.userId);
 
             },
 
@@ -145,11 +145,15 @@ window.onload = _ => {
             ,customLogin(){
                 console.log(this.userInfo.username);
                 console.log(this.userInfo.password);
-                userInfo = new UserRegistration(this.userInfo.username, this.userInfo.password, this.userInfo.password, "asdasd");
+                //userInfo = new UserRegistration(this.userInfo.username, this.userInfo.password, this.userInfo.password, this.userInfo.username);
 
                 this.toGroupAPI
                     .getUserEndpoint()
-                    .login(userInfo)
+                    .login(//userInfo
+                        {
+                            "email": this.userInfo.username,
+                            "password": this.userInfo.password
+                        })
                     .then(resp => {
                     this.setLoggerUser(resp);
             }).catch(this.createErrorHandler("register"));

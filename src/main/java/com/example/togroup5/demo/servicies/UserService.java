@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class UserService {
 
+
     @Autowired
     private AppUserRepository appUserRepository;
 
@@ -59,13 +60,15 @@ public class UserService {
         return appUserRepository.findAll();
     }
 
-    public AppUser findByEmailPassword(UserLoginPayload userEmailPassword){
-        return appUserRepository.findByEmailPassword(userEmailPassword);
-    }
     public AppUser findUserById(Long userId){ return appUserRepository.findAppUserByID(userId);}
 
     public AppUser findByUsernameAndPassword(String userName, String password){
         return appUserRepository.findByUserNameAndPassword(userName,password);
-
+    }
+    public AppUser findByEmailPassword(UserLoginPayload userEmailPassword){
+        return appUserRepository.findByEmailPassword(userEmailPassword);
+    }
+    public AppUser findByEmailOrUsernameAndPassword(UserLoginPayload userEmailPassword){
+        return appUserRepository.findByEmailOrUsernameAndPassword(userEmailPassword);
     }
 }

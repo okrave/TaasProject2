@@ -43,8 +43,11 @@
                 <li id="li2" role="presentation" @click="setListElement(1)"><a >Membri</a></li>
                 <li id="li3" role="presentation" @click="setListElement(2)"><a >Messages <span class="badge">3</span></a></li>
                 <li id="li4" role="presentation" @click="setListElement(3)"><a >Foto <span class="badge">5</span></a></li>
-                <li class = "navbar-right" role="presentation"><button class="btn btn-primary btn-lg" role="button"
-                                                                       @click="addGroupMember(74,'dbuser1')">Unisciti a questo gruppo</button></li>
+                <li class = "navbar-right" role="presentation">
+                    <button class="btn btn-primary btn-lg" role="button" v-if = "isUserMember" @click="removeGroupMember()">Esci dal gruppo</button>
+                    <button class="btn btn-primary btn-lg" role="button" v-else @click="addGroupMember()">Unisciti a questo gruppo </button>
+                </li>
+
 
 
             </ul>
@@ -53,7 +56,7 @@
         <div class="section-list">
             <div class="membersGroup" v-if = "listElement == 1">
                 <h2>Gli utenti che parteciperanno all'evento</h2>
-                <ul v-if = "groupInfo.members.length > 0">
+                <ul class = "ulMember" v-if = "groupInfo.members.length > 0">
                     <li  v-for="user in groupInfo.members">
                         <a v-bind:href="'/userPage/'+user.userId"><img src="https://source.unsplash.com/random/40x40" class="profile-image img-circle"> &nbsp;{{user.userName}}</a>
 

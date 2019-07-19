@@ -14,6 +14,9 @@
     margin-bottom: 5%;
 }
 
+.ulMember{
+    border-radius: inherit;
+}
 .groupHomeHeader-banner{
     margin-right: 3%;
     margin-left: 2%;

@@ -126,7 +126,9 @@ function initAll() {
 
             setLocation(location){
                 console.log("dentro SetLocation");
-                console.log(location);
+                console.log(location.geometry.location.lng());
+                console.log(location.geometry.location.lat());
+                console.log(location.name);
                 this.newGroupInfo.location = location;
             },
 

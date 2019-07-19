@@ -95,6 +95,8 @@ public class RestGroupController {
         return gfd;
     }
 
+
+
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.GET)
     public List<GroupFullDetail> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
         List<AppGroup> groups;
@@ -123,6 +125,7 @@ public class RestGroupController {
 
     @RequestMapping(value = "/removeMember", method = RequestMethod.PATCH)
     public boolean removeUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
+
         UserGroupFound guf;
         guf = fetchGroupUser(userGroupInfo);
         if(guf == null) return false; // error
@@ -130,6 +133,15 @@ public class RestGroupController {
 
         groupService.removeMembershipByGroupUserId(guf.gu.getId());
         return true;
+    }
+
+
+    @RequestMapping(value = "/isMember", method = RequestMethod.PATCH)
+    public boolean isMember(@RequestBody MemberGroupPayload userGroupInfo){
+        System.out.println("Dentro isMember: "+ userGroupInfo);
+        UserGroupFound guf;
+        guf = fetchGroupUser(userGroupInfo);
+        return (guf != null && guf.gu != null);
     }
 
     protected UserGroupFound fetchGroupUser(MemberGroupPayload userGroupInfo){

@@ -105,27 +105,43 @@ public class AppUserRepository {
         //return appUserJpa.findAppUserByUserName()
         try {
             String sql = "Select u from " + AppUser.class.getName() + //
-                   " WHERE u.email = :email AND u.password = :pwd";
+                    " WHERE u.userEmail = :email ";// AND u.password = :pwd";
 
             System.out.println("Query: " + sql);
             Query query = entityManager.createQuery(sql, AppUser.class);
             query.setParameter("email", userEnailPassword.getEmail());
-            query.setParameter("pwd", userEnailPassword.getPassword());
+            //query.setParameter("pwd", userEnailPassword.getPassword());
+            return  (AppUser) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    public AppUser findByEmailOrUsernameAndPassword(UserLoginPayload userEnailPassword){
+        //return appUserJpa.findAppUserByUserName()
+        try {
+            String sql = "Select u from " + AppUser.class.getName() + //
+                    " u WHERE (u.userEmail = :email OR u.userName = :email) ";// AND u.encrytedPassword = :pwd";
+
+            System.out.println("Query: " + sql);
+            Query query = entityManager.createQuery(sql, AppUser.class);
+            query.setParameter("email", userEnailPassword.getEmail());
+            //query.setParameter("pwd", userEnailPassword.getPassword());
             return  (AppUser) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
+
     public AppUser findByUserNameAndPassword(String userName, String password){
         try {
             String sql= "Select u from " + AppUser.class.getName() + //
-                    " WHERE u.userName = :username AND u.encrytedPassword = :pwd";
+                    " u WHERE (u.userName = :username AND ";// u.encrytedPassword = :pwd)";
 
             System.out.println("Query: " + sql);
             Query query = entityManager.createQuery(sql, AppUser.class);
             query.setParameter("username", userName);
-            query.setParameter("pwd", password);
+            //query.setParameter("pwd", password);
             return  (AppUser) query.getSingleResult();
         } catch (NoResultException e) {
             return null;

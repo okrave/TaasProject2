@@ -3,10 +3,13 @@ package com.example.togroup5.demo.controllers;
 import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.entities.newEntities.AppUserRegistration;
 import com.example.togroup5.demo.servicies.UserService;
+import com.example.togroup5.demo.utils.EncryptedPasswordUtils;
 import com.example.togroup5.demo.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -101,6 +104,11 @@ public class HomeController {
         model.addAttribute("title", "Logout");
         return "home";
     }*/
+
+    @GetMapping(value = "/esplora")
+    public String esplora(){
+        return "esplora";
+    }
 
     @GetMapping(value = "/userInfo")
     public String userInfo(Model model, Principal principal) {

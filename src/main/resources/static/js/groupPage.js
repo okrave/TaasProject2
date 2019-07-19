@@ -34,6 +34,7 @@ window.onload = _ =>{
                 username: "",
                 id: 0
             }
+            , isUserMember: false
         },
         mounted(){
 
@@ -43,6 +44,7 @@ window.onload = _ =>{
                 this.userLogged.id = localStorage.getItem('connectedUserId');
                 console.log("In group page user loggato: "+ this.userLogged.username);
             }
+            this.recalculateIsMember();
         },
 
         created(){
@@ -61,17 +63,45 @@ window.onload = _ =>{
                 document.getElementById('appGroupPage').style.visibility = 'visible';
 
             },
-            addGroupMember(userId,userName){
-                console.log(userId,userName,this.groupInfo.groupId)
-                groupMember = new MemberGroupPayload(userId,userName,this.groupInfo.groupId);
+
+            recalculateIsMember(){
+                var thisVue = this;
+                var groupMember = new MemberGroupPayload(this.userLogged.id,this.userLogged.username,this.groupInfo.groupId);
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .isMember(groupMember)
+                    .then(resp => {
+                        console.log("isMember: " + resp);
+                        thisVue.isUserMember = resp;
+                    }).catch(err => {
+                        thisVue.isUserMember = false;
+                    });
+            }
+            ,addGroupMember(){
+
+                groupMember = new MemberGroupPayload(this.userLogged.id,this.userLogged.username,this.groupInfo.groupId);
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .addGroupMember(groupMember)
                     .then(resp => {
-                    console.log("paginaGruppo:D");
-                console.log(JSON.stringify(resp));
-                console.log(resp.members);
-                this.loadGroup();
+                        console.log("paginaGruppo:D");
+                        console.log(JSON.stringify(resp));
+                        this.loadGroup();
+                        //this.groupInfo.members = resp.members;
+
+                    })
+
+            },
+
+            removeGroupMember(){
+                groupMember = new MemberGroupPayload(this.userLogged.id,this.userLogged.username,this.groupInfo.groupId);
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .removeGroupMember(groupMember)
+                    .then(resp => {
+                    console.log("removeGroupMember: ");
+                    console.log(JSON.stringify(resp));
+                    this.loadGroup();
                 //this.groupInfo.members = resp.members;
 
             })
@@ -112,17 +142,19 @@ window.onload = _ =>{
                     .getGroupInfo(groupId)
                     .then(resp => {
                     console.log("paginaGruppo:D");
-                console.log(JSON.stringify(resp));
-                this.groupInfo.creator = resp.creator;
-                this.groupInfo.groupName = resp.groupName;
-                this.groupInfo.data = resp.groupDate;
-                this.groupInfo.description = resp.description;
-                this.groupInfo.groupId = resp.groupId;
-                this.groupInfo.locationId = resp.location;
-                this.groupInfo.members = resp.members;
-                this.groupInfo.tags = resp.tags;
-                this.toGroupAPI.isLoaded = true;
-            })
+                    console.log(JSON.stringify(resp));
+                    this.groupInfo.creator = resp.creator;
+                    this.groupInfo.groupName = resp.groupName;
+                    this.groupInfo.data = resp.groupDate;
+                    this.groupInfo.description = resp.description;
+                    this.groupInfo.groupId = resp.groupId;
+                    this.groupInfo.locationId = resp.location;
+                    this.groupInfo.members = resp.members;
+                    this.groupInfo.tags = resp.tags;
+                    this.toGroupAPI.isLoaded = true;
+
+                    this.recalculateIsMember();
+                })
 
             .catch(this.createErrorHandler("register"));
 
