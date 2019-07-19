@@ -3,6 +3,7 @@ package com.example.togroup5.demo.repositories;
 import com.example.togroup5.demo.entities.AppGroup;
 import com.example.togroup5.demo.entities.AppTag;
 import com.example.togroup5.demo.entities.GroupTag;
+import com.example.togroup5.demo.entities.GroupUser;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -70,6 +71,21 @@ public class AppGroupRepository {
             query.setParameter("groupName", groupName);
 
             return (AppGroup) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public List<AppGroup> listGroupsByUserId(Long userId){
+        try {
+            String sql = "Select g from " + AppGroup.class.getName() //
+                    + " g JOIN " + GroupUser.class.getName() + " gu ON (gu.groupId = g.groupId)" //
+                    + " Where gu.userId = :userId ";
+
+            Query query = entityManager.createQuery(sql, AppGroup.class);
+            query.setParameter("userId", userId);
+
+            return query.getResultList();
         } catch (NoResultException e) {
             return null;
         }

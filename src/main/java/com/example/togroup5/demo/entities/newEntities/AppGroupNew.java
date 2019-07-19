@@ -113,7 +113,7 @@ public class AppGroupNew implements Serializable {
 
     public static class LocationReceived {
         private double lat, lng;
-
+        private String name;
 
         public LocationReceived(){
         }
@@ -127,16 +127,19 @@ public class AppGroupNew implements Serializable {
             this.lng = Double.parseDouble(vals[1].trim());
         }
 
+
         @JsonCreator
         public LocationReceived(
                 @JsonProperty("lat") double lat,
-                @JsonProperty("lng") double lng) {
+                @JsonProperty("lng") double lng,
+                @JsonProperty("name") String name) {
             this.lat = lat;
             this.lng = lng;
+            this.name = name;
         }
 
         public GoogleLocation toGoogleLocation() {
-            return new GoogleLocation(lat, lng);
+            return new GoogleLocation(lat, lng,name);
         }
     }
 }

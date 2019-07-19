@@ -44,7 +44,16 @@ public class GroupUser implements Serializable {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Long userId){
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "GroupUser{" +
+                "id=" + id +
+                ", groupId=" + groupId +
+                ", userId=" + userId +
+                '}';
     }
 }

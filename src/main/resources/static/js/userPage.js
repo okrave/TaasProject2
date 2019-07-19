@@ -31,7 +31,8 @@ window.onload = _ => {
                 isLogged: false,
                 username: "",
                 id: 0
-            }
+            },
+            userGroups : []
 
 
 
@@ -110,7 +111,17 @@ window.onload = _ => {
                         this.userInfo.userId = resp.userId;
                         this.userInfo.userName = resp.userName;
                         this.userInfo.email = resp.email;
+                        this.loadUserGroups();
                     }).catch(this.createErrorHandler("userPage"));
+            }
+            ,loadUserGroups(){
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .loadUserGroups(this.userInfo.userId)
+                    .then(resp => {
+                        this.userGroups = resp;
+                    })
+
             }
 
         }

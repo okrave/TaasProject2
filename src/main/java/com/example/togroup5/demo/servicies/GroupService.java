@@ -68,8 +68,18 @@ public class GroupService {
 
         location = newGroup.getLocation();
         try {
-            locationRepository.save(location);
-            location = locationRepository.findGoogleLocationByLatAndLng(location.getLat(), location.getLng());
+            GoogleLocation locationYetPresent;
+            locationYetPresent = locationRepository.findGoogleLocationByLatAndLng(location.getLat(), location.getLng());
+            if(locationYetPresent == null){
+                System.out.println("location saved: " + location);
+                locationRepository.save(location);
+                location = locationRepository.findGoogleLocationByLatAndLng(location.getLat(), location.getLng());
+            }else {
+                location = locationYetPresent;
+            }
+            newGroup.setLocation(location);
+            // get the id
+             System.out.println("location found again: " + location);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -81,6 +91,10 @@ public class GroupService {
             appGroupRepository.save(g);
             g = appGroupRepository.findDistinctByGroupName(newGroup.getGroupName()); // to load the ID
         }
+
+
+        addMembership(g.getGroupId(),appUserRepository.findAppUserByUserName(g.getCreator()).getUserId());
+
 
         System.out.println(Arrays.toString(newGroup.getTags().toArray()));
         for (String ts : newGroup.getTags()) {
@@ -207,5 +221,10 @@ public class GroupService {
 
     public List<AppGroup> searchGroupAdvanced(GroupSearchAdvPayload groupSearchFilters) {
         return appGroupRepository.advancedSearch(groupSearchFilters);
+    }
+
+
+    public List<AppGroup> listGroupByUserId(Long userId){
+        return appGroupRepository.listGroupsByUserId(userId);
     }
 }

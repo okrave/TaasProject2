@@ -388,6 +388,26 @@ class GroupAPI {
 		});
 	}
 
+	loadUserGroups(userID){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/userGroups/` + userID, {
+			method: "GET"
+		})
+		.then(response => response.json())
+		.then(response => {
+				console.log("asdasdads");
+			console.log(JSON.stringify(response));
+			if (checkResponseHoldsErrors(response)) {
+				reject(response);
+			}
+			console.log("entra in resolve");
+			resolve(response);
+		}).catch(reject);
+
+	});
+
+	}
+
 
 
 	listAllTags() {
@@ -574,6 +594,7 @@ class GroupNew extends GroupBasic{
 		super(creator, groupName, location, tags);
 		this.groupDate = groupDate;
 		this.description = description;
+		this.creatorId = null;
 	}
 }
 
@@ -591,14 +612,11 @@ class GroupSearch extends GroupBasic{
 
 class GroupFullDetail extends GroupNew {
 
-	/*constructor(groupId = null //
-		, creator = "", groupName = "", location = null, tags = null, groupDate = null, description = ""//
-		, locationId = null, members = []) {
-		super.constructor(creator, groupName, location, tags, groupDate, description);
+	constructor(creator = "", groupName = "", location = null, tags = null, groupDate = null, description = ""//
+		, groupId = null, creatorId = null, members = []) {
+		super(creator, groupName, location, tags, groupDate, description);
 		this.groupId = groupId;
-		//super.locationId = locationId;
+		this.creatorId = creatorId;
 		this.members = members;
 	}
-	 */
-
 }

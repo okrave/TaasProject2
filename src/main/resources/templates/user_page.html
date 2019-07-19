@@ -35,7 +35,7 @@
                 <i class="far fa-calendar-alt"></i>{{userInfo.userName}}@gmail.com{{userInfo.userEmail}}
             </div>
             <div class="col-md-3">
-                <i class="fas fa-users"></i>Iscritto a 100 gruppi
+                <i class="fas fa-users"></i>Iscritto a {{userGroups.length}} gruppi
             </div>
             <div class="col-md-3"></div>
         </div>
@@ -59,10 +59,18 @@
     </div>
 
     <hr>
-    <div class="container-fluid user__footer" >
+    <div class="container-fluid user__body__description" >
         <h3> Gruppi in cui sei iscritto </h3>
 
-        Lista gruppi
+
+        <ul v-if = "userGroups.length > 0 ">
+            <li  v-for=" group in userGroups">
+                <a v-bind:href="'/group_page/'+group.groupId"><img src="https://source.unsplash.com/random/40x40" class="profile-image img-circle"> &nbsp;{{group.groupName}}</a>
+
+                <hr>
+            </li>
+
+        </ul>
 
     </div>
 

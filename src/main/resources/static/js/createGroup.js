@@ -91,6 +91,7 @@ function initAll() {
                 this.userLogged.isLogged = true;
                 this.userLogged.username = localStorage.getItem('connectedUserName');
                 this.userLogged.id = localStorage.getItem('connectedUserId');
+                this.newGroupInfo.creator = this.userLogged.username;
                 console.log("In group page user loggato: "+ this.userLogged.username);
             }
         },
@@ -99,7 +100,7 @@ function initAll() {
             this.ping();
             setTimeout( ()=>{thisVue.fetchYetExistingTags();}, 1000);
             // TODO: ottenere il nome (e/o ID?) dell'utente: questa operazione dovrebbe richiedere l'essere loggati
-            this.newGroupInfo.creator = "lonevetad";
+
             this.removeLoader();
         },
         computed: {
@@ -126,8 +127,8 @@ function initAll() {
 
             setLocation(location){
                 console.log("dentro SetLocation");
-                console.log(location.geometry.location.lng());
-                console.log(location.geometry.location.lat());
+                console.log(location.lng);
+                console.log(location.lat);
                 console.log(location.name);
                 this.newGroupInfo.location = location;
             },
@@ -274,6 +275,7 @@ function initAll() {
 
             , createGroup(){
                 let thisVue = this, ngi;
+
 
                 if(this.locationSearch == null || this.locationSearch === '') {
                     alert("Location not setted");

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GroupFullDetail implements Serializable {
 
-    private Long groupId;
+    private Long groupId, creatorId;
 
     private String groupName, description, creator;
 
@@ -24,13 +24,14 @@ public class GroupFullDetail implements Serializable {
 
     private List<AppUser> members;
 
-    public GroupFullDetail(AppGroup g, List<AppTag> t, List<AppUser> members) {
-        this.groupId=g.getGroupId();
+    public GroupFullDetail(AppGroup g, Long creatorId, List<AppTag> t, List<AppUser> members, GoogleLocation location) {
+        this.groupId = g.getGroupId();
+        this.creatorId = creatorId;
         this.groupName = g.getGroupName();
         this.description = g.getDescription();
         this.groupDate = g.getGroupDate();
         this.creator = g.getCreator();
-        this.location = null;
+        this.location = location;
         this.tags = t;
         this.members = members;
     }
@@ -43,6 +44,14 @@ public class GroupFullDetail implements Serializable {
 
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 
     public String getGroupName() {
@@ -113,8 +122,8 @@ public class GroupFullDetail implements Serializable {
                 ", creator='" + creator + '\'' +
                 ", groupDate=" + groupDate +
                 ", location=" + location +
-                ", tags=" + Arrays.toString(tags.toArray() )+
-                ", members=" + Arrays.toString(members.toArray() )+
+                ", tags=" + Arrays.toString(tags.toArray()) +
+                ", members=" + Arrays.toString(members.toArray()) +
                 '}';
     }
 }

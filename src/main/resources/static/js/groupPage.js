@@ -48,12 +48,20 @@ window.onload = _ =>{
         },
 
         created(){
+
             this.currentUrl = window.location.pathname;
             this.loadGroup();
             this.ping();
             this.getAllUser();
             this.removeLoader();
 
+        },
+
+        computed:{
+
+            getCreatorId(){
+                return this.groupInfo.creatorId;
+            }
         },
 
         methods:{
@@ -143,12 +151,14 @@ window.onload = _ =>{
                     .then(resp => {
                     console.log("paginaGruppo:D");
                     console.log(JSON.stringify(resp));
+                    this.groupInfo.creatorId = resp.creatorId;
                     this.groupInfo.creator = resp.creator;
                     this.groupInfo.groupName = resp.groupName;
                     this.groupInfo.data = resp.groupDate;
                     this.groupInfo.description = resp.description;
                     this.groupInfo.groupId = resp.groupId;
-                    this.groupInfo.locationId = resp.location;
+                    this.groupInfo.locationId = resp.location.locationId;
+                    this.groupInfo.location = resp.location;
                     this.groupInfo.members = resp.members;
                     this.groupInfo.tags = resp.tags;
                     this.toGroupAPI.isLoaded = true;

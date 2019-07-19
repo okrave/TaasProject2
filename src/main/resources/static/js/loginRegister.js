@@ -43,7 +43,8 @@ window.onload = _ => {
             , messages: new NotificationsMessage()
 
             , groupsCarousel: null
-        },
+            , groupEachSection: 4
+},
 
         mounted(){
             if (localStorage.getItem('connectedUserName')) {
@@ -64,13 +65,20 @@ window.onload = _ => {
         },
 
         computed: {
+            amountCarouselSections(){
+                if(this.groupsCarousel == null ){
+                    return 0;
+                }
+                return Math.trunc(((this.groupsCarousel.length % this.groupEachSection) == 0) ? (this.groupsCarousel.length / this.groupEachSection)
+                    : ((this.groupsCarousel.length / this.groupEachSection) + 1));
+            },
+
             groupToGroupsCarousel() {
-                var ret, groupSize, i, gsIndex, groupEachSection, gC; //  sectionAmount,
+                var ret, groupSize, i, gsIndex, gC; //  sectionAmount,
                 gC = this.groupsCarousel;
                 if(gC == null) return [];
                 ret = [];
                 groupSize = gC.length;
-                groupEachSection = 4;
 
                 console.log("... during groupToGroupsCarousel: groups received:");
                 console.log(JSON.stringify(gC));
@@ -80,7 +88,7 @@ window.onload = _ => {
                 while( i < groupSize ) {
                     var section = [];
                     gsIndex = -1;
-                    while( ++gsIndex < groupEachSection && i < groupSize) {
+                    while( ++gsIndex < this.groupEachSection && i < groupSize) {
                         section.push(gC[i]);
                         i++;
                     }
@@ -134,12 +142,19 @@ window.onload = _ => {
 
             },
 
-            setLoggedUsername(username){
+            setLoggedFacebook(username){
                 console.log("Dentro setLogged: "+ username);
                 this.userLogged.username = username;
                 this.userLogged.isLogged = true;
                 localStorage.setItem('connectedUserName',username);
 
+                //Registrazione facebook
+                this.userInfo.username = username+"";
+                this.userInfo.password = "";
+                this.userInfo.email = username + "@gmail.com";
+                this.userInfo.passwordConfirmation = "";
+                this.register();
+                this.customLogin();
             }
 
             ,customLogin(){
@@ -283,8 +298,9 @@ window.onload = _ => {
     var myusername = ""
     $.get("/user", function(data) {
         if(data != undefined && data != null && data.userAuthentication != undefined && data.userAuthentication != null){
+            console.log(data);
             myusername = data.userAuthentication.details.name;
-            app.setLoggedUsername(myusername);
+            app.setLoggedFacebook(myusername);
             $("#user").html(myusername);
         }
         $(".unauthenticated").hide();

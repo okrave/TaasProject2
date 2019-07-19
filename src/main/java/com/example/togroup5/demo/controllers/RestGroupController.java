@@ -144,6 +144,13 @@ public class RestGroupController {
         return (guf != null && guf.gu != null);
     }
 
+    @GetMapping(value="/userGroups/{id}")
+    public List<GroupFullDetail> listGroupsByUserId(@PathVariable Long id){
+        return groupFullDetailFromGroups(groupService.listGroupByUserId(id));
+    }
+
+    //
+
     protected UserGroupFound fetchGroupUser(MemberGroupPayload userGroupInfo){
         AppGroup group;
         GroupUser gu;
@@ -174,8 +181,10 @@ public class RestGroupController {
 
     protected GroupFullDetail fetchGroupDetails(AppGroup g){
         return new GroupFullDetail(g,//
+                userService.findAppUserByUserName(g.getCreator()).getUserId(), //
                 groupService.listTagsByAppGroupId(g.getGroupId()),//
-                groupService.listUsersByAppGroupId(g.getGroupId())
+                groupService.listUsersByAppGroupId(g.getGroupId()), //
+                groupService.findLocationById(g.getLocation())
         );
     }
 

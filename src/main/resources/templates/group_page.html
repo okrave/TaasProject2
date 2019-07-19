@@ -27,9 +27,9 @@
                 <div class="groupHomeHeader-groupName"><h1>{{this.groupInfo.groupName}}</h1></div>
                 <div class="groupHomeHeader-info">
                     <div class="groupHomeHeader-groupData"><i class="far fa-calendar-alt"></i> {{this.groupInfo.data}}</div>
-                    <div  ><i class="fas fa-map-marker-alt"></i> location</div>
-                    <div><i class="fas fa-users"></i> 686 membri</div>
-                    <div class="groupHomeHeader-groupCreator"><i class="far fa-user"></i> Organizzato da <a >{{this.groupInfo.creator}}</a></div>
+                    <div  ><i class="fas fa-map-marker-alt"></i> {{this.groupInfo.location.name}}</div>
+                    <div><i class="fas fa-users"></i> {{this.groupInfo.members.length}} membri</div>
+                    <div class="groupHomeHeader-groupCreator"><i class="far fa-user"></i> Organizzato da <a v-bind:href="'/userPage/'+getCreatorId" >{{this.groupInfo.creator}}</a></div>
                     <hr style="margin-top: 10px;margin-bottom: 10px">
                 </div>
                 <div class="groupHomeHeader-groupDescription">{{this.groupInfo.description}}</div>

@@ -36,6 +36,7 @@ create table LOCATION
     --GEOM geometry(Point, 4326) not null,
     LAT DOUBLE PRECISION,
     LNG DOUBLE PRECISION,
+    NAME VARCHAR(30),
     PRIMARY KEY (LOCATION_ID)
 ) ;
 

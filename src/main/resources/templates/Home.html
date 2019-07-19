@@ -205,9 +205,12 @@
         <!-- Indicators -->
         <section class="indicators">
             <ol class="carousel-indicators">
-                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                <li data-target="#carousel-example-generic"
+                    data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic"
+                    v-if="amountCarouselSections > 1"
+                    v-for="i in (amountCarouselSections - 1)"
+                    :data-slide-to="i + 1" ></li>
             </ol>
         </section>
     </div>
@@ -253,7 +256,7 @@
                     />
                     <br />
                     <button type="submit" name="submit" value="submit" class="btn-l" @click="customLogin()">Login</button>
-                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" href="#" role="button" > Registrati qui </a></h5>
+                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" role="button" > Registrati qui </a></h5>
 
 
 
@@ -263,7 +266,7 @@
                     <div class="modal-footer">
                         <h4 style="text-align: center;">Or</h4>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook</button>
+                            <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f" ></i>Facebook</button>
                         </div>
                         <div class="col-sm-6">
                             <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
@@ -315,7 +318,7 @@
                     </div>
                     <div class="link_registrazione">
 
-                        <h5 >Hai già un account ? <a  id="linkToLogin" href="#" role="button" > Accedi </a></h5>
+                        <h5 >Hai già un account ? <button id="linkToLogin" role="button" > Accedi </button></h5>
                     </div>
                 </div>
             </div>
