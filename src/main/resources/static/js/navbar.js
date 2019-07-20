@@ -2,8 +2,8 @@
 function removeAllModalBackdrop() {
     document.querySelectorAll(".modal-backdrop").forEach(e => {
         e.remove();
-    e.parentNode.removeChild(e);
-})
+        e.parentNode.removeChild(e);
+    })
 }
 
 function switchFromRegistModalToLogin(){

@@ -22,6 +22,7 @@ create table APP_USER
 create table APP_GROUP
 (
     GROUP_ID  BIGINT not null,
+    CREATOR_ID BIGINT not null,
     GROUP_NAME varchar (128),
     DESCRIPTION VARCHAR(512) not null,
     DATE DATE not null,
@@ -104,6 +105,10 @@ alter table APP_USER
 alter table APP_GROUP
     add constraint APP_GROUP_FK_CREATOR foreign key (CREATOR)
         references APP_USER (USER_NAME);
+
+alter table APP_GROUP
+    add constraint APP_GROUP_FK_CREATOR_ID foreign key (CREATOR_ID)
+        references APP_USER (USER_ID);
 
 alter table APP_GROUP
     add constraint APP_GROUP_FK_LOCATION foreign key (LOCATION_ID)

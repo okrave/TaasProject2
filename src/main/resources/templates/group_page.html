@@ -5,9 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <th:block th:replace="fragments/header.html :: headerInclusions" />
     <link rel="stylesheet" href="../static/css/groupHome.css" th:href="@{/css/groupHome.css}">
 
-    <th:block th:replace="fragments/header.html :: headerInclusions" />
     <script src="js/groupPage.js"   th:src="@{/js/groupPage.js}"></script>
 
 </head>
@@ -44,8 +44,11 @@
                 <li id="li3" role="presentation" @click="setListElement(2)"><a >Messages <span class="badge">3</span></a></li>
                 <li id="li4" role="presentation" @click="setListElement(3)"><a >Foto <span class="badge">5</span></a></li>
                 <li class = "navbar-right" role="presentation">
-                    <button class="btn btn-primary btn-lg" role="button" v-if = "isUserMember" @click="removeGroupMember()">Esci dal gruppo</button>
-                    <button class="btn btn-primary btn-lg" role="button" v-else @click="addGroupMember()">Unisciti a questo gruppo </button>
+                    <div v-if="isUserLogged">
+                        <button class="btn btn-primary btn-lg" role="button" v-if = "isUserMember" @click="removeGroupMember()">Esci dal gruppo</button>
+                        <button class="btn btn-primary btn-lg" role="button" v-else @click="addGroupMember()">Unisciti al gruppo </button>
+                    </div>
+                    <div v-else><a href="/Home">Fai il login per partecipare</a></div>
                 </li>
 
 
@@ -85,11 +88,6 @@
 
         </div>
     </div>
-
-
-
-
-
 </div>
 
 

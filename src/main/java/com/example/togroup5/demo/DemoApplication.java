@@ -19,7 +19,9 @@ public class DemoApplication {
         }catch (TelegramApiException e){
             e.printStackTrace();
         }*/
+        System.out.println("MEGACIAONEEEE");
         SpringApplication.run(DemoApplication.class, args);
+        System.out.println("MEGACIAONEEEE 2");
     }
 
 }

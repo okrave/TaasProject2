@@ -24,9 +24,9 @@ public class GroupFullDetail implements Serializable {
 
     private List<AppUser> members;
 
-    public GroupFullDetail(AppGroup g, Long creatorId, List<AppTag> t, List<AppUser> members, GoogleLocation location) {
+    public GroupFullDetail(AppGroup g, List<AppTag> t, List<AppUser> members, GoogleLocation location) {
         this.groupId = g.getGroupId();
-        this.creatorId = creatorId;
+        this.creatorId = g.getCreatorId();
         this.groupName = g.getGroupName();
         this.description = g.getDescription();
         this.groupDate = g.getGroupDate();

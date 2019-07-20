@@ -181,7 +181,7 @@ public class RestGroupController {
 
     protected GroupFullDetail fetchGroupDetails(AppGroup g){
         return new GroupFullDetail(g,//
-                userService.findAppUserByUserName(g.getCreator()).getUserId(), //
+                // userService.findAppUserByUserName(g.getCreator()).getUserId(), // 20-07-2019: già fornito dalla creazione front-end: solo gli utenti loggati possono creare gruppi.
                 groupService.listTagsByAppGroupId(g.getGroupId()),//
                 groupService.listUsersByAppGroupId(g.getGroupId()), //
                 groupService.findLocationById(g.getLocation())
@@ -194,9 +194,9 @@ public class RestGroupController {
     //@RequestMapping(value = "/createAll", method = RequestMethod.POST)
     @PostMapping(value = "/createAll")
     public void createDefaults() {
+        this.x.createUsers();
         createAllTag();
         createAllGroup();
-        this.x.createUsers();
     }
 
 
@@ -298,7 +298,9 @@ public class RestGroupController {
                 tags.add(t);
 
 
-            newGroup = new AppGroupNew(groupInfo[0], groupInfo[1], //
+            newGroup = new AppGroupNew(
+                    userService.findAppUserByUserName(groupInfo[0]).getUserId(), //
+                    groupInfo[0], groupInfo[1], //
                     new AppGroupNew.LocationReceived(locationInfo[0]),//
                     tags, groupInfo[2], Date.valueOf(groupInfo[3]));
             newGroup.getLocation().setLocationId(id++);

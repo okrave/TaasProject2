@@ -29,21 +29,11 @@ window.onload = _ =>{
             ,listElement: 0
             ,listUser : []
             ,currentUrl : ""
-            ,userLogged:{
-                isLogged: false,
-                username: "",
-                id: 0
-            }
+            ,userLogged: new UserLogged()
             , isUserMember: false
         },
         mounted(){
-
-            if (localStorage.getItem('connectedUserName')) {
-                this.userLogged.isLogged = true;
-                this.userLogged.username = localStorage.getItem('connectedUserName');
-                this.userLogged.id = localStorage.getItem('connectedUserId');
-                console.log("In group page user loggato: "+ this.userLogged.username);
-            }
+            this.userLogged.reloadUserInfo();
             this.recalculateIsMember();
         },
 
@@ -58,8 +48,11 @@ window.onload = _ =>{
         },
 
         computed:{
+            isUserLogged() {
+                return this.userLogged.isLogged;
+            }
 
-            getCreatorId(){
+            , getCreatorId(){
                 return this.groupInfo.creatorId;
             }
         },

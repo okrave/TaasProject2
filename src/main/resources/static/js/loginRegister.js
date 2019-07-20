@@ -35,24 +35,15 @@ window.onload = _ => {
                 email               : "",
                 passwordConfirmation: ""
             }
-            , userLogged:{
-                isLogged: false,
-                username: "",
-                id: 0
-            }
+            , userLogged: new UserLogged()
             , messages: new NotificationsMessage()
 
-            , groupsCarousel: null
+            , groupsCarousel: []
             , groupEachSection: 4
 },
 
         mounted(){
-            if (localStorage.getItem('connectedUserName')) {
-                this.userLogged.isLogged = true;
-                this.userLogged.username = localStorage.getItem('connectedUserName');
-                //this.userLogged.id = localStorage.getItem('connectedUserId');
-                console.log("In home page user loggato: "+ this.userLogged.username);
-            }
+            this.userLogged.reloadUserInfo();
         },
         created() {
             this.ping();
@@ -170,11 +161,17 @@ window.onload = _ => {
                             "password": this.userInfo.password
                         })
                     .then(resp => {
-                    this.setLoggerUser(resp);
-            }).catch(this.createErrorHandler("register"));
+                        this.setLoggerUser(resp);
+                    }).catch(this.createErrorHandler("register"));
+            }
 
-
-
+            , loadGroupPage(groupId){
+                /*
+                TODO 20/07/2019 by Marco
+                testare quale delle due soluzioni (oppure altre) funziona per redirezionare alla Home
+                */
+                window.location = '/group_page/' + groupId;
+                //this.$router.push('/group_page/' + groupId);
             }
 
             ,createErrorHandler(methodName){

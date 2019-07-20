@@ -15,6 +15,8 @@ import java.util.List;
 
 public class AppGroupNew implements Serializable {
 
+    private Long creatorId;
+
     private String groupName, description, creator;
 
     private java.sql.Date groupDate;
@@ -28,6 +30,7 @@ public class AppGroupNew implements Serializable {
 
     @JsonCreator
     public AppGroupNew(
+            @JsonProperty("creatorId") Long creatorId,
             @JsonProperty("creator") String creator,
             @JsonProperty("groupName") String groupName,
             @JsonProperty("location") LocationReceived location,
@@ -35,6 +38,7 @@ public class AppGroupNew implements Serializable {
             @JsonProperty("description") String description,
             @JsonProperty("groupDate") Date groupDate
     ) {
+        this.creatorId = creatorId;
         this.groupName = groupName;
         this.description = description;
         this.groupDate = groupDate;
@@ -44,6 +48,14 @@ public class AppGroupNew implements Serializable {
     }
 
     //
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
 
     public String getGroupName() {
         return groupName;
@@ -78,7 +90,7 @@ public class AppGroupNew implements Serializable {
     }
 
     public AppGroup toAppGroup() {
-        return new AppGroup(creator, groupName, description, groupDate);
+        return new AppGroup(this.creatorId, creator, groupName, description, groupDate);
     }
 
     public GoogleLocation getLocation() {
@@ -100,7 +112,8 @@ public class AppGroupNew implements Serializable {
     @Override
     public String toString() {
         return "AppGroupNew{" +
-                "creator='" + creator + '\'' +
+                "creatorId='" + creatorId + '\'' +
+                ", creator='" + creator + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", location=" + location +
                 ", groupDate=" + groupDate +

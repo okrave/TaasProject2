@@ -93,8 +93,9 @@ public class GroupService {
         }
 
 
-        addMembership(g.getGroupId(),appUserRepository.findAppUserByUserName(g.getCreator()).getUserId());
-
+        addMembership(g.getGroupId(),
+                        //appUserRepository.findAppUserByUserName(g.getCreator()).getUserId()
+                        g.getCreatorId());
 
         System.out.println(Arrays.toString(newGroup.getTags().toArray()));
         for (String ts : newGroup.getTags()) {

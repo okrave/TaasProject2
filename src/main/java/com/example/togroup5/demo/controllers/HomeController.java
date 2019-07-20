@@ -48,12 +48,6 @@ public class HomeController {
         return "Home";
     }
 
-
-    @GetMapping(value = "/group_page/{id}")
-    public String group_page(@PathVariable(required = false) String id){
-        System.out.println(id);
-        return "group_page";
-    }
     @GetMapping(value="/client_home")
     public String client_home(){
         return "client_home";

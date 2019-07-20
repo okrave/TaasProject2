@@ -13,6 +13,8 @@ public class AppGroup implements Serializable {
     @GeneratedValue
     private Long groupId;
 
+    private Long creatorId;
+
     private String creator;
 
     @Column(unique = true)
@@ -31,7 +33,8 @@ public class AppGroup implements Serializable {
 
     public AppGroup() {}
 
-    public AppGroup(String creator, String groupName, String description, Date groupDate) {
+    public AppGroup(Long creatorId, String creator, String groupName, String description, Date groupDate) {
+        this.creatorId = creatorId;
         this.groupName = groupName;
         this.description = description;
         this.groupDate = groupDate;
@@ -47,6 +50,14 @@ public class AppGroup implements Serializable {
 
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 
     public String getDescription() {
@@ -94,10 +105,11 @@ public class AppGroup implements Serializable {
     @Override
     public String toString() {
         return "AppGroup{" +
-                "groupId=" + groupId +
+                "groupId='" + groupId +
                 ", creator='" + creator + '\'' +
+                ", creatorId='" + creatorId + '\'' +
                 ", groupName='" + groupName + '\'' +
-                ", groupDate=" + groupDate +
+                ", groupDate='" + groupDate +
                 ", locationId='" + locationId + '\'' +
                 ", description='" + description + '\'' +
                 '}';

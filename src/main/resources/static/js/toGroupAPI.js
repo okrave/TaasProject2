@@ -18,12 +18,12 @@ const checkResponseHoldsErrors = function(response){
 
 class ToGroup {
 
-    isLoaded = false;
 
 	constructor(url = null) {
 		if (url === null) {
 			url = APIUrl;
 		}
+		this.isLoaded = false;
 		this.baseURL = url;
 		this.user = new UserAPI(this.baseURL);
 		this.group = new GroupAPI(this.baseURL);
@@ -432,6 +432,28 @@ class GroupAPI {
 
 }
 
+class UserLogged {
+	constructor() {
+		this.isLogged = false;
+		this.username = "";
+		this.id = 0;
+	}
+
+	reloadUserInfo(){
+		var userName;
+		userName = localStorage.getItem('connectedUserName');
+		if (userName) {
+			this.isLogged = true;
+			this.username = userName;
+			this.id = localStorage.getItem('connectedUserId');
+			console.log("In group page user loggato: "+ userName);
+			return true;
+		}
+		this.isLogged = false;
+		return false;
+	}
+}
+
 /** Represents a User, without a ID set */
 class UserRegistration {
 //it's the API payload
@@ -590,11 +612,11 @@ class GoogleLocation{
 class GroupNew extends GroupBasic{
 //it's the API payload
 	constructor(creator="", groupName="", location=null, tags=null,
-				groupDate=null, description="") {
+				groupDate=null, description="", creatorId=null) {
 		super(creator, groupName, location, tags);
 		this.groupDate = groupDate;
 		this.description = description;
-		this.creatorId = null;
+		this.creatorId = creatorId;
 	}
 }
 
@@ -612,11 +634,10 @@ class GroupSearch extends GroupBasic{
 
 class GroupFullDetail extends GroupNew {
 
-	constructor(creator = "", groupName = "", location = null, tags = null, groupDate = null, description = ""//
-		, groupId = null, creatorId = null, members = []) {
-		super(creator, groupName, location, tags, groupDate, description);
+	constructor(creator = "", groupName = "", location = null, tags = null, groupDate = null, description = "", creatorId = null//
+		, groupId = null, members = []) {
+		super(creator, groupName, location, tags, groupDate, description, creatorId);
 		this.groupId = groupId;
-		this.creatorId = creatorId;
 		this.members = members;
 	}
 }

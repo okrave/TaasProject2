@@ -25,6 +25,12 @@ class NewGroupProgression{
             this.actualStep = this.actualStep - 1;
         }
     }
+    getActualStep(){
+        return this.actualStep;
+    }
+    getMaxSteps(){
+        return this.maxSteps;
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -67,11 +73,7 @@ function initAll() {
             , deactiveClass: 'btn deactiveButton'
             , googleMaps: false
             , selectedTag: []
-            ,userLogged:{
-                isLogged: false,
-                username: "",
-                id: 0
-            }
+            ,userLogged: new UserLogged()
 
             //google maps
             , gMapData: {
@@ -87,20 +89,20 @@ function initAll() {
             }
         },
         mounted(){
-            if (localStorage.getItem('connectedUserName')) {
-                this.userLogged.isLogged = true;
-                this.userLogged.username = localStorage.getItem('connectedUserName');
-                this.userLogged.id = localStorage.getItem('connectedUserId');
-                this.newGroupInfo.creator = this.userLogged.username;
-                console.log("In group page user loggato: "+ this.userLogged.username);
+            if (! this.userLogged.reloadUserInfo()) { //not logged
+                this.userLogged.isLogged = false;
+                /*
+                TODO 20/07/2019 by Marco
+                testare quale delle due soluzioni (oppure altre) funziona per redirezionare alla Home
+                */
+                window.location = "Home";
+                //this.$router.push('Home');
             }
         },
         created() {
             let thisVue = this;
             this.ping();
             setTimeout( ()=>{thisVue.fetchYetExistingTags();}, 1000);
-            // TODO: ottenere il nome (e/o ID?) dell'utente: questa operazione dovrebbe richiedere l'essere loggati
-
             this.removeLoader();
         },
         computed: {
@@ -184,12 +186,19 @@ function initAll() {
                     this.addTag();
                 }
                 this.creationProgression.toNextStep();
+            }
+            , toPreviousStep() {
+                this.creationProgression.toPreviousStep();
+            }
+            , checkActualStep(){
+                console.log("Entrato checkActual");
+                if(this.creationProgression.getActualStep() == 0){
+                    document.getElementById('map').style.visibility = 'visible';
+                }else{
+                    document.getElementById('map').style.visibility = 'hidden';
                 }
-            , toPreviousStep(){ this.creationProgression.toPreviousStep(); }
+            }
 
-            , selectTag(tag){
-
-                }
             , selectTag(tagName) {
                 for(tag in this.selectedTag) {
                     console.log(this.selectedTag[tag]);
@@ -204,16 +213,13 @@ function initAll() {
                 }
             }
 
-
             , addTag(){
-
                 this.newGroupInfo.addTag(this.selectedTag);
-
             }
 
 
-
                 /*if (this.terms == true) {//disattivato
+                // 20/07/2019 Marco: usare i metodi che ho gia' fatto di newGroupInfo, o meglio della sua classe di toGroupAPI.js
                     this.terms = false;
                     if (!this.selectedTag.includes(tagName)) {
                         this.selectedTag.push(tagName);
@@ -224,9 +230,6 @@ function initAll() {
                         this.selectedTag.splice(tagName);
                     }
                 }*/
-
-
-
 
                 /*if( this.newGroupInfo.addTag(this.tag.trim())){
                     this.selectedTag.push(this.tag.trim)
@@ -293,7 +296,8 @@ function initAll() {
                 console.log("creating group:");
                 console.log(JSON.stringify(ngi));
 
-                if((ngi.creator == null || ngi.creator === '')
+                if((ngi.creatorId == null || ngi.creatorId === '')
+                    || (ngi.creator == null || ngi.creator === '')
                     || (ngi.groupName == null || ngi.groupName === '')
                     || (ngi.description == null || ngi.description === '')
                     || (ngi.location == null || ngi.location === '')
