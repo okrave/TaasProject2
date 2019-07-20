@@ -21,7 +21,8 @@ function createInfoWindows(group){
     var groupId = group.groupId;
     var htmlInfoWindows =
         '<div>' +
-        '<h1><a href="localhost:8080/group_page/49">'+ groupTitle +'</a></h1>'+
+        '<h1><a href="/group_page/'+ groupId+'">'+ groupTitle +'</a></h1>'+
+        //'<h1><a href="localhost:8080/group_page/49">'+ groupTitle +'</a></h1>'+
         '<p>'+ groupCreator +'</p>'+
         '<p>'+ groupData +'</p>'+
         '<p>'+ groupDescription +'</p>'+
