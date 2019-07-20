@@ -92,8 +92,8 @@ public class AppGroupRepository {
     }
 
     public List<AppGroup> advancedSearch(GroupSearchAdvPayload filters) {
-        boolean isNotFirstFilter;
-        String orderTagMatchAmountClause;
+        boolean isNotFirstFilter, hasStartDate, hasEndDate;
+        String orderTagMatchAmountClause, tagMatchJoin;
         List<SingleFilter> appliedFields;
         StringBuilder sb;
         String andConnector, sql;
@@ -109,19 +109,24 @@ public class AppGroupRepository {
             //if(filters.getLocation() != null) {}
 
             if (filters.getGroupName() != null && (!filters.getGroupName().equals(""))) {
-                appliedFields.add(new SingleFilter("g.groupName == :groupName", "groupName", filters.getGroupName()));
+                appliedFields.add(new SingleFilter("g.groupName = :groupName", "groupName", filters.getGroupName()));
             }
 
             if (filters.getCreator() != null && (!filters.getCreator().equals(""))) {
-                appliedFields.add(new SingleFilter("g.creator == :creator", "creator", filters.getCreator()));
+                appliedFields.add(new SingleFilter("g.creator = :creator", "creator", filters.getCreator()));
             }
 
-            if (filters.getDateStartRange() != null) {
+            hasStartDate    = filters.getDateStartRange() != null;
+            hasEndDate      = filters.getDateEndRange() != null;
+            if(hasStartDate && hasEndDate){
                 appliedFields.add(new SingleFilter("g.groupDate >= :dateStartRange", "dateStartRange", filters.getDateStartRange()));
-            }
-            if (filters.getDateEndRange() != null) {
                 appliedFields.add(new SingleFilter("g.groupDate <= :dateEndRange", "dateEndRange", filters.getDateEndRange()));
-            }
+            } else if (hasStartDate ^ hasEndDate){
+                //solo uno delle due= cerchiamo la data esatta
+                Date exactDate;
+                exactDate = hasStartDate ? filters.getDateStartRange() : filters.getDateEndRange();
+                appliedFields.add(new SingleFilter("g.groupDate = :date", "date", exactDate));
+            } // else: no date filters setted
 
             // questo filtro deve rimanere per ultimo
 
@@ -134,17 +139,19 @@ public class AppGroupRepository {
                     servono dei test), contando poi l'ammontare di tag del gruppo effettivamente contenuti nell'insieme
                     fornito.
                  * */
+                //tagMatchJoin =
                 orderTagMatchAmountClause = //
                         "0 < ( SELECT count(*) AS tagMatches FROM " + GroupTag.class.getName() + " gt JOIN "
                                 + AppTag.class.getName() +
-                                " tag ON (gt.tagId = tag.tagIdd) WHERE ((g.groupId = gt.groupId) AND (tag.tag_name IN :tags))";
-                appliedFields.add(new SingleFilter(orderTagMatchAmountClause, "tags", filters.getTags()));
+                                " tag ON (gt.tagId = tag.tagId) WHERE ((g.groupId = gt.groupId) AND (tag.name IN ANY (:tags)))";
+                appliedFields.add(new SingleFilter(orderTagMatchAmountClause, "tags", //
+                        filters.getTags().toArray(new String[filters.getTags().size()])));
             }
 
             if (appliedFields.isEmpty()) return null;
 
             sb = new StringBuilder(32);
-            sb.append("SELECT * FROM ");
+            sb.append("SELECT g FROM ");
             sb.append(AppGroup.class.getName());
             sb.append(" g WHERE ");
 

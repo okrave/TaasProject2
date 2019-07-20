@@ -128,14 +128,15 @@ public class AppGroupNew implements Serializable {
         private double lat, lng;
         private String name;
 
-        public LocationReceived(){
+        public LocationReceived() {
         }
 
-        public LocationReceived(String toBeDeserialized){
+        public LocationReceived(String toBeDeserialized, String name) {
             // format ('someValue')
             // example: ('40, 42.5')
             String[] vals;
-            vals = toBeDeserialized.substring(toBeDeserialized.indexOf('\'')+1, toBeDeserialized.lastIndexOf('\'')).split(",");
+            this.name = name;
+            vals = toBeDeserialized.substring(toBeDeserialized.indexOf('\'') + 1, toBeDeserialized.lastIndexOf('\'')).split(",");
             this.lat = Double.parseDouble(vals[0].trim());
             this.lng = Double.parseDouble(vals[1].trim());
         }
@@ -152,7 +153,7 @@ public class AppGroupNew implements Serializable {
         }
 
         public GoogleLocation toGoogleLocation() {
-            return new GoogleLocation(lat, lng,name);
+            return new GoogleLocation(lat, lng, name);
         }
     }
 }

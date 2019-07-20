@@ -242,7 +242,7 @@ public class RestGroupController {
                         new String[]{ //group info
                                 "Luca", "Gita a cavallo", "incredibile gita a cavallo", "1995-08-07"
                         },
-                        new String[]{"('35.0, 40.0')"}, // location
+                        new String[]{"('35.0, 40.0')", "Bra"}, // location
                         new String[]{"divertimento", "amici", "natura", "cavalli", "vacanza", "vacanze"} //tags
                 }
                 , //
@@ -250,7 +250,7 @@ public class RestGroupController {
                         new String[]{ //group info
                                 "Davide", "Ballo di gruppo", "incredibile ballo i gruppo", "1995-08-07"
                         },
-                        new String[]{"('35.50, 40.50')"}, // location
+                        new String[]{"('35.50, 40.50')", "Arenzano"}, // location
                         new String[]{"divertimento", "amici", "ballo", "happy hour", "danza"} //tags
                 }
                 , //
@@ -258,7 +258,7 @@ public class RestGroupController {
                         new String[]{ //group info
                                 "lonevetad", "TarTAASSiamoci", "Lavoriamo al progetto!", "2019-06-06"
                         },
-                        new String[]{"('35.10, 40.10')"}, // location
+                        new String[]{"('35.10, 40.10')", "Torino"}, // location
                         new String[]{"progetto", "amici", "taass", "lavoro", "studio", "università"} //tags
                 }
                 , //
@@ -266,7 +266,7 @@ public class RestGroupController {
                         new String[]{ //group info
                                 "lonevetad", "IngrAASSiamo", "Si ragiona meglio a stomaco pieno: all you can eat!", "2019-06-06"
                         },
-                        new String[]{"('35.40, 39.8')"}, // location
+                        new String[]{"('35.40, 39.8')", "Torino"}, // location
                         new String[]{"divertimento", "amici", "relax", "chiacchiere", "pranzo", "cibo"} //tags
                 }
                 , //
@@ -274,7 +274,7 @@ public class RestGroupController {
                         new String[]{ //group info
                                 "lonevetad", "Lindy Hop after-work event", "Un ballo di coppia stile anni 20-30-40, molto rilassante ma energico, per ben concludere la serata.", "2019-06-06"
                         },
-                        new String[]{"('35.40, 39.8')"}, // location
+                        new String[]{"('35.40, 39.8')", "Arenzano"}, // location
                         new String[]{"divertimento", "amici", "ballo", "danza", "lindy hop", "relax"} //tags
                 }
                 , //
@@ -282,8 +282,16 @@ public class RestGroupController {
                         new String[]{ //group info
                                 "Bender", "Cin Cin", "Bevuta rinfrescante a tema relax.", "2019-06-07"
                         },
-                        new String[]{"('35.0, 40.0')"}, // location
+                        new String[]{"('35.0, 40.0')", "Biella"}, // location
                         new String[]{"bere", "divertimento", "amici", "happy hour", "alcool", "alcoolici", "bere"} //tags
+                }
+                , //
+                new String[][]{
+                        new String[]{ //group info
+                                "Luca", "Sci", "Scivolare allegramente tra i fiocchi.", "2019-11-23"
+                        },
+                        new String[]{"('30.0, 30.0')", "Biella"}, // location
+                        new String[]{"sci", "divertimento", "amici", "sport", "montagna", "neve"} //tags
                 }
         };
 
@@ -301,7 +309,7 @@ public class RestGroupController {
             newGroup = new AppGroupNew(
                     userService.findAppUserByUserName(groupInfo[0]).getUserId(), //
                     groupInfo[0], groupInfo[1], //
-                    new AppGroupNew.LocationReceived(locationInfo[0]),//
+                    new AppGroupNew.LocationReceived(locationInfo[0], locationInfo[1]),//
                     tags, groupInfo[2], Date.valueOf(groupInfo[3]));
             newGroup.getLocation().setLocationId(id++);
             groupService.createGroup(newGroup);

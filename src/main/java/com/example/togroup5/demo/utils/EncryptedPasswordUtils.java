@@ -15,11 +15,6 @@ public class EncryptedPasswordUtils {
     }
     public static String encryptePassword(String password) {
         //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.println("----------------------------------------ASD: "+ password);
-        System.out.println("----------------------------------------ASD:" + encoder.encode(password));
-
-        System.out.println("----------------------------------------ASD:" + encoder.encode("ciccio"));
-        System.out.println("----------------------------------------ASD:" + encoder.encode("ciccio"));
-        return encoder.encode(password);
+       return encoder.encode(password);
     }
 }
