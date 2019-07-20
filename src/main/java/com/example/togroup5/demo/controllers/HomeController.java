@@ -48,21 +48,12 @@ public class HomeController {
         return "Home";
     }
 
-    @GetMapping(value="/client_home")
-    public String client_home(){
-        return "client_home";
-    }
 
     @GetMapping(value="/login")
     public String login(){
         return "login";
     }
 
-
-    @GetMapping (value="/create_group")
-    public String create_group(){
-        return "crea_gruppo1";
-    }
 
     @GetMapping("/admin")
     public String admin(Model model, Principal principal) {
