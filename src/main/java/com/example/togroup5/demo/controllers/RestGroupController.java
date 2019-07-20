@@ -97,7 +97,7 @@ public class RestGroupController {
 
 
 
-    @RequestMapping(value = "/advGroupSearch", method = RequestMethod.GET)
+    @RequestMapping(value = "/advGroupSearch", method = RequestMethod.PATCH)
     public List<GroupFullDetail> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
         List<AppGroup> groups;
         //groupService.saveGroup(appGroupNew.toAppGrou());
