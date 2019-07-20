@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      xmlns:v-if="http://www.w3.org/1999/xhtml">
 <head>
     <title>Search Group</title>
 
@@ -30,7 +31,7 @@
 
         <th:block th:insert="fragments/header.html :: notificationMessages"/>
 
-        <div id="formNewGroup">
+        <div id="formNewGroup" v-if="userLogged.isLogged">
 
             <div id="newGroupSection">
                 <div class="progress">
@@ -93,13 +94,20 @@
                             <input type="text"
                                    :value = "selectedTag"
                                    class="form-control"
-                                   placeholder="Search"
+                                   placeholder="Inserisci Tag"
                                    readonly >
                             <br />
                             <div class="gruppo-buttons" id="class-buttons-tag">
-                                <button :disabled='isDisabled' v-for="tag in tags" class="btn deactivate-tag"  @click="selectTag(tag.name)" v-bind:id="tag.name">{{tag.name}}</button>
+                                <button :disabled='isDisabled' v-for="tag in allTags" class="btn deactivate-tag"  @click="selectTag(tag.name)" v-bind:id="tag.name">{{tag.name}}</button>
                             </div>
-                            <button type="button" class="btn btn-primary btn-lg btn-block" @click="addTag()">Aggiungi tag</button>
+
+
+                            <input type="text"
+                                   v-model="newTag"
+                                   class="form-control"
+                                   placeholder="Crea nuovo Tag">
+                            <br />
+                            <button type="button" class="btn btn-primary btn-lg btn-block" @click="createNewTag()" style="margin-top: 10px">Crea tag</button>
                         </div>
 
                         <!--
@@ -181,10 +189,10 @@
                     </div>
                 </div>
 
-                <div v-if="creationProgression.actualStep < 3" class ="buttonAvanti">
+                <div class ="buttonAvanti">
                     <ul class="pager">
                         <li v-if="creationProgression.actualStep > 0" ><a @click="toPreviousStep()">Prev</a></li>
-                        <li><a @click="toNextStep()" >Next</a></li>
+                        <li v-if="creationProgression.actualStep < 3"><a @click="toNextStep()" >Next</a></li>
                     </ul>
                 </div>
 

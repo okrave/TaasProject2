@@ -104,7 +104,7 @@ public class RestGroupController {
 
 
 
-    @RequestMapping(value = "/advGroupSearch", method = RequestMethod.GET)
+    @RequestMapping(value = "/advGroupSearch", method = RequestMethod.PATCH)
     public List<GroupFullDetail> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
         List<AppGroup> groups;
         //groupService.saveGroup(appGroupNew.toAppGrou());
@@ -114,6 +114,7 @@ public class RestGroupController {
         System.out.println("found " + groups.size() + " groups, now add tags");
         return groupFullDetailFromGroups(groups);
     }
+
 
     @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
     public boolean addUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
@@ -154,6 +155,12 @@ public class RestGroupController {
     @GetMapping(value="/userGroups/{id}")
     public List<GroupFullDetail> listGroupsByUserId(@PathVariable Long id){
         return groupFullDetailFromGroups(groupService.listGroupByUserId(id));
+    }
+
+    @GetMapping(value="/createTag/{name}")
+    public boolean createTag(@PathVariable String name){
+        groupService.saveTag(new AppTag(name));
+        return true;
     }
 
     //

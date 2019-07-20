@@ -93,14 +93,13 @@ public class AppGroupRepository {
 
     public List<AppGroup> advancedSearch(GroupSearchAdvPayload filters) {
         boolean isNotFirstFilter, hasStartDate, hasEndDate;
-        String orderTagMatchAmountClause, tagMatchJoin, unrolledTags;
+        String orderTagMatchAmountClause, tagMatchJoin;
         List<SingleFilter> appliedFields;
         StringBuilder sb;
         String andConnector, sql;
         TypedQuery<AppGroup> query;
 
         if (filters == null) return null;
-        unrolledTags = null;
         try {
             orderTagMatchAmountClause = tagMatchJoin = null;
             andConnector = " AND ";
@@ -123,13 +122,11 @@ public class AppGroupRepository {
                 appliedFields.add(new SingleFilter("g.groupDate >= :dateStartRange", "dateStartRange", filters.getDateStartRange()));
                 appliedFields.add(new SingleFilter("g.groupDate <= :dateEndRange", "dateEndRange", filters.getDateEndRange()));
             } else if (hasStartDate ^ hasEndDate) {
-                //solo uno delle due= cerchiamo la data esatta
+                //solo uno delle due = cerchiamo la data esatta
                 Date exactDate;
                 exactDate = hasStartDate ? filters.getDateStartRange() : filters.getDateEndRange();
                 appliedFields.add(new SingleFilter("g.groupDate = :date", "date", exactDate));
             } // else: no date filters setted
-
-            // questo filtro deve rimanere per ultimo
 
             if (filters.getTags() != null && filters.getTags().size() > 0) {
                 /*
@@ -140,11 +137,9 @@ public class AppGroupRepository {
                     servono dei test), contando poi l'ammontare di tag del gruppo effettivamente contenuti nell'insieme
                     fornito.
                  * */
-
                 tagMatchJoin = " JOIN " + GroupTag.class.getName() + " gt ON g.groupId = gt.groupId JOIN " + //
                         AppTag.class.getName() + " tag ON gt.tagId = tag.tagId ";
                 orderTagMatchAmountClause = " (SELECT count(*) from tag WHERE tag.name IN :tags ) ";
-
                 appliedFields.add(new SingleFilter(" 0 < " + orderTagMatchAmountClause, "tags", // "", //
                         filters.getTags()));
             }
@@ -171,16 +166,12 @@ public class AppGroupRepository {
                 // dovrebbe essere DESC ma stranamente li ordina in senso contrario
                 sb.append(" ORDER BY count(tag.name) ASC");
             }
-            query = entityManager.createQuery(sql = sb.toString(), AppGroup.class);
+            query = entityManager.createQuery(sb.toString(), AppGroup.class);
             sb = null;
-            System.out.println("Huge advanced group query:\n\t");
-            System.out.println(sql);
-            sql = null;
 
             appliedFields.forEach(filter -> {
                 if (!"".equals(filter.nameParameter)) query.setParameter(filter.nameParameter, filter.parameter);
             });
-
             return query.getResultList();
         } catch (NoResultException e) {
             return null;

@@ -341,7 +341,7 @@ class GroupAPI {
 	searchGroups(filters) {
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/advGroupSearch`, {
-				method: "GET",
+				method: "PATCH",
 				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify(filters)
 				})
@@ -405,6 +405,24 @@ class GroupAPI {
 		}).catch(reject);
 
 	});
+
+	}
+
+
+	createNewTag(newTag){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/createTag/` + newTag, {
+			method: "GET"
+			})
+			.then(response => response.json())
+			.then(response => {
+				console.log("asdasdads");
+				console.log(JSON.stringify(response));
+				console.log("entra in resolve");
+				resolve(response);
+			}).catch(reject);
+
+		});
 
 	}
 
@@ -630,6 +648,20 @@ class GroupSearch extends GroupBasic{
 		this.dateEndRange = dateEndRange;
 		this.maxDistance = maxDistance; // only for search o.o
 	}
+
+	setCreator(creator){
+		this.creator = creator
+	}
+
+	setGroupName(groupName){
+		this.groupName = groupName;
+	}
+
+	setDate(date){
+		this.dateStartRange = date;
+	}
+
+
 }
 
 class GroupFullDetail extends GroupNew {
