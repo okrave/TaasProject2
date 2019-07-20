@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      xmlns:v-if="http://www.w3.org/1999/xhtml">
 <head>
     <title>Search Group</title>
 
@@ -30,7 +31,7 @@
 
         <th:block th:insert="fragments/header.html :: notificationMessages"/>
 
-        <div id="formNewGroup">
+        <div id="formNewGroup" v-if="userLogged.isLogged">
 
             <div id="newGroupSection">
                 <div class="progress">

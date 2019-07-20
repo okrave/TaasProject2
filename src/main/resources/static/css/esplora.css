@@ -17,6 +17,7 @@ body{background-color: white;}
 
 }
 
+
 .cover__caption{
     display: table;
     height: 100%;
@@ -46,3 +47,12 @@ body{background-color: white;}
 .dropdown{margin-top: 8px;}
 #dropdownMenu1{margin-left: 4%;}
 .navbar-form{margin-left: 20%;}
+
+
+#loaderCustom{
+    visibility: visible;
+}
+
+#appGroupEsplora{
+    visibility: hidden;
+}

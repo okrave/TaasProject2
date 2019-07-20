@@ -6,172 +6,171 @@
     <title>Title</title>
     <link rel="stylesheet" href="../static/css/esplora.css" th:href="@{/css/esplora.css}">
 
+    <script src="js/esplora.js"      th:src="@{/js/esplora.js}"></script>
     <th:block th:replace="fragments/header.html :: headerInclusions" />
 
 
 </head>
 <body>
-<th:block th:replace="fragments/navbar :: navbar" />
-
-<!----------------------------------------------
-  COVER
- ------------------------------------------------->
-
-<section class="cover">
-    <div class="cover__caption">
-        <div class="title">
-            Esplora
-        </div>
-
-    </div>
-</section>
-
-<nav class="navbar navbar-inverse navbar-fixed-top search">
-    <div class="container">
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
 
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                    <button type="submit" class="btn button__search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+<div id="loaderCustom"></div>
 
-                </div>
+<div id="appGroupEsplora">
+    <th:block th:replace="fragments/navbar :: navbar" />
 
-            </form>
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Dropdown
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                </ul>
+    <section class="cover">
+        <div class="cover__caption">
+            <div class="title">
+                Esplora
             </div>
 
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-
-
-
-
-
-
-
-
-
-
-<div class="container cards">
-
-    <div class="row">
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/user/erondu/171x180" >
-                <div class="caption">
-                    <h5>Cucina</h5>
-                </div>
-            </div>
         </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/user/erondu/171x180" >
-                <div class="caption">
-                    <h5>Danza</h5>
+    </section>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top search">
+        <div class="container">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <button type="submit" class="btn button__search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+
+                    </div>
+
+                </form>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Dropdown
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/random/171x180" >
-                <div class="caption">
-                    <h5>Studio</h5>
+
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div v-if="getTypeSearch == 'cards'">
+
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/user/erondu/171x180" >
+                        <div class="caption">
+                            <h5>Cucina</h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/category/food/171x180" >
-                <div class="caption">
-                    <h5>Party</h5>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/user/erondu/171x180" >
+                        <div class="caption">
+                            <h5>Danza</h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/random/171x180" >
-                <div class="caption">
-                    <h5>Escursioni</h5>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/random/171x180" >
+                        <div class="caption">
+                            <h5>Studio</h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/random/171x180" >
-                <div class="caption">
-                    <h5>Sport</h5>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/category/food/171x180" >
+                        <div class="caption">
+                            <h5>Party</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/random/171x180" >
+                        <div class="caption">
+                            <h5>Escursioni</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/random/171x180" >
+                        <div class="caption">
+                            <h5>Sport</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/random/171x180" >
-                <div class="caption">
-                    <h5>Caccia</h5>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/random/171x180" >
+                        <div class="caption">
+                            <h5>Caccia</h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/random/171x180" >
-                <div class="caption">
-                    <h5>Video Games</h5>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/random/171x180" >
+                        <div class="caption">
+                            <h5>Video Games</h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/category/film/171x180" >
-                <div class="caption">
-                    <h5>Film/Serie TV</h5>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/category/film/171x180" >
+                        <div class="caption">
+                            <h5>Film/Serie TV</h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/category/nature/171x180" >
-                <div class="caption">
-                    <h5>Climbing</h5>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/category/nature/171x180" >
+                        <div class="caption">
+                            <h5>Climbing</h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/category/people/171x180" >
-                <div class="caption">
-                    <h5>Corsa</h5>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/category/people/171x180" >
+                        <div class="caption">
+                            <h5>Corsa</h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="https://source.unsplash.com/random/171x180" >
-                <div class="caption">
-                    <h5>Other</h5>
+                <div class="col-sm-6 col-md-2">
+                    <div class="thumbnail">
+                        <img src="https://source.unsplash.com/random/171x180" >
+                        <div class="caption">
+                            <h5>Other</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 
