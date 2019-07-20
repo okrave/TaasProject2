@@ -409,6 +409,24 @@ class GroupAPI {
 	}
 
 
+	createNewTag(newTag){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/createTag/` + newTag, {
+			method: "GET"
+			})
+			.then(response => response.json())
+			.then(response => {
+				console.log("asdasdads");
+				console.log(JSON.stringify(response));
+				console.log("entra in resolve");
+				resolve(response);
+			}).catch(reject);
+
+		});
+
+	}
+
+
 
 	listAllTags() {
 		return new Promise((resolve, reject) => {

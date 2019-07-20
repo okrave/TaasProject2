@@ -50,6 +50,7 @@ function initAll() {
             , locationSearch: "Torino"
             , newGroupInfo: new GroupNew()
             , creationProgression : new NewGroupProgression()
+            , allTags : []
             , tags: [
                 {id: 1, name:'Famiglia'},
                 {id: 2, name:'Montagna'},
@@ -73,7 +74,8 @@ function initAll() {
             , deactiveClass: 'btn deactiveButton'
             , googleMaps: false
             , selectedTag: []
-            ,userLogged: new UserLogged()
+            , userLogged: new UserLogged()
+            , newTag : ""
 
             //google maps
             , gMapData: {
@@ -107,6 +109,7 @@ function initAll() {
             let thisVue = this;
             this.ping();
             setTimeout( ()=>{thisVue.fetchYetExistingTags();}, 1000);
+
             this.removeLoader();
         },
         computed: {
@@ -223,6 +226,20 @@ function initAll() {
                 this.newGroupInfo.addTag(this.selectedTag);
             }
 
+            , createNewTag(){
+                console.log("Entra in createTag");
+                if(this.newTag != ""){
+                    this.toGroupAPI
+                        .getGroupEndpoint()
+                        .createNewTag(this.newTag.trim())
+                        .then(response => {
+                            this.fetchYetExistingTags();
+                            console.log("Tag created successfully :D");
+                        }).catch(this.createErrorHandler("create group"));
+                }
+
+            }
+
 
                 /*if (this.terms == true) {//disattivato
                 // 20/07/2019 Marco: usare i metodi che ho gia' fatto di newGroupInfo, o meglio della sua classe di toGroupAPI.js
@@ -325,6 +342,7 @@ function initAll() {
 
             , fetchYetExistingTags(){
                 let thisVue = this;
+                console.log("entro in fetch");
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .listAllTags()

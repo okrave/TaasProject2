@@ -108,6 +108,7 @@ public class RestGroupController {
         return groupFullDetailFromGroups(groups);
     }
 
+
     @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
     public boolean addUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
         System.out.println(userGroupInfo);
@@ -147,6 +148,12 @@ public class RestGroupController {
     @GetMapping(value="/userGroups/{id}")
     public List<GroupFullDetail> listGroupsByUserId(@PathVariable Long id){
         return groupFullDetailFromGroups(groupService.listGroupByUserId(id));
+    }
+
+    @GetMapping(value="/createTag/{name}")
+    public boolean createTag(@PathVariable String name){
+        groupService.saveTag(new AppTag(name));
+        return true;
     }
 
     //
