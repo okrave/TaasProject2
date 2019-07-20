@@ -8,7 +8,8 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'),{
         center: torino,
         zoom: 14,
-        disableDefaultUI: true
+        disableDefaultUI: true,
+        gestureHandling: 'greedy'
     });
 }
 
