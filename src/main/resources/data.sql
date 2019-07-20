@@ -51,7 +51,7 @@ create table APP_ROLE
 create table APP_TAG
 (
     TAG_ID   BIGINT not null,
-    TAG_NAME VARCHAR(30) not null,
+    NAME VARCHAR(30) not null,
     PRIMARY KEY (TAG_ID)
 ) ;
 
@@ -122,7 +122,7 @@ alter table APP_ROLE
 -- app_tag
 
 alter table APP_TAG
-    add constraint APP_TAG_UK unique (TAG_NAME);
+    add constraint APP_TAG_UK unique (name);
 
 
 -- user_role

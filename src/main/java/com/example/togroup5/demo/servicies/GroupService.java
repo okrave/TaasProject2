@@ -38,6 +38,7 @@ public class GroupService {
     }
 
     public AppGroup findGroupById(Long id){ return appGroupRepository.findAppGroupByID(id);}
+    public boolean removeGroupById(Long id){ return appGroupRepository.delete(id);}
 
     public List<AppGroup> listGroupByCreator() {
         return appGroupRepository.findDistinctByCreator("ciao");
@@ -91,7 +92,12 @@ public class GroupService {
             appGroupRepository.save(g);
             g = appGroupRepository.findDistinctByGroupName(newGroup.getGroupName()); // to load the ID
         }
-
+        if(g.getLocation() != location.getLocationId()){
+            //update
+            g.setLocation(location.getLocationId());
+            appGroupRepository.save(g);
+            g = appGroupRepository.findAppGroupByID(g.getGroupId());
+        }
 
         addMembership(g.getGroupId(),
                         //appUserRepository.findAppUserByUserName(g.getCreator()).getUserId()

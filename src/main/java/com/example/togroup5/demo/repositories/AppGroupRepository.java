@@ -76,7 +76,7 @@ public class AppGroupRepository {
         }
     }
 
-    public List<AppGroup> listGroupsByUserId(Long userId){
+    public List<AppGroup> listGroupsByUserId(Long userId) {
         try {
             String sql = "Select g from " + AppGroup.class.getName() //
                     + " g JOIN " + GroupUser.class.getName() + " gu ON (gu.groupId = g.groupId)" //
@@ -93,15 +93,16 @@ public class AppGroupRepository {
 
     public List<AppGroup> advancedSearch(GroupSearchAdvPayload filters) {
         boolean isNotFirstFilter, hasStartDate, hasEndDate;
-        String orderTagMatchAmountClause, tagMatchJoin;
+        String orderTagMatchAmountClause, tagMatchJoin, unrolledTags;
         List<SingleFilter> appliedFields;
         StringBuilder sb;
         String andConnector, sql;
         TypedQuery<AppGroup> query;
 
         if (filters == null) return null;
+        unrolledTags = null;
         try {
-            orderTagMatchAmountClause = null;
+            orderTagMatchAmountClause = tagMatchJoin = null;
             andConnector = " AND ";
             appliedFields = new LinkedList<>();
 
@@ -116,12 +117,12 @@ public class AppGroupRepository {
                 appliedFields.add(new SingleFilter("g.creator = :creator", "creator", filters.getCreator()));
             }
 
-            hasStartDate    = filters.getDateStartRange() != null;
-            hasEndDate      = filters.getDateEndRange() != null;
-            if(hasStartDate && hasEndDate){
+            hasStartDate = filters.getDateStartRange() != null;
+            hasEndDate = filters.getDateEndRange() != null;
+            if (hasStartDate && hasEndDate) {
                 appliedFields.add(new SingleFilter("g.groupDate >= :dateStartRange", "dateStartRange", filters.getDateStartRange()));
                 appliedFields.add(new SingleFilter("g.groupDate <= :dateEndRange", "dateEndRange", filters.getDateEndRange()));
-            } else if (hasStartDate ^ hasEndDate){
+            } else if (hasStartDate ^ hasEndDate) {
                 //solo uno delle due= cerchiamo la data esatta
                 Date exactDate;
                 exactDate = hasStartDate ? filters.getDateStartRange() : filters.getDateEndRange();
@@ -130,7 +131,7 @@ public class AppGroupRepository {
 
             // questo filtro deve rimanere per ultimo
 
-            if (filters.getTags() != null) {
+            if (filters.getTags() != null && filters.getTags().size() > 0) {
                 /*
                     Si filtrano quei gruppi il cui insieme di tag associati forma una intersezione non vuota con
                     l'insieme di tag fornito come filtro di ricerca, ordinando poi tali gruppi in senso decrescente.
@@ -139,13 +140,13 @@ public class AppGroupRepository {
                     servono dei test), contando poi l'ammontare di tag del gruppo effettivamente contenuti nell'insieme
                     fornito.
                  * */
-                //tagMatchJoin =
-                orderTagMatchAmountClause = //
-                        "0 < ( SELECT count(*) AS tagMatches FROM " + GroupTag.class.getName() + " gt JOIN "
-                                + AppTag.class.getName() +
-                                " tag ON (gt.tagId = tag.tagId) WHERE ((g.groupId = gt.groupId) AND (tag.name IN ANY (:tags)))";
-                appliedFields.add(new SingleFilter(orderTagMatchAmountClause, "tags", //
-                        filters.getTags().toArray(new String[filters.getTags().size()])));
+
+                tagMatchJoin = " JOIN " + GroupTag.class.getName() + " gt ON g.groupId = gt.groupId JOIN " + //
+                        AppTag.class.getName() + " tag ON gt.tagId = tag.tagId ";
+                orderTagMatchAmountClause = " (SELECT count(*) from tag WHERE tag.name IN :tags ) ";
+
+                appliedFields.add(new SingleFilter(" 0 < " + orderTagMatchAmountClause, "tags", // "", //
+                        filters.getTags()));
             }
 
             if (appliedFields.isEmpty()) return null;
@@ -153,7 +154,10 @@ public class AppGroupRepository {
             sb = new StringBuilder(32);
             sb.append("SELECT g FROM ");
             sb.append(AppGroup.class.getName());
-            sb.append(" g WHERE ");
+            sb.append(" g ");
+            if (tagMatchJoin != null)
+                sb.append(tagMatchJoin);
+            sb.append(" WHERE ");
 
             isNotFirstFilter = false;
             for (SingleFilter filter : appliedFields) {
@@ -162,16 +166,20 @@ public class AppGroupRepository {
                 isNotFirstFilter = true;
             }
 
-            if (orderTagMatchAmountClause != null)
-                sb.append(" ORDER BY tagMatches DESC ");
-
+            if (orderTagMatchAmountClause != null) {
+                sb.append(" GROUP BY g");
+                // dovrebbe essere DESC ma stranamente li ordina in senso contrario
+                sb.append(" ORDER BY count(tag.name) ASC");
+            }
             query = entityManager.createQuery(sql = sb.toString(), AppGroup.class);
             sb = null;
             System.out.println("Huge advanced group query:\n\t");
             System.out.println(sql);
             sql = null;
 
-            appliedFields.forEach(filter -> query.setParameter(filter.nameParameter, filter.parameter));
+            appliedFields.forEach(filter -> {
+                if (!"".equals(filter.nameParameter)) query.setParameter(filter.nameParameter, filter.parameter);
+            });
 
             return query.getResultList();
         } catch (NoResultException e) {
@@ -179,7 +187,18 @@ public class AppGroupRepository {
         }
     }
 
-
+    protected String unrollTagListMatch_IN_Clause(List<String> tags) {
+        StringBuilder sbTag;
+        String stringCheck;
+        final String separatorAndCheck;
+        stringCheck = "tag.name = '";
+        separatorAndCheck = "' OR " + stringCheck;
+        sbTag = new StringBuilder();
+        tags.forEach(str -> {
+            sbTag.append((sbTag.length() == 0) ? stringCheck : separatorAndCheck).append(str.trim());
+        });
+        return sbTag.append('\'').toString();
+    }
 
     static class SingleFilter {
         String nameParameter, clause;

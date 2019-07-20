@@ -79,6 +79,13 @@ public class RestGroupController {
     }
 
 
+    @RequestMapping(value = "/deleteGroup/{groupId}", method = RequestMethod.DELETE)
+    public boolean newGroup(@PathVariable("groupId") Long groupId) {
+        System.out.println("delete group: " + groupId);
+        return  groupService.removeGroupById(groupId);
+    }
+
+
 
     @GetMapping(value = "/info/{groupId}")
     public GroupFullDetail infoGroup(@PathVariable String groupId ){
@@ -292,6 +299,22 @@ public class RestGroupController {
                         },
                         new String[]{"('30.0, 30.0')", "Biella"}, // location
                         new String[]{"sci", "divertimento", "amici", "sport", "montagna", "neve"} //tags
+                }
+                , //
+                new String[][]{
+                        new String[]{ //group info
+                                "Luca", "Pesca con fiocina", "Caccia a polpi, anguille, conciglie e pesci vari.", "2019-08-05"
+                        },
+                        new String[]{"('32.0, 35.0')", "Agrigento"}, // location
+                        new String[]{"pesca", "divertimento", "amici", "sport", "pesci", "pesce", "fiocina", "caccia", "cibo", "mare", "snorkeling"} //tags
+                }
+                , //
+                new String[][]{
+                        new String[]{ //group info
+                                "Luca", "Meeting Data Science", "Meeting sulle nuove opportunita' lavorative in ambito Data Science.", "2019-09-22"
+                        },
+                        new String[]{"('35.40, 39.8')", "Torino"}, // location
+                        new String[]{"lavoro", "data science", "informatica", "meeting", "studio", "computer science", "statistica"} //tags
                 }
         };
 

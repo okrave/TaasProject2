@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "location", uniqueConstraints={@UniqueConstraint(columnNames ={"lat","lng"})})
+@Table(/*name = "location",*/ uniqueConstraints={@UniqueConstraint(columnNames ={"lat","lng"})})
 public class GoogleLocation implements Serializable {
     @Id
     @GeneratedValue
