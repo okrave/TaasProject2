@@ -92,110 +92,20 @@
 
         <div class="container">
 
+
             <div class="row">
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
+                <div class="col-sm-6 col-md-2" v-for="tag in allTags">
+                    <div class="thumbnail" @click="findGroupByTag(tag.name)">
                         <img src="https://source.unsplash.com/user/erondu/171x180" >
                         <div class="caption">
-                            <h5>Cucina</h5>
+                            <h5>{{tag.name}}</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/user/erondu/171x180" >
-                        <div class="caption">
-                            <h5>Danza</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/random/171x180" >
-                        <div class="caption">
-                            <h5>Studio</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/category/food/171x180" >
-                        <div class="caption">
-                            <h5>Party</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/random/171x180" >
-                        <div class="caption">
-                            <h5>Escursioni</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/random/171x180" >
-                        <div class="caption">
-                            <h5>Sport</h5>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/random/171x180" >
-                        <div class="caption">
-                            <h5>Caccia</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/random/171x180" >
-                        <div class="caption">
-                            <h5>Video Games</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/category/film/171x180" >
-                        <div class="caption">
-                            <h5>Film/Serie TV</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/category/nature/171x180" >
-                        <div class="caption">
-                            <h5>Climbing</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/category/people/171x180" >
-                        <div class="caption">
-                            <h5>Corsa</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-2">
-                    <div class="thumbnail">
-                        <img src="https://source.unsplash.com/random/171x180" >
-                        <div class="caption">
-                            <h5>Other</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- ------------------------------ MAPS ------------------------------------ -->
     <div v-if="getTypeSearch == 'maps'">
@@ -215,15 +125,17 @@
 
         </div>
         <div class="container">
-            <ul v-if="groupFind.length > 0 ">
-                <li v-for=" group in groupFind">
-                    <a v-bind:href="'/group_page/'+group.groupId"><img src="https://source.unsplash.com/random/40x40"
-                                                                       class="profile-image img-circle"> &nbsp;{{group.groupName}}</a>
+            <ul v-if="groupFind.length > 0 " style="list-style-type: none">
+                <li><h3>{{new Date(inputDate).toLocaleString('it-IT', {'weekday': 'long', 'month': 'long', 'day': '2-digit'})}}</h3></li>
+                <li v-for=" group in groupFind" class="groupName">
+                    <ul style="list-style-type: none">
+                        <li><h4><a v-bind:href="'/group_page/'+group.groupId">&nbsp {{group.groupName}}</a></h4></li>
 
-                    <hr>
-                </li>
+                        <li> <img src="https://source.unsplash.com/random/40x40" class="profile-image img-circle">Parteciperanno all'evento: {{group.members.length}} Persone</li>
+                        <li> Location: {{group.location.name}}</li>
+                    </ul>
+                 </li>
             </ul>
-
         </div>
 
 
@@ -241,6 +153,9 @@
                 <li v-for=" group in groupFind">
                     <a v-bind:href="'/group_page/'+group.groupId"><img src="https://source.unsplash.com/random/40x40"
                                                                        class="profile-image img-circle"> &nbsp;{{group.groupName}}</a>
+                    {{group.description}}
+                    {{group.creator}}
+                    {{group.groupDate}}
 
                     <hr>
                 </li>

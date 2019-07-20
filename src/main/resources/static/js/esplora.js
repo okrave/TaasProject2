@@ -75,7 +75,9 @@ window.onload = _ =>{
             map : null,
             service: null,
             infowindow: null,
-            myLocation: "torino"
+            myLocation: "torino",
+            allTags : [],
+            filteredTags : []
 
         },
 
@@ -102,7 +104,10 @@ window.onload = _ =>{
                 document.getElementById('appGroupEsplora').style.visibility = 'visible';
             }
 
+            ,findGroupByTag(tagName){
+                console.log(tagName);
 
+            }
 
             ,mapsSearch(){
                 this.typeSearch = "maps";
@@ -124,6 +129,17 @@ window.onload = _ =>{
             ,tagsSearch(){
                 document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "tags";
+                let thisVue = this;
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .listAllTags()
+                    .then(response => {
+                        if(response != null && response !== undefined && response.length > 0) {
+                            console.log(response);
+                            thisVue.allTags = thisVue.filteredTags = response;
+                        }
+                })
+            .catch(this.createErrorHandler("list all tags"));
             }
 
             ,dateSearch(){
