@@ -28,10 +28,6 @@ public class AppMessageRepository {
     private AppMessageJpa appMessageJpa;
 
 
-    @Autowired
-    private EntityManager entityManager;
-
-
     public void save(AppMessage message){
         appMessageJpa.save(message);
     }
