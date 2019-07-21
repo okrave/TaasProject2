@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository("AppMessageRepository")
+@Transactional
 public class AppMessageRepository {
 
     @Autowired
@@ -37,11 +38,9 @@ public class AppMessageRepository {
     }
 
 
-    /*
-    public AppMessage findAppMessageByID(Long messageId){ return appMessageJpa.getOne(messageId); }
-    public List<AppMessage> findAppMessageByGroupID(Long groupId){ return appMessageJpa.findAllByGroupId(); }
-    public List<AppMessage> findAppMessageByUserId(Long userId){ return appMessageJpa.findAllByUserId(); }
-*/
+    public List<AppMessage> findAllByGroupId(Long groupId){
+        return findAppMessageByGroupId(groupId);
+    }
 
     public AppMessage findAppMessageById(Long messageId){
         return appMessageJpa.getOne(messageId);
@@ -50,7 +49,6 @@ public class AppMessageRepository {
     public List<AppMessage> findAppMessageByGroupId(Long groupId){
         String sql = "Select e from " + AppMessage.class.getName() + " e " //
                 + " Where e.groupId= :groupId ";
-
         Query query = entityManager.createQuery(sql, AppMessage.class);
         query.setParameter("groupId", groupId);
         return query.getResultList();
@@ -82,6 +80,4 @@ public class AppMessageRepository {
             return null;
         }
     }
-
-    
 }

@@ -55,6 +55,26 @@ create table APP_TAG
     PRIMARY KEY (TAG_ID)
 ) ;
 
+create table APP_MESSAGE
+(
+
+    private Long messId;
+
+    private Long groupId;
+
+    private Long userId;
+
+    private String testo;
+
+    private Date dateCreation;
+
+    MESS_ID   BIGINT not null,
+    GROUP_ID   BIGINT not null,
+    USER_ID   BIGINT not null,
+    TESTO VARCHAR(512) not null,
+    PRIMARY KEY (MESS_ID)
+) ;
+
 create table USER_ROLE
 (
     ID      BIGINT not null,
@@ -124,6 +144,17 @@ alter table APP_ROLE
 alter table APP_TAG
     add constraint APP_TAG_UK unique (TAG_NAME);
 
+
+-- app_message
+
+
+alter table APP_MESSAGE
+    add constraint APP_MESSAGE_FK_USER foreign key (USER_ID)
+        references APP_USER(USER_ID);
+
+alter table APP_MESSAGE
+    add constraint APP_MESSAGE_FK_GROUP foreign key (GROUP_ID)
+        references APP_GROUP(GROUP_ID);
 
 -- user_role
 
