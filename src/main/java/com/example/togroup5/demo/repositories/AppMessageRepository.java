@@ -27,4 +27,8 @@ public class AppMessageRepository {
     public AppMessage findAppMessageByID(Long messageId){
         return appMessageJpa.getOne(messageId);
     }
+
+    public AppMessage findAppMessageByGroupID(Long groupId){
+       return null;
+    }
 }

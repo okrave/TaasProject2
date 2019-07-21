@@ -16,6 +16,8 @@ public class AppMessage implements Serializable {
 
     private Long userId;
 
+    private Long groupId;
+
     public AppMessage(){}
 
     public Long getMessId() {
