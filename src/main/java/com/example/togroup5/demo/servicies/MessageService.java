@@ -5,11 +5,16 @@ import com.example.togroup5.demo.entities.payloadsResults.MessageQueryPayload;
 import com.example.togroup5.demo.repositories.AppMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 import java.sql.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class MessageService {
 
     @Autowired
@@ -26,6 +31,7 @@ public class MessageService {
 
     public AppMessage findAppMessageById(Long userId){
         return appMessageRepository.findAppMessageById(userId);
+
     }
 
     public List<AppMessage> findAppMessageByGroupId(Long groupId){
@@ -36,6 +42,7 @@ public class MessageService {
         return appMessageRepository.findAppMessageByUserId(userId);
     }
 
+
     public boolean saveMessage(AppMessage m){
         appMessageRepository.save(m);
         return true;
@@ -44,4 +51,5 @@ public class MessageService {
     public List<AppMessage> fetchMessages(MessageQueryPayload msgQuery){
         return appMessageRepository.fetchMessages(msgQuery);
     }
+
 }

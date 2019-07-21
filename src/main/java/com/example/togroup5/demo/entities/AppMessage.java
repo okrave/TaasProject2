@@ -60,6 +60,7 @@ public class AppMessage implements Serializable {
         this.groupId = groupId;
     }
 
+
     public Date getDateCreation() {
         return dateCreation;
     }
@@ -78,4 +79,5 @@ public class AppMessage implements Serializable {
                 ", testo='" + testo + '\'' +
                 '}';
     }
+
 }

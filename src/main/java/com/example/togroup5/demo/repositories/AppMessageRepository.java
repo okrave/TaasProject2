@@ -10,13 +10,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
 import javax.persistence.NoResultException;
+
 import javax.persistence.Query;
 import javax.validation.constraints.Max;
 import java.util.List;
+import java.util.Optional;
 
 @Repository("AppMessageRepository")
-@Transactional
 public class AppMessageRepository {
 
     @Autowired
@@ -25,7 +27,10 @@ public class AppMessageRepository {
     @Autowired
     private AppMessageJpa appMessageJpa;
 
-    //
+
+    @Autowired
+    private EntityManager entityManager;
+
 
     public void save(AppMessage message){
         appMessageJpa.save(message);
@@ -49,6 +54,7 @@ public class AppMessageRepository {
     public List<AppMessage> findAppMessageByGroupId(Long groupId){
         String sql = "Select e from " + AppMessage.class.getName() + " e " //
                 + " Where e.groupId= :groupId ";
+
         Query query = entityManager.createQuery(sql, AppMessage.class);
         query.setParameter("groupId", groupId);
         return query.getResultList();
@@ -80,4 +86,6 @@ public class AppMessageRepository {
             return null;
         }
     }
+
+    
 }
