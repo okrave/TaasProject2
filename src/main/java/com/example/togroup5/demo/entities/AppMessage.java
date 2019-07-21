@@ -49,4 +49,12 @@ public class AppMessage implements Serializable {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
 }

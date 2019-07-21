@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "Group")
@@ -29,6 +30,39 @@ public class RestGroupController {
 
     @Autowired
     MessageService messageService;
+
+    //-------------------------------------Messaggi--------------------------------
+
+    @GetMapping(value = "/createMessage")
+    public void createMessage(){
+        messageService.save();
+    }
+
+    @GetMapping(value="/findMessageById/{id}")
+    public AppMessage findMessageById(@PathVariable Long id){
+        return messageService.findAppMessageByID(id);
+    }
+
+    @GetMapping(value="/findAllMessage")
+    public List<AppMessage> findAllMessage(){
+        return messageService.findAll();
+    }
+
+    @GetMapping(value="/findMessageByUserId/{id}")
+    public List<AppMessage> findMessageByUserId(@PathVariable Long id){
+        return messageService.findAppMessageByUserId(id);
+    }
+
+    @GetMapping(value="/findMessageByGroupId/{id}")
+    public List<AppMessage> findMessageByGroupId(@PathVariable Long id){
+        return messageService.findAppMessageByGroupId(id);
+    }
+
+
+
+
+
+    //-------------------------------------Fine Messaggi---------------------------
 
     @GetMapping(value = "/listGroupSimple")
     public List<AppGroup> listGroup() {
@@ -149,10 +183,6 @@ public class RestGroupController {
         return (guf != null && guf.gu != null);
     }
 
-    @GetMapping(value = "/createMessage")
-    public void createMessage(){
-
-    }
 
     @GetMapping(value="/userGroups/{id}")
     public List<GroupFullDetail> listGroupsByUserId(@PathVariable Long id){
