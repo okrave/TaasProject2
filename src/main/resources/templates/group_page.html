@@ -27,7 +27,7 @@
                 <div class="groupHomeHeader-groupName"><h1>{{this.groupInfo.groupName}}</h1></div>
                 <div class="groupHomeHeader-info">
                     <div class="groupHomeHeader-groupData"><i class="far fa-calendar-alt"></i> {{this.groupInfo.data}}</div>
-                    <div  ><i class="fas fa-map-marker-alt"></i> {{this.groupInfo.location.name}}</div>
+                    <div  ><i class="fas fa-map-marker-alt"></i> {{this.groupInfo.location == null ? '' : this.groupInfo.location.name}}</div>
                     <div><i class="fas fa-users"></i> {{this.groupInfo.members.length}} membri</div>
                     <div class="groupHomeHeader-groupCreator"><i class="far fa-user"></i> Organizzato da <a v-bind:href="'/userPage/'+getCreatorId" >{{this.groupInfo.creator}}</a></div>
                     <hr style="margin-top: 10px;margin-bottom: 10px">
@@ -81,14 +81,14 @@
                             <ul class="containerFlex flexFlowCol msgListPanel w100">
                                 <li class="containerFlex flexFlowRow msgDetail w100"
                                     v-for="(msg, index) in groupMessages"
-                                    v-key="index"
+                                    v-bind:key="index"
                                     >
-                                    <div class="w-5">{{index}}</div>
+                                    <div class="w5">{{index}}</div>
                                     <div class="containerFlex flexFlowCol dateSender w25">
                                         <p>{{msg.userName}}</p>
                                         <p>{{msg.dateCreation}}</p>
                                     </div>
-                                    <div class="msgTextContainer w-70 h100">
+                                    <div class="msgTextContainer w70 h100">
                                         <div> <!-- questo div serve per fare da pannello ed avere come altezza la somma delle altezze di tutti i messaggi, divenendo enorme -->
                                             <!-- textarea cols="50" readonly wrap="soft" -->
                                             <div class="msgText"
