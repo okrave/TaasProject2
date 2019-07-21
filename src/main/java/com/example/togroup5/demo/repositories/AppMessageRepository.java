@@ -29,6 +29,10 @@ public class AppMessageRepository {
     }
 
     public AppMessage findAppMessageByGroupID(Long groupId){
-       return null;
+       return appMessageJpa.findAllByGroupId();
+    }
+
+    public AppMessage findAppMessageByUserId(Long userId){
+        return appMessageJpa.findAllByUserId();
     }
 }

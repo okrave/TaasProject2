@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface AppMessageJpa extends JpaRepository<AppMessage,Long>{
 
+    AppMessage findAllByGroupId();
+
+    AppMessage findAllByUserId();
+
 }
