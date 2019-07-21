@@ -57,17 +57,6 @@ create table APP_TAG
 
 create table APP_MESSAGE
 (
-
-    private Long messId;
-
-    private Long groupId;
-
-    private Long userId;
-
-    private String testo;
-
-    private Date dateCreation;
-
     MESS_ID   BIGINT not null,
     GROUP_ID   BIGINT not null,
     USER_ID   BIGINT not null,
