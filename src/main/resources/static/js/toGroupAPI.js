@@ -250,8 +250,8 @@ class GroupAPI {
 
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/isMember`, {
-			method: "PATCH",
-				headers: { 'content-type': 'application/json' },
+			method: "PATCH"
+			, headers: { 'content-type': 'application/json' },
 			body: JSON.stringify(groupMember)
 		})
 		.then(response => response.json())
@@ -270,7 +270,7 @@ class GroupAPI {
 		return new Promise((resolve, reject) => {
 				fetch(this.baseURL + `/removeMember`, {
 				method: "PATCH",
-					headers: { 'content-type': 'application/json' },
+				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify(groupMember)
 			})
 			.then(response => response.json())
@@ -287,7 +287,7 @@ class GroupAPI {
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/addMember`, {
 				method: "PATCH",
-					headers: { 'content-type': 'application/json' },
+				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify(groupMember)
 			})
 			.then(response => response.json())
@@ -341,8 +341,8 @@ class GroupAPI {
 	searchGroups(filters) {
 		return new Promise((resolve, reject) => {
 			fetch(this.baseURL + `/advGroupSearch`, {
-				method: "PATCH",
-				headers: { 'content-type': 'application/json' },
+				method: "PATCH"
+				, headers: { 'content-type': 'application/json' },
 				body: JSON.stringify(filters)
 				})
 				.then(response => response.json())
@@ -448,6 +448,40 @@ class GroupAPI {
 
 	}
 
+	fetchMessages(msgQueryPayload){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/fetchMessages`, {
+				method: "PATCH" // TODO dovrebbe essere una GET, lo diventera' appena si trova il modo di passare un oggetto nella query in modo automatico
+				, headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(msgQueryPayload)
+			})
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
+		});
+	}
+	sendMessage(messageNewPayload){
+		return new Promise((resolve, reject) => {
+			fetch(this.baseURL + `/sendMessage`, {
+				method: "POST"
+				, headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(messageNewPayload)
+			})
+				.then(response => response.json())
+				.then(response => {
+					if (checkResponseHoldsErrors(response)) {
+						reject(response);
+					}
+					resolve(response);
+				})
+				.catch(reject);
+		});
+	}
 }
 
 class UserLogged {
@@ -457,7 +491,7 @@ class UserLogged {
 		this.id = 0;
 	}
 
-	reloadUserInfo(){
+	reloadUserInfo(callback = null){
 		var userName;
 		userName = localStorage.getItem('connectedUserName');
 		if (userName) {
@@ -465,6 +499,8 @@ class UserLogged {
 			this.username = userName;
 			this.id = localStorage.getItem('connectedUserId');
 			console.log("In group page user loggato: "+ userName);
+			if(callback != null)
+				callback(this);
 			return true;
 		}
 		this.isLogged = false;
@@ -671,5 +707,19 @@ class GroupFullDetail extends GroupNew {
 		super(creator, groupName, location, tags, groupDate, description, creatorId);
 		this.groupId = groupId;
 		this.members = members;
+	}
+}
+
+class MessageQueryPayload {
+	constructor(groupId = null, dateStart = null) {
+		this.groupId = groupId;
+		this.dateStart = dateStart;
+	}
+}
+class MessageNewPayload {
+	constructor(userId = null, groupId = null, testo = "") {
+		this.userId = userId;
+		this.groupId = groupId;
+		this.testo = testo;
 	}
 }

@@ -1,3 +1,7 @@
+var app;
+
+const RELOAD_MSG_INTERVAL = 5000;
+
 window.onload = _ =>{
 
     $(document).ready(function(){
@@ -15,36 +19,35 @@ window.onload = _ =>{
         el:"#appGroupPage",
         data: {
             toGroupAPI : new ToGroup()
-            ,groupInfo: new GroupFullDetail() /*{
-                groupId: "",
-                groupName: "",
-                groupDate: "",
-                creator: "",
-                description: "",
-                locationId: "",
-                tags: [],
-                members: []
-            }*/
-            ,groupInfo2: null
+            ,groupInfo: new GroupFullDetail()
             ,listElement: 0
             ,listUser : []
             ,currentUrl : ""
             ,userLogged: new UserLogged()
             , isUserMember: false
+
+            //messages:
+            , newMessage: new MessageNewPayload()
+            , msgFilter: new MessageQueryPayload()
+            , groupMessages: []
+            , msgUpdaterIntervalID: 0
         },
         mounted(){
-            this.userLogged.reloadUserInfo();
+            var thisVue;
+            thisVue = this;
+            this.userLogged.reloadUserInfo(ul => {
+                thisVue.newMessage.userId = ul.id;
+            });
             this.recalculateIsMember();
+            this.getAllUser();
+            this.reloadMessageList();
         },
 
         created(){
-
             this.currentUrl = window.location.pathname;
             this.loadGroup();
             this.ping();
-            this.getAllUser();
             this.removeLoader();
-
         },
 
         computed:{
@@ -54,6 +57,13 @@ window.onload = _ =>{
 
             , getCreatorId(){
                 return this.groupInfo.creatorId;
+            }
+            , lastMsgDate() {
+                var lastMsg;
+                if(this.groupMessages == null || this.groupMessages === undefined || this.groupMessages.length == 0)
+                    return null;
+                lastMsg = this.groupMessages[this.groupMessages.length - 1];
+                return lastMsg.dateCreation;
             }
         },
 
@@ -79,13 +89,12 @@ window.onload = _ =>{
                     });
             }
             ,addGroupMember(){
-
-                groupMember = new MemberGroupPayload(this.userLogged.id,this.userLogged.username,this.groupInfo.groupId);
+                let groupMember = new MemberGroupPayload(this.userLogged.id,this.userLogged.username,this.groupInfo.groupId);
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .addGroupMember(groupMember)
                     .then(resp => {
-                        console.log("paginaGruppo:D");
+                        console.log("paginaGruppo:D - add g member");
                         console.log(JSON.stringify(resp));
                         this.loadGroup();
                         //this.groupInfo.members = resp.members;
@@ -95,7 +104,7 @@ window.onload = _ =>{
             },
 
             removeGroupMember(){
-                groupMember = new MemberGroupPayload(this.userLogged.id,this.userLogged.username,this.groupInfo.groupId);
+                let groupMember = new MemberGroupPayload(this.userLogged.id,this.userLogged.username,this.groupInfo.groupId);
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .removeGroupMember(groupMember)
@@ -111,7 +120,13 @@ window.onload = _ =>{
 
             ,setListElement(liNumber){
                 this.listElement = liNumber;
-                console.log(this.listElement)
+                console.log(this.listElement);
+                if(liNumber == 2){
+                    //messages
+                    this.restartMsgUpdater();
+                } else {
+                    this.stopMsgUpdater();
+                }
             }
 
             ,createErrorHandler(methodName){
@@ -127,43 +142,91 @@ window.onload = _ =>{
                     .getUserEndpoint()
                     .getAllUsers()
                     .then(resp => {
-                    console.log("tuttiGliUtenti:D");
-                console.log(JSON.stringify(resp));
-                this.listUser = resp;
-
-            })
+                        console.log("tuttiGliUtenti:D");
+                        console.log(JSON.stringify(resp));
+                        this.listUser = resp;
+                    })
             }
 
             ,loadGroup(){
-                piecesUrl = this.currentUrl.split("/");
-                groupId = piecesUrl[piecesUrl.length-1];
+                var piecesUrl = this.currentUrl.split("/");
+                var groupId = piecesUrl[piecesUrl.length-1];
                 console.log(groupId);
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .getGroupInfo(groupId)
                     .then(resp => {
-                    console.log("paginaGruppo:D");
-                    console.log(JSON.stringify(resp));
-                    this.groupInfo.creatorId = resp.creatorId;
-                    this.groupInfo.creator = resp.creator;
-                    this.groupInfo.groupName = resp.groupName;
-                    this.groupInfo.data = resp.groupDate;
-                    this.groupInfo.description = resp.description;
-                    this.groupInfo.groupId = resp.groupId;
-                    this.groupInfo.locationId = resp.location.locationId;
-                    this.groupInfo.location = resp.location;
-                    this.groupInfo.members = resp.members;
-                    this.groupInfo.tags = resp.tags;
-                    this.toGroupAPI.isLoaded = true;
+                        var gId;
+                        console.log("paginaGruppo:D - load group");
+                        console.log(JSON.stringify(resp));
+                        gId = resp.groupId;
+                        this.groupInfo.creatorId = resp.creatorId;
+                        this.groupInfo.creator = resp.creator;
+                        this.groupInfo.groupName = resp.groupName;
+                        this.groupInfo.data = resp.groupDate;
+                        this.groupInfo.description = resp.description;
+                        this.groupInfo.groupId = gId;
+                        this.groupInfo.locationId = resp.location.locationId;
+                        this.groupInfo.location = resp.location;
+                        this.groupInfo.members = resp.members;
+                        this.groupInfo.tags = resp.tags;
+                        this.toGroupAPI.isLoaded = true;
 
-                    this.recalculateIsMember();
-                })
+                        this.msgFilter.groupId = gId;
+                        this.newMessage.groupId = gId;
 
-            .catch(this.createErrorHandler("register"));
+                        this.recalculateIsMember();
+                    })
+                    .catch(this.createErrorHandler("register"));
 
             }
             ,ping(){
                 this.toGroupAPI.ping().then( resp => console.log("pinged :D " + resp) );
+            }
+
+            , restartMsgUpdater(){
+                var thisVue = this;
+                this.reloadMessageList();
+                this.msgUpdaterIntervalID = setInterval(
+                    //this.reloadMessageList
+                    function () {
+                        console.log("reload message list");
+                        thisVue.reloadMessageList();
+                    }
+                    , RELOAD_MSG_INTERVAL);
+            }
+            , stopMsgUpdater(){
+                clearInterval(this.msgUpdaterIntervalID);
+            }
+            , reloadMessageList(){
+                this.msgFilter.dateStart = this.lastMsgDate;
+                console.log("Reloading msg from date: " + this.msgFilter.dateStart);
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .fetchMessages(this.msgFilter)
+                    .then(resp => {
+                        const msgs = resp.messages;
+                        if(msgs != null || msgs !== undefined)
+                            this.groupMessages = msgs;
+                    })
+                    .catch(err =>{
+                        console.log(err);
+                        this.stopMsgUpdater();
+                    });
+            }
+
+            , sendMessage(){
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .sendMessage(this.newMessage)
+                    .then(resp => {
+                        if(resp) this.newMessage.testo = "";
+                    })
+                    .catch(err => console.log(err))
+            }
+
+            , splitTextToLines(text){
+                return text.split("\n");
             }
 
         }

@@ -71,8 +71,47 @@
                     Non ci sono membri in questo gruppo.
                 </div>
             </div>
-            <div v-if = "listElement == 2">
-                Messaggi
+            <div v-if = "listElement == 2"
+                 class="containerFlex flexFlowCol"
+                >
+                <div class="w100">
+                    <div class="w100"
+                            v-if="groupMessages.length > 0">
+                       <div class="msgListContainer w100">
+                            <ul class="containerFlex flexFlowCol msgListPanel w100">
+                                <li class="containerFlex flexFlowRow msgDetail w100"
+                                    v-for="(msg, index) in groupMessages"
+                                    v-key="index"
+                                    >
+                                    <div class="w-5">{{index}}</div>
+                                    <div class="containerFlex flexFlowCol dateSender w25">
+                                        <p>{{msg.userName}}</p>
+                                        <p>{{msg.dateCreation}}</p>
+                                    </div>
+                                    <div class="msgTextContainer w-70 h100">
+                                        <div> <!-- questo div serve per fare da pannello ed avere come altezza la somma delle altezze di tutti i messaggi, divenendo enorme -->
+                                            <!-- textarea cols="50" readonly wrap="soft" -->
+                                            <div class="msgText"
+                                                v-for="part in splitTextToLines(msg.testo)"
+                                                >{{part}}
+                                                <br v-if='part == ""'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                       </div>
+                    </div>
+                    <p v-else>Nessun commento ancora e' stato lasciato</p>
+                </div>
+                <div class="containerFlex flexFlowRow">
+                    <textarea
+                            v-model="newMessage.testo"
+                            name="msgText" cols="50" rows="5"
+                    ></textarea>
+                    <button @click="sendMessage()" >Send</button>
+                </div>
+
             </div>
             <div v-if = "listElement == 3">
                 <div class="Foto">

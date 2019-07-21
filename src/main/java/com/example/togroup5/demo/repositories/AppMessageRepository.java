@@ -29,24 +29,28 @@ public class AppMessageRepository {
     private AppMessageJpa appMessageJpa;
 
 
-    public void save(AppMessage message){
+    public void save(AppMessage message) {
         appMessageJpa.save(message);
     }
 
-    public List<AppMessage> findAll(){
+    public List<AppMessage> findAll() {
         return appMessageJpa.findAll();
     }
 
+    public void removeAll() {
+        appMessageJpa.deleteAll();
+    }
 
-    public List<AppMessage> findAllByGroupId(Long groupId){
+
+    public List<AppMessage> findAllByGroupId(Long groupId) {
         return findAppMessageByGroupId(groupId);
     }
 
-    public AppMessage findAppMessageById(Long messageId){
+    public AppMessage findAppMessageById(Long messageId) {
         return appMessageJpa.getOne(messageId);
     }
 
-    public List<AppMessage> findAppMessageByGroupId(Long groupId){
+    public List<AppMessage> findAppMessageByGroupId(Long groupId) {
         String sql = "Select e from " + AppMessage.class.getName() + " e " //
                 + " Where e.groupId= :groupId ";
         Query query = entityManager.createQuery(sql, AppMessage.class);
@@ -54,7 +58,7 @@ public class AppMessageRepository {
         return query.getResultList();
     }
 
-    public List<AppMessage> findAppMessageByUserId(Long userId){
+    public List<AppMessage> findAppMessageByUserId(Long userId) {
         String sql = "Select e from " + AppMessage.class.getName() + " e " //
                 + " Where e.userId = :userId ";
         Query query = entityManager.createQuery(sql, AppMessage.class);
@@ -62,18 +66,18 @@ public class AppMessageRepository {
         return query.getResultList();
     }
 
-    public List<AppMessage> fetchMessages(MessageQueryPayload msgQuery){
+    public List<AppMessage> fetchMessages(MessageQueryPayload msgQuery) {
         try {
-            String sql ;
+            String sql;
             Query query;
             sql = "SELECT m FROM " + AppMessage.class.getName() //
                     + " m WHERE m.groupId = :groupId";
-            if(msgQuery.getDateStart() != null)
+            if (msgQuery.getDateStart() != null)
                 sql = sql + " AND m.dateCreation >= :dateStart";
 
             query = entityManager.createQuery(sql, AppMessage.class);
             query.setParameter("groupId", msgQuery.getGroupId());
-            if(msgQuery.getDateStart() != null)
+            if (msgQuery.getDateStart() != null)
                 query.setParameter("dateStart", msgQuery.getDateStart());
             return query.getResultList();
         } catch (NoResultException e) {

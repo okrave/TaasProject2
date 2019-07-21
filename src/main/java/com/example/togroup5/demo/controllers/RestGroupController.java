@@ -164,37 +164,58 @@ public class RestGroupController {
     //-------------------------------------Messaggi--------------------------------
 
     @GetMapping(value = "/createMessage")
-    public void createMessage(){
+    public void createMessage() {
         messageService.save();
     }
 
-    @GetMapping(value="/findMessageById/{id}")
-    public AppMessage findMessageById(@PathVariable Long id){
+    @RequestMapping(value = "/removeAllMessages", method = RequestMethod.DELETE)
+    public void removeAllMessages(){
+        messageService.removeAll();
+    }
+
+    @GetMapping(value = "/findMessageById/{id}")
+    public AppMessage findMessageById(@PathVariable Long id) {
         return messageService.findAppMessageById(id);
     }
 
-    @GetMapping(value="/findAllMessage")
-    public List<AppMessage> findAllMessage(){
+    @GetMapping(value = "/findAllMessage")
+    public List<AppMessage> findAllMessage() {
         return messageService.findAll();
     }
 
-    @GetMapping(value="/findMessageByUserId/{id}")
-    public List<AppMessage> findMessageByUserId(@PathVariable Long id){
+    @GetMapping(value = "/findMessageByUserId/{id}")
+    public List<AppMessage> findMessageByUserId(@PathVariable Long id) {
         return messageService.findAppMessageByUserId(id);
     }
 
-    @GetMapping(value="/findMessageByGroupId/{id}")
-    public List<AppMessage> findMessageByGroupId(@PathVariable Long id){
+    @GetMapping(value = "/findMessageByGroupId/{id}")
+    public List<AppMessage> findMessageByGroupId(@PathVariable Long id) {
         return messageService.findAppMessageByGroupId(id);
     }
-
 
 
     @PostMapping(value = "/sendMessage")
     public boolean sendMessage(@RequestBody MessageNewPayload msgNew) {
         Date dateNow;
         AppMessage m;
+        String text;
+        final int MAX_MSG_LENGTH = 255; // deciso a livello di database
         dateNow = new Date(System.currentTimeMillis());
+        text = msgNew.getTesto();
+        if (text.length() > MAX_MSG_LENGTH) {
+            /*messaggio troppo lungo: spezziamolo in sottoparti*/
+            boolean res;
+            int i, len;
+            len = text.length();
+            i = 0;
+            res = true;
+            while (i < len) {
+                m = new AppMessage(text.substring(i, Math.min(i += MAX_MSG_LENGTH, len))//
+                        , msgNew.getUserId(), msgNew.getGroupId(), dateNow);
+                res &= messageService.saveMessage(m);
+            }
+            return res;
+        }
         m = new AppMessage(msgNew.getTesto(), msgNew.getUserId(), msgNew.getGroupId(), dateNow);
         return messageService.saveMessage(m);
     }

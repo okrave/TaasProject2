@@ -88,3 +88,51 @@
     margin-bottom: 2%;
 
 }
+
+.containerFlex {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+}
+.flexFlowRow{
+    flex-flow: row;
+}
+.flexFlowCol{
+    flex-flow: column;
+}
+.msgListContainer {
+    overflow-y: auto;
+    max-height: 400px;
+    height: 400px;
+}
+.msgListPanel {
+    overflow: hidden;
+}
+.w100 { width: 100%; }
+.w25  { width: 25%; }
+.w75  { width: 75%; }
+.h100 { height: 100%; }
+.msgDetail {
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 5px #9d9d9d;
+    max-height: 200px;
+}
+.dateSender{
+    border-radius: 5px;
+}
+.msgDetail, .msgTextContainer{
+    border: 1px solid #a0a0a0;
+}
+
+.msgTextContainer {
+    overflow-y: auto;
+    max-height: 200px; /*come msgDetail*/
+}
+.msgText{
+    max-height: 500px;
+    max-width: 800px;
+    text-wrap: normal;
+}
