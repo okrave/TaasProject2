@@ -1,10 +1,8 @@
 package com.example.togroup5.demo.controllers;
 
 import com.example.togroup5.demo.entities.*;
-import com.example.togroup5.demo.entities.newEntities.AppGroupNew;
-import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
-import com.example.togroup5.demo.entities.payloadsResults.GroupFullDetail;
-import com.example.togroup5.demo.entities.payloadsResults.MemberGroupPayload;
+import com.example.togroup5.demo.entities.payloadsResults.AppGroupNew;
+import com.example.togroup5.demo.entities.payloadsResults.*;
 import com.example.togroup5.demo.servicies.GroupService;
 import com.example.togroup5.demo.servicies.MessageService;
 import com.example.togroup5.demo.servicies.UserService;
@@ -22,8 +20,9 @@ public class RestGroupController {
 
     @Autowired
     GroupService groupService;
+
     @Autowired
-    RestHomeController x;
+    RestHomeController restHomeController;
 
     @Autowired
     UserService userService;
@@ -117,22 +116,20 @@ public class RestGroupController {
     }
 
 
-
     @GetMapping(value = "/info/{groupId}")
-    public GroupFullDetail infoGroup(@PathVariable String groupId ){
-        AppGroup newGroup ;
+    public GroupFullDetail infoGroup(@PathVariable String groupId) {
+        AppGroup newGroup;
         GroupFullDetail gfd;
         System.out.println("groupId:" + groupId);
         newGroup = groupService.findGroupById(Long.valueOf(groupId));
-        if(newGroup == null)
+        if (newGroup == null)
             return null;
 
-        System.out.println("Il gruppo:"+ newGroup.getGroupName());
+        System.out.println("Il gruppo:" + newGroup.getGroupName());
         gfd = fetchGroupDetails(newGroup);
-        System.out.println(x.toString());
+        System.out.println(gfd.toString());
         return gfd;
     }
-
 
 
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.PATCH)
@@ -148,27 +145,27 @@ public class RestGroupController {
 
 
     @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
-    public boolean addUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
+    public boolean addUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo) {
         System.out.println(userGroupInfo);
         UserGroupFound guf;
         guf = fetchGroupUser(userGroupInfo);
-        if(guf == null){
+        if (guf == null) {
             System.out.println("errore fetchGroupUser");
             return false; // error
         }
-        if(guf.gu != null) return true; // yet present but it's not an error. TODO: is it an error?
+        if (guf.gu != null) return true; // yet present but it's not an error. TODO: is it an error?
 
         groupService.addMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId());
         return true;
     }
 
     @RequestMapping(value = "/removeMember", method = RequestMethod.PATCH)
-    public boolean removeUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo){
+    public boolean removeUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo) {
 
         UserGroupFound guf;
         guf = fetchGroupUser(userGroupInfo);
-        if(guf == null) return false; // error
-        if(guf.gu == null) return true; // not present but it's not an error. TODO: is it an error?
+        if (guf == null) return false; // error
+        if (guf.gu == null) return true; // not present but it's not an error. TODO: is it an error?
 
         groupService.removeMembershipByGroupUserId(guf.gu.getId());
         return true;
@@ -176,37 +173,99 @@ public class RestGroupController {
 
 
     @RequestMapping(value = "/isMember", method = RequestMethod.PATCH)
-    public boolean isMember(@RequestBody MemberGroupPayload userGroupInfo){
-        System.out.println("Dentro isMember: "+ userGroupInfo);
+    public boolean isMember(@RequestBody MemberGroupPayload userGroupInfo) {
+        System.out.println("Dentro isMember: " + userGroupInfo);
         UserGroupFound guf;
         guf = fetchGroupUser(userGroupInfo);
         return (guf != null && guf.gu != null);
     }
 
 
-    @GetMapping(value="/userGroups/{id}")
-    public List<GroupFullDetail> listGroupsByUserId(@PathVariable Long id){
+    @GetMapping(value = "/userGroups/{id}")
+    public List<GroupFullDetail> listGroupsByUserId(@PathVariable Long id) {
         return groupFullDetailFromGroups(groupService.listGroupByUserId(id));
     }
 
-    @GetMapping(value="/createTag/{name}")
-    public boolean createTag(@PathVariable String name){
+    @GetMapping(value = "/createTag/{name}")
+    public boolean createTag(@PathVariable String name) {
         groupService.saveTag(new AppTag(name));
         return true;
     }
 
+
+    @PostMapping(value = "/sendMessage")
+    public boolean sendMessage(@RequestBody MessageNewPayload msgNew) {
+        Date dateNow;
+        AppMessage m;
+        dateNow = new Date(System.currentTimeMillis());
+        m = new AppMessage(msgNew.getTesto(), msgNew.getUserId(), msgNew.getGroupId(), dateNow);
+        return messageService.saveMessage(m);
+    }
+
+
+    @RequestMapping(value = "/fetchMessages", method = RequestMethod.PATCH)
+    public MessagesGroupResponse fetchMessages(@RequestBody MessageQueryPayload msgQuery) {
+        List<MessageSent> msgs;
+        List<AppMessage> fetchedMsgs;
+
+        fetchedMsgs = messageService.fetchMessages(msgQuery);
+        if (fetchedMsgs == null) return null;
+        msgs = new ArrayList<>(fetchedMsgs.size());
+        fetchedMsgs.forEach(m -> {
+                    AppUser user;
+                    user = restHomeController.infoUser(m.getUserId());
+                    if (user != null)
+                        msgs.add(new MessageSent(m, user.getUserName()));
+                    else
+                        throw new NullPointerException("On fetching group " + m.getGroupId() + " 's messages, cannot find user with id: " + m.getUserId());
+                }
+        );
+        return new MessagesGroupResponse(msgQuery.getGroupId(), msgs);
+    }
+
+    @GetMapping(value = "/createMessage")
+    public void createMessage(){
+        messageService.save();
+    }
+
+    @GetMapping(value="/findMessageById/{id}")
+    public AppMessage findMessageById(@PathVariable Long id){
+        return messageService.findAppMessageById(id);
+    }
+
+
+    @GetMapping(value="/findAllMessage")
+    public List<AppMessage> findAllMessage(){
+        return messageService.findAll();
+    }
+
+    @GetMapping(value="/findMessageByUserId/{id}")
+    public List<AppMessage> findMessageByUserId(@PathVariable Long id){
+        return messageService.findAppMessageByUserId(id);
+    }
+
+    @GetMapping(value="/findMessageByGroupId/{id}")
+    public List<AppMessage> findMessageByGroupId(@PathVariable Long id){
+        return messageService.findAppMessageByGroupId(id);
+    }
+
+
     //
 
-    protected UserGroupFound fetchGroupUser(MemberGroupPayload userGroupInfo){
+    //
+
+    //
+
+    protected UserGroupFound fetchGroupUser(MemberGroupPayload userGroupInfo) {
         AppGroup group;
         GroupUser gu;
-        if(userGroupInfo == null || userGroupInfo.getGroupId() == null || userGroupInfo.getUserId() == null ||
+        if (userGroupInfo == null || userGroupInfo.getGroupId() == null || userGroupInfo.getUserId() == null ||
                 (userGroupInfo.getUserName() == null || "".equals(userGroupInfo.getUserName().toLowerCase())))
             return null;
         group = groupService.findGroupById(userGroupInfo.getGroupId());
-        if(group == null) return null;
+        if (group == null) return null;
         // TODO the following call should be performed without explicitly call the userService instance
-        if(! userService.containsUser(userGroupInfo.getUserId()))
+        if (!userService.containsUser(userGroupInfo.getUserId()))
             return null;
         return new UserGroupFound(groupService.findMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId()));
     }
@@ -217,7 +276,7 @@ public class RestGroupController {
         GroupFullDetail gfd;
         if (groups == null) return null;
         gts = new ArrayList<>(groups.size());
-        for (AppGroup g : groups){
+        for (AppGroup g : groups) {
             gfd = fetchGroupDetails(g);
             gfd.setLocation(groupService.findLocationById(g.getLocation()));
             gts.add(gfd);
@@ -225,7 +284,7 @@ public class RestGroupController {
         return gts;
     }
 
-    protected GroupFullDetail fetchGroupDetails(AppGroup g){
+    protected GroupFullDetail fetchGroupDetails(AppGroup g) {
         return new GroupFullDetail(g,//
                 // userService.findAppUserByUserName(g.getCreator()).getUserId(), // 20-07-2019: già fornito dalla creazione front-end: solo gli utenti loggati possono creare gruppi.
                 groupService.listTagsByAppGroupId(g.getGroupId()),//
@@ -240,7 +299,7 @@ public class RestGroupController {
     //@RequestMapping(value = "/createAll", method = RequestMethod.POST)
     @PostMapping(value = "/createAll")
     public void createDefaults() {
-        this.x.createUsers();
+        this.restHomeController.createUsers();
         createAllTag();
         createAllGroup();
     }
@@ -261,7 +320,7 @@ public class RestGroupController {
                 newTag = new AppTag(tag.toLowerCase());
                 groupService.saveTag(newTag);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -357,7 +416,8 @@ public class RestGroupController {
     protected class UserGroupFound {
         //boolean found;
         GroupUser gu;
-        protected UserGroupFound(GroupUser gu){
+
+        protected UserGroupFound(GroupUser gu) {
             //found = false;
             this.gu = gu;
         }

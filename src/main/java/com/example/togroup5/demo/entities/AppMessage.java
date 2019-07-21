@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.sql.Date;
 
 @Entity
 public class AppMessage implements Serializable {
@@ -14,16 +15,17 @@ public class AppMessage implements Serializable {
 
     private String testo;
 
-    private Long userId;
+    private Long userId, groupId;
 
-    private Long groupId;
+    private Date dateCreation;
 
     public AppMessage(){}
 
-    public AppMessage(String testo, Long userId, Long groupId) {
+    public AppMessage(String testo, Long userId, Long groupId, Date dateCreation) {
         this.testo = testo;
         this.userId = userId;
         this.groupId = groupId;
+        this.dateCreation = dateCreation;
     }
 
     public Long getMessId() {
@@ -57,4 +59,25 @@ public class AppMessage implements Serializable {
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
+
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    @Override
+    public String toString() {
+        return "AppMessage{" +
+                "messId=" + messId +
+                ", userId=" + userId +
+                ", groupId=" + groupId +
+                ", dateCreation=" + dateCreation +
+                ", testo='" + testo + '\'' +
+                '}';
+    }
+
 }
