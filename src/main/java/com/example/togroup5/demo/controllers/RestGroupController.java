@@ -6,6 +6,7 @@ import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
 import com.example.togroup5.demo.entities.payloadsResults.GroupFullDetail;
 import com.example.togroup5.demo.entities.payloadsResults.MemberGroupPayload;
 import com.example.togroup5.demo.servicies.GroupService;
+import com.example.togroup5.demo.servicies.MessageService;
 import com.example.togroup5.demo.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ public class RestGroupController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    MessageService messageService;
 
     @GetMapping(value = "/listGroupSimple")
     public List<AppGroup> listGroup() {
@@ -143,6 +147,11 @@ public class RestGroupController {
         UserGroupFound guf;
         guf = fetchGroupUser(userGroupInfo);
         return (guf != null && guf.gu != null);
+    }
+
+    @GetMapping(value = "/createMessage")
+    public void createMessage(){
+
     }
 
     @GetMapping(value="/userGroups/{id}")

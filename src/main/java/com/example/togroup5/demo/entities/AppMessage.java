@@ -20,6 +20,12 @@ public class AppMessage implements Serializable {
 
     public AppMessage(){}
 
+    public AppMessage(String testo, Long userId, Long groupId) {
+        this.testo = testo;
+        this.userId = userId;
+        this.groupId = groupId;
+    }
+
     public Long getMessId() {
         return messId;
     }
