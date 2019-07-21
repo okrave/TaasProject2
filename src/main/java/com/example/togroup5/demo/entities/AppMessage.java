@@ -13,9 +13,11 @@ public class AppMessage implements Serializable {
     @GeneratedValue
     private Long messId;
 
-    private String testo;
+    private Long groupId;
 
-    private Long userId, groupId;
+    private Long userId;
+
+    private String testo;
 
     private Date dateCreation;
 
