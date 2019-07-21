@@ -1,7 +1,7 @@
 package com.example.togroup5.demo.controllers;
 
 import com.example.togroup5.demo.entities.AppUser;
-import com.example.togroup5.demo.entities.newEntities.AppUserRegistration;
+import com.example.togroup5.demo.entities.payloadsResults.AppUserRegistration;
 import com.example.togroup5.demo.entities.payloadsResults.UserLoginPayload;
 import com.example.togroup5.demo.servicies.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,9 +105,9 @@ public class RestHomeController {
 
 
     @GetMapping(value = "/User/info/{userId}")
-    public AppUser infoUser(@PathVariable String userId) {
+    public AppUser infoUser(@PathVariable Long userId) {
         System.out.println("groupId:" + userId);
-        AppUser newUser = userService.findUserById(new Long(userId));
+        AppUser newUser = userService.findUserById(userId);
 
         return newUser;
     }
@@ -133,7 +133,11 @@ public class RestHomeController {
     }
 
 
+    //
+
     // populate db with default staffs
+
+    //
 
     @GetMapping(value = "/User/createUser")
     public void createUsers() {
@@ -160,10 +164,5 @@ public class RestHomeController {
         // create role and RoleUser
     }
 
-    @RequestMapping("/login-user")
-    public AppUser loginUser(@ModelAttribute AppUser user, HttpServletRequest request) {
-        return userService.findByUsernameAndPassword(user.getUserName(), user.getEncrytedPassword());
-
-    }
 
 }

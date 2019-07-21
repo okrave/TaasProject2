@@ -1,7 +1,7 @@
 package com.example.togroup5.demo.servicies;
 
 import com.example.togroup5.demo.entities.*;
-import com.example.togroup5.demo.entities.newEntities.AppGroupNew;
+import com.example.togroup5.demo.entities.payloadsResults.AppGroupNew;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
 import com.example.togroup5.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
