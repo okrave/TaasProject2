@@ -2,6 +2,12 @@
 function logoutCustom(){
     localStorage.removeItem('connectedUserName');
     localStorage.removeItem('connectedUserId');
+
+    $.post("/logout", function() {
+        $("#user").html('');
+        $(".unauthenticated").show();
+        $(".authenticated").hide();
+    });
 }
 
 

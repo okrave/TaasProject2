@@ -38,18 +38,20 @@
                         <div class="form-group">
                             <input type="text"
                                    class="form-control"
-                                   placeholder="Search by group's title"
+                                   placeholder="Search by title of group"
                                    v-model="inputGroupName">
 
                             <input type="text"
                                    class="form-control"
-                                   placeholder="Search by creator's name"
+                                   placeholder="Search by userName creatore"
                                    v-model="inputCreator">
 
                             <button @click="userOrGroupSearch()" type="submit" class="btn button__search"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 
+
                         </div>
+
                     </div>
                     <div class=" searchNav">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
@@ -69,6 +71,23 @@
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
+
+        <!--
+        <div class="form-group">
+            <input type="text"
+                   class="form-control"
+                   placeholder="Search by title of group"
+                   v-model="inputGroupName">
+
+            <input type="text"
+                   class="form-control"
+                   placeholder="Search by userName creatore"
+                   v-model="inputCreator">
+
+            <button @click="userOrGroupSearch()" type="submit" class="btn button__search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+
+        </div>
+        -->
 
         <!-- ------------------------------ TAGS ------------------------------------ -->
         <div v-if="getTypeSearch == 'tags'">
@@ -93,23 +112,32 @@
         <!-- ------------------------------ DATA ------------------------------------ -->
         <div v-if="getTypeSearch == 'date'">
             <div class="container">
-                <label>Start date<input class="calendarGroup"
-                                        type="date"
-                                        name="groupDateStart"
-                                        v-model="inputDateStart"
-                                        value="2020-01-01"
-                                        data-date-inline-picker="true">
-                </label>
-                <label>End date<input class="calendarGroup"
-                                      type="date"
-                                      name="groupDateEnd"
-                                      v-model="inputDateEnd"
-                                      value="2020-01-01"
-                                      data-date-inline-picker="true">
-                </label>
+                <input class="calendarGroup"
+                       type="date"
+                       name="groupDate"
+                       v-model="inputDate"
+                       value="2020-01-01"
+                       data-date-inline-picker="true">
                 <button @click="dateSearchGroup()" type="submit" class="btn button__search"><span
                         class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 
+            </div>
+            <div class="container">
+                <ul v-if="groupFind != null && groupFind.length > 0 " style="list-style-type: none">
+                    <li><h3>{{new Date(inputDate).toLocaleString('it-IT', {'weekday': 'long', 'month': 'long', 'day':
+                        '2-digit'})}}</h3></li>
+                    <li v-for="group in groupFind" class="groupName">
+                        <ul style="list-style-type: none">
+                            <li><h4><a v-bind:href="'/group_page/'+group.groupId">&nbsp {{group.groupName}}</a></h4>
+                            </li>
+
+                            <li><img src="https://source.unsplash.com/random/40x40" class="profile-image img-circle">Parteciperanno
+                                all'evento: {{group.members.length}} Persone
+                            </li>
+                            <li> Location: {{group.location.name}}</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
 
 
@@ -118,12 +146,28 @@
 
         <!-- ------------------------------ USER OR GROUPNAME ------------------------------------ -->
 
+        <div v-if="getTypeSearch == 'userOrGroup'">
+            <div class="container">
+                <ul v-if="groupFind != null && groupFind.length > 0">
+                    <li v-for="group in groupFind">
+                        <a v-bind:href="'/group_page/'+group.groupId"><img
+                                src="https://source.unsplash.com/random/40x40"
+                                class="profile-image img-circle"> &nbsp;{{group.groupName}}</a>
+                        {{group.description}}
+                        {{group.creator}}
+                        {{group.groupDate}}
+
+                        <hr>
+                    </li>
+                </ul>
+                USER OR GROUPNAME
+            </div>
+        </div>
+
 
         <!--
         rifatta da Marco 22-07-2019
         -->
-
-        <!-- ------------------------------ RICERCA AVANZATA ------------------------------------ -->
 
 
         <div id="advSearch"
@@ -222,13 +266,14 @@
                 <div id="subSectionNewTag"
                      class="w100 containerFlex flexFlowRow"
                 >
-                    <div class="w35">Inventa un Tag o<br>Cerca qui sotto</div>
+                    <div class="w35">Inventa un Tag<br>o<br>Cerca qui sotto</div>
                     <input type="text"
                            class="w50"
                            v-model="tagNewAndFilter"
                            placeholder="Type the new Tag or the filter for existing ones"
                            @input="applyFilter"
                     >
+                    <!-- TODO non so se funziona questa riga ...-->
                     <button class="w15" @click="addTag()">Aggiungi tag</button>
                 </div>
 
@@ -242,62 +287,36 @@
                             @click="addTagFromExisting(tag.name)">
                         {{tag.name}}
                     </button>
+                    <!--  TODO cose da fare:
+                        - usare tagNewAndFilter per filtrare i tag
+                        - elencare dei pulsanti dei tag filtrati (@"
+                        - tale elenco va a capo da solo (wrap)
+                    -->
                 </div>
             </div>
         </div>
 
-        <!-- ------------------------------ VISUALIZZAZIONE RISULTATI ------------------------------------ -->
-
-
         <div v-if="groupFind != null && groupFind.length > 0 " class="borderNice">
             <ul>
                 <li v-for="group in groupFind">
-                    <div v-if="group !== undefined && group != undefined"
-                         class="container containerFlex flexFlowCol">
-                        <div class="w100 containerFlex flexFlowRow">
-                            <div class="containerFlex flexFlowCol w25">
+                    <div class="container containerFlex flexFlowCol">
+                        <div class="w100">
+                            <div class="containerFlex flexFlowCol w35">
                                 <a v-bind:href="'/group_page/' + group.groupId"><img
-                                        src="https://source.unsplash.com/random/40x40">
-                                    {{group.groupName}}
-                                </a>
-                                <div>Creatore: {{group.creator}}</div>
-                                <div>Data: {{group.groupDate}}</div>
-                                <div>Location: {{group.location.name}}</div>
+                                        src="https://source.unsplash.com/random/40x40"
+                                    <div>Creatore: {{group.creator}}</div>
+                                    <div>Data: {{group.groupDate}}</div>
+                                    <div>Location: {{group.location.name}}</div>
+                                    <div>Membri: {{group.members.length}}</div>
                             </div>
-                            <div class="w50">
-                                <p>Descrizione:</p>
-                                <div class="containerFlex flexFlowCol overFlowY mh200">
-                                    <div
-                                            v-for="part in splitTextToLines(group.description)"
-                                    >{{part}}
-                                        <br v-if='part == ""'>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--
-                            <textarea class="w50" rows="8" cols="256" readonly>
+                            <textarea class="w65" rows="10" cols="100">
                                 {{group.description}}
                             </textarea>
-                            -->
-                            <div class="w25">
-                                <p>Membri: {{group.members.length}}</p>
-                                <div class="containerFlex flexFlowCol overFlowY mh200">
-                                    <div>
-                                        <div class="borderNice membersList"
-                                             v-for="member in group.members"
-                                        >
-                                            {{member.userName}}
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="w100 containerFlex flexFlowRow overFlowY">
                             <div class="btnTag borderNice" v-for="tag in group.tags">{{tag.name}}</div>
                         </div>
                     </div>
-                    <div v-else>group undefined</div>
                     <hr>
                 </li>
             </ul>

@@ -110,6 +110,13 @@
 .msgListPanel {
     overflow: hidden;
 }
+.tagListContainer{
+    overflow-x: auto;
+    max-height: 400px;
+}
+.tagElement{
+    border: 1px solid #a0a0a0;
+}
 .w100 { width: 100%; }
 .w5   { width: 5%; }
 .w25  { width: 25%; }

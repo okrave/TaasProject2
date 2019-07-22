@@ -15,7 +15,7 @@ function initMap() {
 }
 
 function createInfoWindows(group) {
-
+    if(group == null || group === undefined) return;
     var groupTitle = group.groupName;
     var groupCreator = group.creator;
     var groupData = group.groupDate;
@@ -71,7 +71,8 @@ window.onload = _ => {
             typeSearch: "tags",
             inputGroupName: "",
             inputCreator: "",
-            inputDate: null,
+            inputDateStart: "",
+            inputDateEnd: "",
             groupFind: [],
             map: null,
             service: null,
@@ -79,48 +80,37 @@ window.onload = _ => {
             myLocation: "torino",
 
             //tags
-            tagNewAndFIlter: "", // agisce sia come "nuovo tag" che come filtro di quelli gia' esistenti
+            tagNewAndFilter: "", // agisce sia come "nuovo tag" che come filtro di quelli gia' esistenti
             allTags: [],
             filteredTags: [],
             filterTags: ""
 
-            , filters: new GroupSearch()/*{
-                groupName: "",
-                creatorMember: "", //name, not id
-                isSearchingByCreator: true, // if false, search by member
-                dateStartRnge: null,
-                dateEndRAnge: null,
-                location: null,
-                maxDistance: 0.0,
-                tags: []
-            }*/
-            /*
-            GroupSearch
-	            (creator="", groupName="", location=null, tags=null,
-				dateStartRange=null, dateEndRange=null, maxDistance="0.0")
-            * */
+            , filters: new GroupSearch()
         },
 
         mounted() {
             this.userLogged.reloadUserInfo();
             this.fetchYetExistingTags();
-        },
-
-        created() {
             this.removeLoader();
         },
 
+        created() {
+        },
+
         computed: {
-            getTypeSearch: function () {
-                return this.typeSearch;
+            isLogged(){
+                return (this.userLogged != null && this.userLogged  !== undefined) ? this.userLogged.isLogged : false;
             }
 
             , getFilteredTags() {
                 if (this.filterTags === '') {
                     return this.allTags;
                 }
-                this.applyFilter();
-                return this.filteredTags;
+                return (this.filteredTags != null && this.filteredTags !== undefined) ? this.filteredTags : this.allTags;
+            }
+
+            , getTypeSearch () {
+                return this.typeSearch;
             }
 
             , getSelectedTagsAsList() { // deprecated
@@ -134,8 +124,20 @@ window.onload = _ => {
                 document.getElementById('appGroupEsplora').style.visibility = 'visible';
             }
 
+            , createErrorHandler(methodName) {
+                let thisVue = this;
+                return function (err) {
+                    console.log("Error on method: " + methodName);
+                    console.log(err.status + " - " + err.error + "\n-----\n" + err.message);
+                }
+            }
+
             , switchFilterCreatorOrMember() {
-                this.filters.creatorMember = !this.filters.creatorMember;
+                this.filters.isSearchingByCreator = !this.filters.isSearchingByCreator;
+            }
+
+            , splitTextToLines(text){
+                return text.split("\n");
             }
 
             , searchLocationThroughGoogleMaps() {
@@ -144,28 +146,34 @@ window.onload = _ => {
             }
 
             , addTag() {
-                if (this.filters.addTag(this.tagNewAndFIlter.trim())) {
-                    this.tagNewAndFIlter = "";
+                if (this.filters.addTag(this.tagNewAndFilter.trim())) {
+                    this.tagNewAndFilter = "";
                 }
             }
             , addTagFromExisting(tag) {
-                let prevTag = this.tagNewAndFIlter;
-                this.tagNewAndFIlter = tag.trim();
+                let prevTag = this.tagNewAndFilter;
+                this.tagNewAndFilter = tag.trim();
                 this.addTag();
-                this.tagNewAndFIlter = prevTag;
+                this.tagNewAndFilter = prevTag;
             }
             , removeTag(tag, index) {
                 this.filters.removeTag(tag, index);
             }
             , applyFilter() {
-                if (this.tagNewAndFIlter == null || this.tagNewAndFIlter === '') {
+                let filter, tagsFiltered;
+                if (this.tagNewAndFilter == null || this.tagNewAndFilter === '') {
+                    this.filteredTags = this.allTags;
                     return;
                 }
-                let filter = this.tagNewAndFIlter.trim();
-                this.filteredTags = this.allTags.filter(record => {
+                filter = this.tagNewAndFilter.trim();
+                tagsFiltered = this.allTags.filter(record => {
                     record = record["name"];
                     return record === filter || record.includes(filter);
                 });
+                if(tagsFiltered != null && tagsFiltered !== undefined)
+                    this.filteredTags = tagsFiltered;
+                else
+                    this.filteredTags = this.allTags;
             }
 
             , fetchYetExistingTags() {
@@ -176,16 +184,39 @@ window.onload = _ => {
                     .then(response => {
                         if (response == null || response === undefined)
                             console.log("response null on list all tags");
-                        else
-                            thisVue.allTags = thisVue.filteredTags = response;
+                        else {
+                            try {
+                                this.allTags = response;
+                                thisVue.filteredTags = response;
+                            } catch(err) {
+                                console.log(err);
+                            }
+                        }
                     })
                     .catch(this.createErrorHandler("list all tags"));
             }
+
+
+            , searchAdvanced() {
+                document.getElementById('map').style.visibility = 'hidden';
+                console.log("searching:\n\t " + JSON.stringify(this.filters));
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .searchGroups(this.filters)
+                    .then(response => {
+                        this.groupFind = response;
+                        // this.viewGroupFind();
+                    }).catch(this.createErrorHandler("adv search group"));
+            }
+
+
             /*
+            custom searches
             * */
 
             , findGroupByTag(tagName) {
-                console.log(tagName);
+                this.filters.resetFields().addTag(tagName);
+                this.searchAdvanced();
             }
 
             , mapsSearch() {
@@ -206,83 +237,31 @@ window.onload = _ => {
             }
 
             , tagsSearch() {
-                document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "tags";
-                let thisVue = this;
-                this.toGroupAPI
-                    .getGroupEndpoint()
-                    .listAllTags()
-                    .then(response => {
-                        if (response != null && response !== undefined && response.length > 0) {
-                            console.log(response);
-                            thisVue.allTags = thisVue.filteredTags = response;
-                        }
-                    })
-                    .catch(this.createErrorHandler("list all tags"));
+                var tags = this.filters.tags;
+                this.filters.resetFields();
+                this.filters.tags = tags;
+                this.searchAdvanced();
             }
 
             , dateSearch() {
-                document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "date";
-
-            }
-
-            , dateSearchGroup() {
-                var filters = new GroupSearch();
-
-                if (this.inputDate != null) {
-                    filters.setDate(this.inputDate);
-                    this.searchGroup(filters);
+                if (this.inputDateStart != null && this.inputDateStart != "" && this.inputDateEnd != "" && this.inputDateEnd != null) {
+                    this.filters.resetFields();
+                    this.filters.setDateStart(this.inputDateStart);
+                    this.filters.setDateEnd(this.inputDateEnd);
+                    this.searchAdvanced();
                 }
             }
 
             , userOrGroupSearch() {
-                document.getElementById('map').style.visibility = 'hidden';
-                this.typeSearch = "userOrGroup";
-
-                var filters = new GroupSearch();
                 var isIn = false;
-                if (this.inputCreator != "") {
-                    filters.setCreator(this.inputCreator);
-                    isIn = true;
-
-                }
-
-                if (this.inputGroupName != "") {
-                    filters.setGroupName(this.inputGroupName);
-                    isIn = true;
-                }
-
-                if (isIn)
-                    this.searchGroup(filters);
-
-            }
-
-            , searchAdvanced() {
-                // TODO to be implemented
-                console.log("ricerca avanzata");
-            }
-            , searchGroup(filters) {
-                this.toGroupAPI
-                    .getGroupEndpoint()
-                    .searchGroups(filters)
-                    .then(response => {
-                        console.log("Risposta search group: ");
-                        console.log(response[0]);
-                        console.log("tutta la response search group: ");
-                        console.log(JSON.stringify(response));
-                        this.groupFind = response;
-                        this.viewGroupFind();
-                    }).catch(this.createErrorHandler("create group"));
-
-            }
-
-
-            , createErrorHandler(methodName) {
-                let thisVue = this;
-                return function (err) {
-                    console.log("Error on method: " + methodName);
-                    console.log(err.status + " - " + err.error + "\n-----\n" + err.message);
+                this.typeSearch = "userOrGroup";
+                if ( (this.inputCreator != "" && this.inputCreator != null) || (this.inputGroupName != "" && this.inputGroupName != null)){
+                    this.filters.resetFields();
+                    this.filters.setCreator(this.inputCreator);
+                    this.filters.setGroupName(this.inputGroupName);
+                    this.searchAdvanced();
                 }
             }
         }

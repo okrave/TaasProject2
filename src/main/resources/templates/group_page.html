@@ -43,10 +43,11 @@
                 <li id="li2" role="presentation" @click="setListElement(1)"><a >Membri<span class="badge">{{this.groupInfo.members.length}}</span></a></li>
                 <li id="li3" role="presentation" @click="setListElement(2)"><a >Messages <span class="badge">3</span></a></li>
                 <li id="li4" role="presentation" @click="setListElement(3)"><a >Foto <span class="badge">5</span></a></li>
+                <li id="li5" role="presentation" @click="setListElement(4)"><a >Tags <span class="badge"> {{(groupInfo != null && groupInfo.tags != null) ? groupInfo.tags.length : 0}}</span></a></li>
                 <li class = "navbar-right" role="presentation">
                     <div v-if="isUserLogged">
-                        <button class="btn btn-primary btn-lg" role="button" v-if = "isUserMember" @click="removeGroupMember()">Esci dal gruppo</button>
-                        <button class="btn btn-primary btn-lg" role="button" v-else @click="addGroupMember()">Unisciti al gruppo </button>
+                        <button class="btn btn-primary btn-lg" role="button" v-if = "isUserMember" @click="removeGroupMember()">Esci</button>
+                        <button class="btn btn-primary btn-lg" role="button" v-else @click="addGroupMember()">Unisciti</button>
                     </div>
                     <div v-else><a href="/Home">Fai il login per partecipare</a></div>
                 </li>
@@ -123,6 +124,18 @@
 
                 </div>
 
+            </div>
+
+            <div class="tagListContainer" v-if = "listElement == 4">
+                <div class="containerFlex flexFlowCol"
+                     v-if="groupInfo != null && groupInfo.tags != null && groupInfo.tags.length > 0"
+                >
+                    <div class="tagElement"
+                         v-for="tag in groupInfo.tags"
+                    >
+                        <p> {{tag.name}} </p>
+                    </div>
+                </div>
             </div>
 
         </div>

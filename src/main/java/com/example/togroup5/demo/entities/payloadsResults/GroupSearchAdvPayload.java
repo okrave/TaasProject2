@@ -38,6 +38,7 @@ public class GroupSearchAdvPayload implements Serializable {
             @JsonProperty("dateEndRange") Date dateEndRange,
             @JsonProperty("maxDistance") Double maxDistance,
             @JsonProperty("tags") List<String> tags) {
+        this.isSearchingByCreator = isSearchingByCreator;
         this.creatorMember = creatorMember;
         this.groupName = groupName;
         this.location = location;

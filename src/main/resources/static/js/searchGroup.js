@@ -41,6 +41,10 @@ window.onload = _ => {
 			this.ping();
 		}
 		, computed: {
+			isLogged(){
+				return (this.userLogged != null && this.userLogged  !== undefined) ? this.userLogged.isLogged : false;
+			},
+
 			getFilteredTags(){
 				if(this.filterTags === '') {
 					return this.allTags;

@@ -6,6 +6,7 @@ import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
 import com.example.togroup5.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +59,10 @@ public class GroupService {
 
     public void saveGroup(AppGroup newGroup) {
         appGroupRepository.save(newGroup);
+    }
+
+    public boolean deleteGroupById( Long groupId){
+        return appGroupRepository.delete(groupId);
     }
 
     public void createGroup(AppGroupNew newGroup) {

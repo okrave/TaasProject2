@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml"
       xmlns:v-if="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Search Group</title>
+    <title>New Group</title>
 
     <!--
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,16 +73,9 @@
                                         <!--
                         <button @click="getLocationFromAddress()">Cerca con Google</button>
                     -->
-
                                 </div>
-
-
                             </div>
-
-
                         </div>
-
-
                     </div>
 
                     <div v-if="creationProgression.actualStep == 1">
@@ -92,7 +85,7 @@
                             <h1 class="gruppo-titolo">Scegli qualche argomento che descriva gli interessi del tuo gruppo</h1>
                             <p>Cerca di essere specifico! In questo modo ci aiuterai a proporre il tuo gruppo alle persone giuste </p>
                             <input type="text"
-                                   :value = "selectedTag"
+                                   :value = "selectedTags"
                                    class="form-control"
                                    placeholder="Inserisci Tag"
                                    readonly >
