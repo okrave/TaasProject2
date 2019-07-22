@@ -1,21 +1,17 @@
-html,body{height: 100%;background-color: lightgrey;}
+html,body{height: 100%;background-color: white;}
 
-.container-fluid{
-    padding-right: 0px;
-    padding-left: 0px;
+#appLoginRegister{
+    visibility: hidden;
 }
 
-.navbar-inverse{
-    border-radius: 0;
-    border-color: transparent;
-    margin: 0;
+.dropdown-menu{
+    min-width: 132px;
 }
 
-
-.navbar-brand{width: 200px; background-size: contain;background-repeat: no-repeat; margin: 2%;padding: 0;}
-#button__search{padding: 0;height: 34px;width: 30px; background-color: white;}
-
-
+.navbar-nav>li>a.creaNuovoGruppo{
+    color:brown;
+    opacity: 5%;
+}
 
 .cover{
     height: 80%;
@@ -72,27 +68,45 @@ CARDS
 .post__intestazione__titolo{font-size: 22px; margin-top: 20px;margin-left: 25px;display: block;float: left;}
 .post__intestazione__link{float: right;display: block; margin-top: 20px;margin-right: 25px;font-size: 15px;color: blue;}
 
-.thumbnail{max-width: 30%;margin: 1.6%;float: left;border: 0;padding: 0;box-shadow: 0 2px 10px #424242;}
+.thumbnail{
+    width: 22%;
+    max-width: 22%;
+    max-height: 500px;
+    margin: 1.5%;
+    float: left;
+    padding: 0;
+    box-shadow: 0 2px 10px #424242;
+    border-radius: 60px 60px 60px 60px;
+    -moz-border-radius: 60px 60px 60px 60px;
+    -webkit-border-radius: 60px 60px 60px 60px;
+
+}
+.thumbnail a>img, .thumbnail>img {
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 60px 60px 00px 40px;
+    border: 2px solid white;
+    width: 100%;
+}
 .thumbnail:hover{box-shadow:
         2px  2px 20px #424242,
         -2px -2px 20px #424242,
         2px -2px 20px #424242,
         -2px  2px 20px #424242;
 }
-.thumbnail > img {
-    width: 100%;
-}
 
-.carousel-inner{padding: 10px;}
-.img-circle{ margin: 4%; float: left;border-style: solid;border-width: 2px;border-color: black;}
+.caption>h3{margin-top: 10px;}
+.caption>p{margin: 5px;}
+.carousel-inner{padding: 10px 5% 10px 5%;}
 
-.organizzato{margin-top: 2px;padding-right: 10%; padding-top: 19px; font-size: 14px;float: left;}
+.card__footer{padding: 9px;}
 
-
-.link_card{color: black; font-size: 15px;display: inline-block; padding-top: 19px;padding-right: 3%;}
-
+.immagine_creatore{ margin: 3%; float: left;border-style: solid;border-width: 2px;border-color: black;}
+.organizzato{ font-size: 14px;float: left;margin-top: 7%;}
+.link_card{color: black; font-size: 15px;display: inline-block;margin-top: 10px;}
 
 
+.clearfix{clear: both;}
 
 
 
@@ -109,7 +123,7 @@ CARDS
     border-style: solid;
     border-color: black;
     border-width: 2px;
-    border-radius: 8px;
+    border-radius: 60px;
     box-shadow: 0 6px 10px #424242;
     text-align: center;
 }
@@ -118,6 +132,7 @@ CARDS
     font-size:16px;
     color: darkred;
     font-weight: 700;
+
 }
 
 .month{
@@ -132,6 +147,7 @@ CARDS
 .carousel-indicators li.active{background-color: #212121;}
 .carousel-indicators li{background-color: #616161;}
 .indicators{padding-top: 40px;}
+
 
 
 

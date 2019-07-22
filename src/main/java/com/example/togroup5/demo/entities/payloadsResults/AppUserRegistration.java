@@ -1,11 +1,13 @@
-package com.example.togroup5.demo.entities.newEntities;
+package com.example.togroup5.demo.entities.payloadsResults;
 
 import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.utils.EncryptedPasswordUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class AppUserRegistration {
+import java.io.Serializable;
+
+public class AppUserRegistration implements Serializable {
 
     private String userName;
     private String password;

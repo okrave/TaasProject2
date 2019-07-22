@@ -1,9 +1,10 @@
 package com.example.togroup5.demo.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class GroupTag {
+public class GroupTag implements Serializable {
 
     @Id
     @GeneratedValue

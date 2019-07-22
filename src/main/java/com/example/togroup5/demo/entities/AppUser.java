@@ -5,9 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.io.Serializable;
+import java.sql.Date;
+import java.util.Calendar;
 
 @Entity
-public class AppUser {
+public class AppUser implements Serializable {
 
     @Id
     @GeneratedValue
@@ -22,6 +25,8 @@ public class AppUser {
 
     private Integer enabled;
 
+    private Date dateCreated;
+
     public AppUser (){}
 
     public AppUser(String userName, String encrytedPassword, String userEmail, boolean enabled) {
@@ -29,6 +34,7 @@ public class AppUser {
         this.encrytedPassword = encrytedPassword;
         this.userEmail  = userEmail;
         this.enabled = enabled?1:0;
+        this.dateCreated = new java.sql.Date(Calendar.getInstance().getTime().getTime());
     }
 
     public Long getUserId() {
@@ -76,6 +82,6 @@ public class AppUser {
     }
 
     public String toString(){
-        return "{userName:"+ this.userEmail+ ", password: "+ this.encrytedPassword  +"}";
+        return "{id:"+ userId + "userName:"+ this.userEmail+ ", password: "+ this.encrytedPassword  +"}";
     }
 }

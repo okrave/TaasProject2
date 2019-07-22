@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -40,4 +41,10 @@ public class GroupController {
         return "searchGroup";
     }
 
+
+    @GetMapping(value = "/group_page/{id}")
+    public String group_page(@PathVariable(required = false) String id){
+        System.out.println(id);
+        return "group_page";
+    }
 }

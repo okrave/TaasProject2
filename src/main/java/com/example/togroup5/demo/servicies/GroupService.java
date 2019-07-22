@@ -1,17 +1,12 @@
 package com.example.togroup5.demo.servicies;
 
-import com.example.togroup5.demo.entities.AppGroup;
-import com.example.togroup5.demo.entities.AppTag;
-import com.example.togroup5.demo.entities.GoogleLocation;
-import com.example.togroup5.demo.entities.GroupTag;
-import com.example.togroup5.demo.entities.newEntities.AppGroupNew;
+import com.example.togroup5.demo.entities.*;
+import com.example.togroup5.demo.entities.payloadsResults.AppGroupNew;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
-import com.example.togroup5.demo.repositories.AppGroupRepository;
-import com.example.togroup5.demo.repositories.AppTagRepository;
-import com.example.togroup5.demo.repositories.GroupTagRepository;
-import com.example.togroup5.demo.repositories.LocationRepository;
+import com.example.togroup5.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,11 +26,19 @@ public class GroupService {
     @Autowired
     private LocationRepository locationRepository;
 
+    @Autowired
+    private AppUserRepository appUserRepository;
+
+    @Autowired
+    private GroupUserRepository groupUserRepository;
+
     // list all
 
     public List<AppGroup> listAllGroup() {
         return appGroupRepository.findAll();
     }
+
+    public AppGroup findGroupById(Long id){ return appGroupRepository.findAppGroupByID(id);}
 
     public List<AppGroup> listGroupByCreator() {
         return appGroupRepository.findDistinctByCreator("ciao");
@@ -58,6 +61,10 @@ public class GroupService {
         appGroupRepository.save(newGroup);
     }
 
+    public boolean deleteGroupById( Long groupId){
+        return appGroupRepository.delete(groupId);
+    }
+
     public void createGroup(AppGroupNew newGroup) {
         AppGroup g;
         AppTag t;
@@ -66,8 +73,18 @@ public class GroupService {
 
         location = newGroup.getLocation();
         try {
-            locationRepository.save(location);
-            location = locationRepository.findGoogleLocationByLatAndLng(location.getLat(), location.getLng());
+            GoogleLocation locationYetPresent;
+            locationYetPresent = locationRepository.findGoogleLocationByLatAndLng(location.getLat(), location.getLng());
+            if(locationYetPresent == null){
+                System.out.println("location saved: " + location);
+                locationRepository.save(location);
+                location = locationRepository.findGoogleLocationByLatAndLng(location.getLat(), location.getLng());
+            }else {
+                location = locationYetPresent;
+            }
+            newGroup.setLocation(location);
+            // get the id
+             System.out.println("location found again: " + location);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -79,6 +96,11 @@ public class GroupService {
             appGroupRepository.save(g);
             g = appGroupRepository.findDistinctByGroupName(newGroup.getGroupName()); // to load the ID
         }
+
+
+        addMembership(g.getGroupId(),
+                        //appUserRepository.findAppUserByUserName(g.getCreator()).getUserId()
+                        g.getCreatorId());
 
         System.out.println(Arrays.toString(newGroup.getTags().toArray()));
         for (String ts : newGroup.getTags()) {
@@ -146,9 +168,69 @@ public class GroupService {
     public List<AppTag> listTagsByAppGroupId(Long groupId) {
         return appTagRepository.listTagsByGroupId(groupId);
     }
+    public List<AppUser> listUsersByAppGroupId(Long groupId) {
+        return appUserRepository.listUsersByGroupId(groupId);
+    }
 
+    /**
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param userId the second {@link Long} is the {@link AppUser}'s ID
+     * */
+    public GroupUser findMembership(Long groupId, Long userId){
+        return groupUserRepository.findGroupUserByGroupIdAndUserId(groupId, userId);
+    }
+
+    /**
+     * Implementor's note: it's assumed that all checks about the existence of the group and the user
+     * are performed BEFORE this call.
+     *
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param user the {@link AppUser} which desires to apply onto the given group
+     * */
+    public void addMembership(Long groupId, AppUser user){
+        addMembership(groupId, user.getUserId());
+    }
+    /**
+     * Implementor's note: it's assumed that all checks about the existence of the group and the user
+     * are performed BEFORE this call.
+     *
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param userId the second {@link Long} is the {@link AppUser}'s ID which desires to apply onto the given group
+     * */
+    public void addMembership(Long groupId, Long userId){
+        groupUserRepository.save(new GroupUser(groupId, userId) );
+    }
+    /**
+     * Implementor's note: it's assumed that all checks about the existence of the group and the user
+     * are performed BEFORE this call.
+     *
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param user the {@link AppUser} which desires to be removed from the given group
+     * */
+    public void removeMembership(Long groupId, AppUser user){
+        removeMembership(groupId, user.getUserId());
+    }
+    /**
+     * Implementor's note: it's assumed that all checks about the existence of the group and the user
+     * are performed BEFORE this call.
+     *
+     * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
+     * @param userId the second {@link Long} is the {@link AppUser}'s ID which desires to be removed from the given group
+     * */
+    public void removeMembership(Long groupId, Long userId){
+        groupUserRepository.deleteGroupUserByGroupIdAndUserId(groupId, userId);
+    }
+
+    public void removeMembershipByGroupUserId(Long groupUserId){
+        groupUserRepository.delete(groupUserId);
+    }
 
     public List<AppGroup> searchGroupAdvanced(GroupSearchAdvPayload groupSearchFilters) {
         return appGroupRepository.advancedSearch(groupSearchFilters);
+    }
+
+
+    public List<AppGroup> listGroupByUserId(Long userId){
+        return appGroupRepository.listGroupsByUserId(userId);
     }
 }

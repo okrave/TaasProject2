@@ -1,15 +1,21 @@
-package com.example.togroup5.demo.entities.newEntities;
+package com.example.togroup5.demo.entities.payloadsResults;
 
 import com.example.togroup5.demo.entities.AppGroup;
 import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.entities.GoogleLocation;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Entity;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-public class AppGroupNew {
+
+public class AppGroupNew implements Serializable {
+
+    private Long creatorId;
 
     private String groupName, description, creator;
 
@@ -21,11 +27,10 @@ public class AppGroupNew {
 
     //
 
-    public AppGroupNew() {
-    }
 
     @JsonCreator
     public AppGroupNew(
+            @JsonProperty("creatorId") Long creatorId,
             @JsonProperty("creator") String creator,
             @JsonProperty("groupName") String groupName,
             @JsonProperty("location") LocationReceived location,
@@ -33,6 +38,7 @@ public class AppGroupNew {
             @JsonProperty("description") String description,
             @JsonProperty("groupDate") Date groupDate
     ) {
+        this.creatorId = creatorId;
         this.groupName = groupName;
         this.description = description;
         this.groupDate = groupDate;
@@ -42,6 +48,14 @@ public class AppGroupNew {
     }
 
     //
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
 
     public String getGroupName() {
         return groupName;
@@ -76,7 +90,7 @@ public class AppGroupNew {
     }
 
     public AppGroup toAppGroup() {
-        return new AppGroup(creator, groupName, description, groupDate);
+        return new AppGroup(this.creatorId, creator, groupName, description, groupDate);
     }
 
     public GoogleLocation getLocation() {
@@ -98,7 +112,8 @@ public class AppGroupNew {
     @Override
     public String toString() {
         return "AppGroupNew{" +
-                "creator='" + creator + '\'' +
+                "creatorId='" + creatorId + '\'' +
+                ", creator='" + creator + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", location=" + location +
                 ", groupDate=" + groupDate +
@@ -111,7 +126,7 @@ public class AppGroupNew {
 
     public static class LocationReceived {
         private double lat, lng;
-
+        private String name;
 
         public LocationReceived(){
         }
@@ -125,16 +140,19 @@ public class AppGroupNew {
             this.lng = Double.parseDouble(vals[1].trim());
         }
 
+
         @JsonCreator
         public LocationReceived(
                 @JsonProperty("lat") double lat,
-                @JsonProperty("lng") double lng) {
+                @JsonProperty("lng") double lng,
+                @JsonProperty("name") String name) {
             this.lat = lat;
             this.lng = lng;
+            this.name = name;
         }
 
         public GoogleLocation toGoogleLocation() {
-            return new GoogleLocation(lat, lng);
+            return new GoogleLocation(lat, lng,name);
         }
     }
 }

@@ -10,6 +10,19 @@ var app;
 //----------------------------------------------------------------------------------------------------------------------
 
 window.onload = _ => {
+
+	$(document).ready(function(){
+		$('#linkToLogin').click(switchFromRegistModalToLogin);
+		$('#linkToRegistration').click(switchFromLoginModalToRegistration);
+		$('#nav-linkRegister').click(function(){
+			$('#registerModal').modal('show');
+		});
+		$('#nav-linkToLogin').click(function(){
+			$('#loginModal').modal('show');
+		});
+	});
+
+
 	app = new Vue({
 		el: "#appSearch",
 		data: {
@@ -18,6 +31,8 @@ window.onload = _ => {
 			, tag : ""
 			, messages: new NotificationsMessage()
 			, groups: []
+
+			//tags yet present on remove
 			, allTags: [] //yet existing tags on database
 			, filteredTags : []
 			, filterTags: ''
@@ -26,6 +41,10 @@ window.onload = _ => {
 			this.ping();
 		}
 		, computed: {
+			isLogged(){
+				return (this.userLogged != null && this.userLogged  !== undefined) ? this.userLogged.isLogged : false;
+			},
+
 			getFilteredTags(){
 				if(this.filterTags === '') {
 					return this.allTags;

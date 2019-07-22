@@ -1,6 +1,7 @@
 package com.example.togroup5.demo.servicies;
 
 import com.example.togroup5.demo.entities.AppUser;
+import com.example.togroup5.demo.entities.payloadsResults.UserLoginPayload;
 import com.example.togroup5.demo.repositories.AppRoleRepository;
 import com.example.togroup5.demo.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.List;
 //Utilizza i metodi che sono implementati nella appUserRepository
 @Service
 public class UserService {
+
 
     @Autowired
     private AppUserRepository appUserRepository;
@@ -51,7 +53,22 @@ public class UserService {
         return appUserRepository.findUserAccount(userName);
     }
 
+    public AppUser findAppUserByUserName(String userName){
+        return appUserRepository.findAppUserByUserName(userName);
+    }
     public List<AppUser> findAll(){
         return appUserRepository.findAll();
+    }
+
+    public AppUser findUserById(Long userId){ return appUserRepository.findAppUserByID(userId);}
+
+    public AppUser findByUsernameAndPassword(String userName, String password){
+        return appUserRepository.findByUserNameAndPassword(userName,password);
+    }
+    public AppUser findByEmailPassword(UserLoginPayload userEmailPassword){
+        return appUserRepository.findByEmailPassword(userEmailPassword);
+    }
+    public AppUser findByEmailOrUsernameAndPassword(UserLoginPayload userEmailPassword){
+        return appUserRepository.findByEmailOrUsernameAndPassword(userEmailPassword);
     }
 }

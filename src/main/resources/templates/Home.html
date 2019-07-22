@@ -1,5 +1,7 @@
+
+
 <!DOCTYPE html>
-<html lang="it" xmlns:th="http://www.thymeleaf.org" >
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
 
     <title> Home </title>
@@ -13,9 +15,11 @@
 </head>
 
 <body>
-<th:block th:replace="fragments/navbar :: navbar" />
 
+<div id="loaderCustom"></div>
 <div id="appLoginRegister">
+    <th:block th:replace="fragments/navbar :: navbar" />
+
 
     <!----------------------------------------------
   COVER
@@ -35,11 +39,9 @@
     <!----------------------------------------------
       CARDS
      ------------------------------------------------->
-
     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
         <div class="post__intestazione">
             <span class="post__intestazione__titolo">Popolari</span>
-            <a class="link2" href=""><span class="post__intestazione__link">Vedi tutti</span></a>
         </div>
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
@@ -49,38 +51,18 @@
             -->
             <section class="item active" >
 
-                <div class="thumbnail" v-for="group in groupToGroupsCarousel[0]">
+                <div class="thumbnail"
+                     v-if ="groupToGroupsCarousel.length > 0 && groupToGroupsCarousel[0].length > 0"
+                     v-for="group in groupToGroupsCarousel[0]"
+                     @click="loadGroupPage(group.groupId)" >
 
 
-            <!--
-            <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarousel" :key="indexGES" class="(indexGES == 0 ? 'item active' : 'item')" >
+                    <!--
+                    v-bind:href="'localhost:8080/groupPage/'+ group.groupId"
+                    <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarousel" :key="indexGES" class="(indexGES == 0 ? 'item active' : 'item')" >
 
-                 <div class="thumbnail" v-for="group in groupsEachSection">
-            -->
-                <img src="https://source.unsplash.com/category/nature/400x260" alt="">
-                    <div class="post__date">
-                        <span class="date">25</span>
-                        <span class="month">nov</span>
-                    </div>
-
-                    <div class="caption">
-                        <h4 style="margin: 0">{{group.groupDate}}</h4>
-                        <h3 style="margin-top: 10px;">{{group.groupName}}</h3>
-                        <p>{{group.description}}</p>
-                        <div class="row" >
-                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
-
-                            <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
-
-                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarouselInactive" :key="indexGES" class="item" >
-
-                <div class="thumbnail" v-for="group in groupsEachSection">
+                         <div class="thumbnail" v-for="group in groupsEachSection">
+                    -->
                     <img src="https://source.unsplash.com/category/nature/400x260" alt="">
                     <div class="post__date">
                         <span class="date">25</span>
@@ -88,24 +70,34 @@
                     </div>
 
                     <div class="caption">
-                        <h4 style="margin: 0">{{group.groupDate}}</h4>
-                        <h3 style="margin-top: 10px;">{{group.groupName}}</h3>
-                        <p>{{group.description}}</p>
-                        <div class="row" >
-                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
+                        <div class="row">
+                            <div class="col-md-10"><h4>{{group.groupDate}}</h4></div>
+                            <div class="col-md-2"> <a class="link_card" href=""><i class="far fa-heart"></i></a></div>
 
-                            <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
-
-                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
                         </div>
+
+                        <h3> <a @click="loadGroupPage(group.groupId)" >{{group.groupName}}</a></h3> <!-- v-bind:href="'/group_page/'+group.groupId" -->
+                        <p>{{group.description}}</p>
+
                     </div>
+                    <div class="card__footer" >
+                        <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
+
+                        <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
+
+                        <div class="clearfix"></div>
+                    </div>
+
                 </div>
             </section>
-            -->
-            <!--
-            <section class="item active">
 
-                <div class="thumbnail">
+            <section class="item"
+                     v-if ="groupToGroupsCarouselInactive.length > 0"
+                     v-for="(groupsEachSection, indexGES) in groupToGroupsCarouselInactive"
+                     :key="indexGES"
+                     @click="loadGroupPage(group.groupId)" >
+
+                <div class="thumbnail" v-for="group in groupsEachSection" >
                     <img src="https://source.unsplash.com/category/nature/400x260" alt="">
                     <div class="post__date">
                         <span class="date">25</span>
@@ -113,82 +105,38 @@
                     </div>
 
                     <div class="caption">
-                        <h4 style="margin: 0">Martedì 25 Novembre, 20:00</h4>
-                        <h3 style="margin-top: 10px;">Nome Gruppo</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta rem sit quos voluptatibus, delectus aliquam doloremque debitis iure? </p>
-                        <div class="row" >
-                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
-
-
-                            <h4 class="organizzato">Organizzato da Calogero</h4>
-
-                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
+                        <div class="row">
+                            <div class="col-md-10"><h4>{{group.groupDate}}</h4></div>
+                            <div class="col-md-2"> <a class="link_card" href=""><i class="far fa-heart"></i></a></div>
 
                         </div>
 
-
+                        <h3> <a @click="loadGroupPage(group.groupId)" >{{group.groupName}}</a></h3> <!-- v-bind:href="'/group_page/'+group.groupId" -->
+                        <p>{{group.description}}</p>
 
                     </div>
-                </div>
-                <div class="thumbnail">
-                    <img src="https://source.unsplash.com/random/400x260" alt="">
-                    <div class="post__date">
-                        <span class="date">25</span>
-                        <span class="month">nov</span>
+                    <div class="card__footer" >
+                        <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
+
+                        <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
+                        <div class="clearfix"></div>
                     </div>
-                    <div class="caption">
-                        <h4 style="margin: 0;">Martedì 25 Novembre, 20:00</h4>
-                        <h3 style="margin-top: 10px;">Nome Gruppo</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta rem sit quos voluptatibus, delectus aliquam doloremque debitis iure? </p>
-                        <div class="row" >
-                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
 
-
-                            <h4 class="organizzato">Organizzato da Calogero</h4>
-
-                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="thumbnail">
-                    <img src="https://source.unsplash.com/random/400x260" alt="">
-                    <div class="post__date">
-                        <span class="date">25</span>
-                        <span class="month">nov</span>
-                    </div>
-                    <div class="caption">
-                        <h4 style="margin: 0;">Martedì 25 Novembre, 20:00</h4>
-                        <h3 style="margin-top: 10px;">Nome Gruppo</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta rem sit quos voluptatibus, delectus aliquam doloremque debitis iure? </p>
-                        <div class="row" >
-                            <img class="img-circle" src="https://source.unsplash.com/random/40x40" alt="">
-
-
-                            <h4 class="organizzato">Organizzato da Luca</h4>
-
-                            <a class="link_card" href=""><i class="far fa-heart"></i></a>
-
-
-                        </div>
-                    </div>
                 </div>
             </section>
-            -->
-            <!----
-             <section class="item">
-
-             </section>
-             ------->
         </div>
 
 
         <!-- Indicators -->
+
         <section class="indicators">
             <ol class="carousel-indicators">
-                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                <li data-target="#carousel-example-generic"
+                    data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic"
+                    v-if="amountCarouselSections > 1"
+                    v-for="x in (amountCarouselSections - 1)"
+                    :data-slide-to="x" ></li>
             </ol>
         </section>
     </div>
@@ -197,28 +145,27 @@
 
 
     <div class="Wrapper">
-               <div class="unauthenticated">
-                 <a class="btn" href="/login">Login</a>
-               </div>
-               <div class="authenticated" style="display: none">
-                 Logged in as: <span id="user"></span>
-                 <div><button onClick="logout()" class="btn">Logout</button></div>
-               </div>
+        <div class="unauthenticated">
+            <a class="btn" href="/login">Login</a>
+        </div>
+        <div class="authenticated" style="display: none">
+            Logged in as: <span id="user"></span>
+            <div><button onClick="logout()" class="btn">Logout</button></div>
+        </div>
     </div>
 
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">
-        Launch demo modal
-    </button>
-    <form id="loginModal" class="modal animated bounceInUp" role="form" method="POST" th:action="@{/j_spring_security_check}">
+
+    <div id="loginModal" class="modal animated bounceInUp">
         <div class="modal-dialog" id="modal-login">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title scritta-accedi">Accedi</h4>
                 </div>
-                <div class="modal-body">
+
+                <div class="modal-body" >
 
                     <!--
                     <th:block th:insert="fragments/header.html :: notificationMessages" />
@@ -232,24 +179,28 @@
                            v-model="userInfo.password"
                     />
                     <br />
-                    <button type="submit" name="submit" value="submit" class="btn-l" >Login</button>
-                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" href="#" role="button" > Registrati qui </a></h5>
+                    <button type="submit" name="submit" value="submit" class="btn-l" @click="customLogin()">Login</button>
+                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" role="button" onclick="switchFromLoginModalToRegistration()"> Registrati qui </a></h5>
 
 
 
                 </div>
-                <div class="modal-footer">
-                    <h4 style="text-align: center;">Or</h4>
-                    <div class="col-sm-6">
-                        <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook</button>
+
+                <form  role="form" method="POST" th:action="@{/j_spring_security_check}">
+                    <div class="modal-footer">
+                        <h4 style="text-align: center;">Or</h4>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f" ></i>Facebook</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-    </form>
+
+    </div>
     <!-- Modal Registrazione-->
 
     <div th:action="@{/registration}" id="registerModal" class="modal  animated bounceInUp" role="form" method="POST" >
@@ -291,7 +242,7 @@
                     </div>
                     <div class="link_registrazione">
 
-                        <h5 >Hai già un account ? <a  id="linkToLogin" href="#" role="button" > Accedi </a></h5>
+                        <h5 >Hai già un account ? <a id="linkToLogin" role="button" onclick="switchFromRegistModalToLogin()"> Accedi </a></h5>
                     </div>
                 </div>
             </div>
@@ -300,43 +251,20 @@
 </div>
 
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
- <script
-    			  src="https://code.jquery.com/jquery-3.4.1.min.js"
-    			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-    			  crossorigin="anonymous">
-
- </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
 
 <script>
 
     if (window.location.hash == '#_=_'){
-          history.replaceState
-              ? history.replaceState(null, null, window.location.href.split('#')[0])
-              : window.location.hash = '';
-      }
+        history.replaceState
+            ? history.replaceState(null, null, window.location.href.split('#')[0])
+            : window.location.hash = '';
+    }
 
-    $.get("/user", function(data) {
-        if(data != undefined && data != null && data.userAuthentication != undefined && data.userAuthentication != null){
-            $("#user").html(data.userAuthentication.details.name);
-        }
-        $(".unauthenticated").hide();
-        $(".authenticated").show();
-
-      });
-
-    var logout = function() {
-        $.post("/logout", function() {
-          $("#user").html('');
-          $(".unauthenticated").show();
-          $(".authenticated").hide();
-        });
-        return true;
-      }
 </script>
 
 

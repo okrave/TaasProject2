@@ -1,43 +1,66 @@
+
+
 <!DOCTYPE html>
-<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Navbar</title>
+    <script src="js/navbar.js"  th:src="@{/js/navbar.js}"></script>
+
 </head>
+
 <body>
-<th:block th:fragment="navbar">
-<nav class="navbar navbar-inverse ">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">ToGroup</a>
-        </div>
+<div id = "appNav">
+    <th:block th:fragment="navbar">
+        <nav class="navbar navbar-inverse ">
+            <div class="container" >
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" th:href="@{/}" >ToGroup</a>
+                </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-            <ul class="nav navbar-nav navbar-right">
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                        <button type="submit" id="button__search" class="btn "><i class="fas fa-search"></i></button>
-                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <form class="navbar-form navbar-left">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search">
+                                <button type="submit" id="button__search" class="btn "><i class="fas fa-search"></i></button>
+                            </div>
 
-                </form>
-                <li><a th:if="${#request.userPrincipal == null}"type="button"  data-toggle="modal" data-target="#registerModal" style="cursor: pointer;">Registrati</a></li>
-                <li><a th:if="${#request.userPrincipal == null}"type="button"  data-toggle="modal" data-target="#loginModal" style="cursor: pointer;">Accedi</a></li>
-                <li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-</th:block>
+                        </form>
+                        <li><a class="creaNuovoGruppo"th:href="@{/newGroup}">Crea un nuovo gruppo</a></li>
+                        <li v-if = "! isLogged"><a type="button" data-toggle="modal" data-target="#registerModal" style="cursor: pointer;">Registrati</a></li>
+                        <li v-if = "! isLogged"><a type="button" data-toggle="modal" data-target="#loginModal" style="cursor: pointer;">Accedi</a></li>
+                        <li v-if = "isLogged"><a th:href="@{/esplora}" >Esplora</a></li>
+
+                        <li class="dropdown" v-if = "isLogged">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="https://source.unsplash.com/random/20x20" class="profile-image img-circle"> {{userLogged.username}} <b class="caret"></b></a>
+                            <ul class="dropdown-menu dropdown-navbar">
+                                <li><a  v-bind:href="'/userPage/' + userLogged.id"><i class="fa fa-user"></i> &nbsp  Profilo</a></li>
+                                <li><a ><i class="fa fa-cog"></i> &nbsp Impostazioni</a></li>
+                                <li class="divider"></li>
+                                <li><a th:href="@{/logout}" onclick = "logoutCustom()"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+
+    </th:block>
+</div>
 
 
 </body>
