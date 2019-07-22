@@ -6,7 +6,7 @@ function initMap() {
 
     infowindow = new google.maps.InfoWindow();
 
-    map = new google.maps.Map(document.getElementById('map'),{
+    map = new google.maps.Map(document.getElementById('map'), {
         center: torino,
         zoom: 14,
         disableDefaultUI: true,
@@ -14,7 +14,7 @@ function initMap() {
     });
 }
 
-function createInfoWindows(group){
+function createInfoWindows(group) {
 
     var groupTitle = group.groupName;
     var groupCreator = group.creator;
@@ -23,29 +23,29 @@ function createInfoWindows(group){
     var groupId = group.groupId;
     var htmlInfoWindows =
         '<div>' +
-        '<h1><a href="/group_page/'+ groupId+'">'+ groupTitle +'</a></h1>'+
+        '<h1><a href="/group_page/' + groupId + '">' + groupTitle + '</a></h1>' +
         //'<h1><a href="localhost:8080/group_page/49">'+ groupTitle +'</a></h1>'+
-        '<p>'+ groupCreator +'</p>'+
-        '<p>'+ groupData +'</p>'+
-        '<p>'+ groupDescription +'</p>'+
+        '<p>' + groupCreator + '</p>' +
+        '<p>' + groupData + '</p>' +
+        '<p>' + groupDescription + '</p>' +
         '</div>';
 
     return htmlInfoWindows;
 }
 
-function setAllMarkerMaps(){
+function setAllMarkerMaps() {
     var groups = app.groupFind;
 
     for (var i = 0; i < groups.length; i++) {
         console.log(groups[i].location.lat);
         console.log(groups[i].location.lng);
-        var latlng = new google.maps.LatLng(groups[i].location.lat,groups[i].location.lng);
+        var latlng = new google.maps.LatLng(groups[i].location.lat, groups[i].location.lng);
         var contentInfo = createInfoWindows(groups[i]);
-        setOneMarkerMaps(latlng,contentInfo);
+        setOneMarkerMaps(latlng, contentInfo);
     }
 }
 
-function setOneMarkerMaps(latlng,contentInfo) {
+function setOneMarkerMaps(latlng, contentInfo) {
     var marker = new google.maps.Marker({
         map: map,
         position: latlng
@@ -55,32 +55,32 @@ function setOneMarkerMaps(latlng,contentInfo) {
         content: contentInfo
     });
 
-    google.maps.event.addListener(marker, 'click', function() {
+    google.maps.event.addListener(marker, 'click', function () {
         infowindow.open(map, this);
     });
 
 }
 
-window.onload = _ =>{
+window.onload = _ => {
 
     app = new Vue({
-        el:"#appGroupEsplora",
+        el: "#appGroupEsplora",
         data: {
-            toGroupAPI : new ToGroup(),
+            toGroupAPI: new ToGroup(),
             userLogged: new UserLogged(),
-            typeSearch : "tags",
-            inputGroupName : "",
+            typeSearch: "tags",
+            inputGroupName: "",
             inputCreator: "",
-            inputDate : null,
-            groupFind : [],
-            map : null,
+            inputDate: null,
+            groupFind: [],
+            map: null,
             service: null,
             infowindow: null,
             myLocation: "torino",
 
             //tags
             tagNewAndFIlter: "", // agisce sia come "nuovo tag" che come filtro di quelli gia' esistenti
-            allTags : [],
+            allTags: [],
             filteredTags: [],
             filterTags: ""
 
@@ -101,79 +101,94 @@ window.onload = _ =>{
             * */
         },
 
-        mounted(){
+        mounted() {
             this.userLogged.reloadUserInfo();
+            this.fetchYetExistingTags();
         },
 
-        created(){
+        created() {
             this.removeLoader();
         },
 
         computed: {
-            getTypeSearch:function () {
+            getTypeSearch: function () {
                 return this.typeSearch;
             }
 
-            , getFilteredTags(){
-                if(this.filterTags === '') {
+            , getFilteredTags() {
+                if (this.filterTags === '') {
                     return this.allTags;
                 }
                 this.applyFilter();
                 return this.filteredTags;
             }
 
-            , getSelectedTagsAsList(){ // deprecated
+            , getSelectedTagsAsList() { // deprecated
                 return this.filters.tags.join(", ");
             }
         },
 
-        methods:{
-            removeLoader(){
+        methods: {
+            removeLoader() {
                 document.getElementById('loaderCustom').style.visibility = 'hidden';
                 document.getElementById('appGroupEsplora').style.visibility = 'visible';
             }
 
-            , switchFilterCreatorOrMember(){
-                this.filters.creatorMember = ! this.filters.creatorMember;
+            , switchFilterCreatorOrMember() {
+                this.filters.creatorMember = !this.filters.creatorMember;
             }
 
-            , searchLocationThroughGoogleMaps(){
+            , searchLocationThroughGoogleMaps() {
                 // TODO to be implemented
                 console.log("searchLocationThroughGoogleMaps TO BE IMPLEMENTED");
             }
 
-            , addTag(){
-                if( this.filters.addTag(this.tagNewAndFIlter.trim())){
+            , addTag() {
+                if (this.filters.addTag(this.tagNewAndFIlter.trim())) {
                     this.tagNewAndFIlter = "";
                 }
             }
-            , addTagFromExisting(tag){
+            , addTagFromExisting(tag) {
                 let prevTag = this.tagNewAndFIlter;
                 this.tagNewAndFIlter = tag.trim();
                 this.addTag();
                 this.tagNewAndFIlter = prevTag;
             }
-            , removeTag(tag, index){
+            , removeTag(tag, index) {
                 this.filters.removeTag(tag, index);
             }
-            , applyFilter(){
-                if(this.tagNewAndFIlter == null || this.tagNewAndFIlter === '') {
+            , applyFilter() {
+                if (this.tagNewAndFIlter == null || this.tagNewAndFIlter === '') {
                     return;
                 }
                 let filter = this.tagNewAndFIlter.trim();
-                this.filteredTags = this.allTags.filter( record => {
+                this.filteredTags = this.allTags.filter(record => {
                     record = record["name"];
                     return record === filter || record.includes(filter);
                 });
             }
+
+            , fetchYetExistingTags() {
+                let thisVue = this;
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .listAllTags()
+                    .then(response => {
+                        if (response == null || response === undefined)
+                            console.log("response null on list all tags");
+                        else
+                            thisVue.allTags = thisVue.filteredTags = response;
+                    })
+                    .catch(this.createErrorHandler("list all tags"));
+            }
             /*
             * */
 
-            ,findGroupByTag(tagName){
+            , findGroupByTag(tagName) {
                 console.log(tagName);
             }
 
-            ,mapsSearch(){
+            , mapsSearch() {
                 this.typeSearch = "maps";
                 document.getElementById('map').style.visibility = 'visible';
 
@@ -190,7 +205,7 @@ window.onload = _ =>{
 
             }
 
-            ,tagsSearch(){
+            , tagsSearch() {
                 document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "tags";
                 let thisVue = this;
@@ -198,56 +213,56 @@ window.onload = _ =>{
                     .getGroupEndpoint()
                     .listAllTags()
                     .then(response => {
-                        if(response != null && response !== undefined && response.length > 0) {
+                        if (response != null && response !== undefined && response.length > 0) {
                             console.log(response);
                             thisVue.allTags = thisVue.filteredTags = response;
                         }
-                })
-            .catch(this.createErrorHandler("list all tags"));
+                    })
+                    .catch(this.createErrorHandler("list all tags"));
             }
 
-            ,dateSearch(){
+            , dateSearch() {
                 document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "date";
 
             }
 
-            ,dateSearchGroup(){
+            , dateSearchGroup() {
                 var filters = new GroupSearch();
 
-                if(this.inputDate != null){
+                if (this.inputDate != null) {
                     filters.setDate(this.inputDate);
                     this.searchGroup(filters);
                 }
             }
 
-            ,userOrGroupSearch(){
+            , userOrGroupSearch() {
                 document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "userOrGroup";
 
                 var filters = new GroupSearch();
                 var isIn = false;
-                if(this.inputCreator != ""){
+                if (this.inputCreator != "") {
                     filters.setCreator(this.inputCreator);
                     isIn = true;
 
                 }
 
-                if(this.inputGroupName != ""){
+                if (this.inputGroupName != "") {
                     filters.setGroupName(this.inputGroupName);
                     isIn = true;
                 }
 
-                if(isIn)
+                if (isIn)
                     this.searchGroup(filters);
 
             }
 
-            , searchAdvanced(){
+            , searchAdvanced() {
                 // TODO to be implemented
                 console.log("ricerca avanzata");
             }
-            ,searchGroup(filters){
+            , searchGroup(filters) {
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .searchGroups(filters)
@@ -263,7 +278,7 @@ window.onload = _ =>{
             }
 
 
-            ,createErrorHandler(methodName) {
+            , createErrorHandler(methodName) {
                 let thisVue = this;
                 return function (err) {
                     console.log("Error on method: " + methodName);
