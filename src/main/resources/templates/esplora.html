@@ -259,7 +259,9 @@
                     >{{tag}}</button>
                 </div>
             </div>
-            <div id="subSectionYetExistingTags">
+            <div id="subSectionYetExistingTags"
+                class="containerFlex flexFlowCol"
+                >
 
                 <button v-for="(tagAggiunto, index) in getFilteredTags"
                         @click="addTagFromExisting(tagAggiunto)">
