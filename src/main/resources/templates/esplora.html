@@ -38,20 +38,18 @@
                         <div class="form-group">
                             <input type="text"
                                    class="form-control"
-                                   placeholder="Search by title of group"
+                                   placeholder="Search by group's title"
                                    v-model="inputGroupName">
 
                             <input type="text"
                                    class="form-control"
-                                   placeholder="Search by userName creatore"
+                                   placeholder="Search by creator's name"
                                    v-model="inputCreator">
 
                             <button @click="userOrGroupSearch()" type="submit" class="btn button__search"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 
-
                         </div>
-
                     </div>
                     <div class=" searchNav">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
@@ -71,23 +69,6 @@
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-
-        <!--
-        <div class="form-group">
-            <input type="text"
-                   class="form-control"
-                   placeholder="Search by title of group"
-                   v-model="inputGroupName">
-
-            <input type="text"
-                   class="form-control"
-                   placeholder="Search by userName creatore"
-                   v-model="inputCreator">
-
-            <button @click="userOrGroupSearch()" type="submit" class="btn button__search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-
-        </div>
-        -->
 
         <!-- ------------------------------ TAGS ------------------------------------ -->
         <div v-if="getTypeSearch == 'tags'">
@@ -112,12 +93,20 @@
         <!-- ------------------------------ DATA ------------------------------------ -->
         <div v-if="getTypeSearch == 'date'">
             <div class="container">
-                <input class="calendarGroup"
-                       type="date"
-                       name="groupDate"
-                       v-model="inputDate"
-                       value="2020-01-01"
-                       data-date-inline-picker="true">
+                <label>Start date<input class="calendarGroup"
+                                        type="date"
+                                        name="groupDateStart"
+                                        v-model="inputDateStart"
+                                        value="2020-01-01"
+                                        data-date-inline-picker="true">
+                </label>
+                <label>End date<input class="calendarGroup"
+                                      type="date"
+                                      name="groupDateEnd"
+                                      v-model="inputDateEnd"
+                                      value="2020-01-01"
+                                      data-date-inline-picker="true">
+                </label>
                 <button @click="dateSearchGroup()" type="submit" class="btn button__search"><span
                         class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 
@@ -133,6 +122,8 @@
         <!--
         rifatta da Marco 22-07-2019
         -->
+
+        <!-- ------------------------------ RICERCA AVANZATA ------------------------------------ -->
 
 
         <div id="advSearch"
@@ -255,27 +246,55 @@
             </div>
         </div>
 
+        <!-- ------------------------------ VISUALIZZAZIONE RISULTATI ------------------------------------ -->
+
+
         <div v-if="groupFind != null && groupFind.length > 0 " class="borderNice">
             <ul>
                 <li v-for="group in groupFind">
                     <div v-if="group !== undefined && group != undefined"
                          class="container containerFlex flexFlowCol">
-                        <div class="w100">
-                            <div class="containerFlex flexFlowCol w35">
+                        <div class="w100 containerFlex flexFlowRow">
+                            <div class="containerFlex flexFlowCol w25">
                                 <a v-bind:href="'/group_page/' + group.groupId"><img
                                         src="https://source.unsplash.com/random/40x40">
+                                    {{group.groupName}}
                                 </a>
                                 <div>Creatore: {{group.creator}}</div>
                                 <div>Data: {{group.groupDate}}</div>
                                 <div>Location: {{group.location.name}}</div>
-                                <div>Membri: {{group.members.length}}</div>
-                                <textarea class="w65" rows="10" cols="100">
+                            </div>
+                            <div class="w50">
+                                <p>Descrizione:</p>
+                                <div class="containerFlex flexFlowCol overFlowY mh200">
+                                    <div
+                                            v-for="part in splitTextToLines(group.description)"
+                                    >{{part}}
+                                        <br v-if='part == ""'>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--
+                            <textarea class="w50" rows="8" cols="256" readonly>
                                 {{group.description}}
-                                </textarea>
+                            </textarea>
+                            -->
+                            <div class="w25">
+                                <p>Membri: {{group.members.length}}</p>
+                                <div class="containerFlex flexFlowCol overFlowY mh200">
+                                    <div>
+                                        <div class="borderNice membersList"
+                                             v-for="member in group.members"
+                                        >
+                                            {{member.userName}}
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="w100 containerFlex flexFlowRow overFlowY">
-                                <div class="btnTag borderNice" v-for="tag in group.tags">{{tag.name}}</div>
-                            </div>
+                        </div>
+                        <div class="w100 containerFlex flexFlowRow overFlowY">
+                            <div class="btnTag borderNice" v-for="tag in group.tags">{{tag.name}}</div>
                         </div>
                     </div>
                     <div v-else>group undefined</div>

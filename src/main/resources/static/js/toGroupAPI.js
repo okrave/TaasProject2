@@ -677,7 +677,7 @@ class GroupNew extends GroupBasic {
 /** Represents a search-Group informations*/
 class GroupSearch extends GroupBasic {
 //it's the API response
-    constructor(isSearchingByCreator = true, creator = "", groupName = "", location = null, tags = null,
+    constructor(isSearchingByCreator = true, creator = "", groupName = "", location = null, tags = [],
                 dateStartRange = null, dateEndRange = null, maxDistance = "0.0") {
         super(creator, groupName, location, tags);
         this.isSearchingByCreator = isSearchingByCreator;
@@ -705,11 +705,24 @@ class GroupSearch extends GroupBasic {
         this.groupName = groupName;
     }
 
-    setDate(date) {
+    setDateStart(date) {
         this.dateStartRange = date;
     }
+    setDateEnd(date) {
+        this.dateStartEnd = date;
+    }
 
-
+    resetFields(){
+        this.isSearchingByCreator = true;
+        this.setCreator("");
+        this.groupName = "";
+        this.location = null;
+        this.tags = [];
+        this.dateStartRange = null;
+        this.dateEndRange = null;
+        this.maxDistance = "0.0";
+        return this;
+    }
 }
 
 class GroupFullDetail extends GroupNew {

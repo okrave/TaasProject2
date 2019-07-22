@@ -118,6 +118,9 @@ body{background-color: white;}
 .w85  { width: 85%; }
 .w100 { width: 100%; }
 .h100 { height: 100%; }
+.mh400{ max-height: 400px; }
+.mh300{ max-height: 300px; }
+.mh200{ max-height: 200px; }
 
 .choosenTags{
     border: 1px solid #2e6da4;

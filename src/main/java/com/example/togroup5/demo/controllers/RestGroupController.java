@@ -99,6 +99,11 @@ public class RestGroupController {
         return gfd;
     }
 
+    @RequestMapping(value="deleteGroup/{groupId}", method = RequestMethod.DELETE)
+    public boolean deleteGroupById(@PathVariable Long groupId){
+        return groupService.deleteGroupById(groupId);
+    }
+
 
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.PATCH)
     public List<GroupFullDetail> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
@@ -383,6 +388,22 @@ public class RestGroupController {
                         },
                         new String[]{"('35.0, 40.0')"}, // location
                         new String[]{"bere", "divertimento", "amici", "happy hour", "alcool", "alcoolici", "bere"} //tags
+                }
+                , //
+                new String[][]{
+                        new String[]{ //group info
+                                "lonevetad", "Sushitiamo gioia", "Pranzo orientale tra amici.", "2019-07-30"
+                        },
+                        new String[]{"('35.0, 40.0')", "Torino"}, // location
+                        new String[]{"amici", "sushi", "pranzo", "relax"} //tags
+                }
+                , //
+                new String[][]{
+                        new String[]{ //group info
+                                "Davide", "Vola", "Deltaplano\nche vola lontano\ntassiamo un rapporto sano\ntendoci mano per mano\ne tutti assieme, tra spighe di grano\nfacciamo ciò che è più umano:\nuniti viviamo e sognamo.\n\nLa gioia di vivere\nspicca il volo.\nLOL.", "2019-09-17"
+                        },
+                        new String[]{"('50.0, 50.0')", "Aosta"}, // location
+                        new String[]{"amici", "volo", "deltaplano", "volare", "sogno", "relax"} //tags
                 }
         };
 
