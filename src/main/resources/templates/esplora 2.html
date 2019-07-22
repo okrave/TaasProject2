@@ -122,12 +122,47 @@
                         class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 
             </div>
+            <div class="container">
+                <ul v-if="groupFind != null && groupFind.length > 0 " style="list-style-type: none">
+                    <li><h3>{{new Date(inputDate).toLocaleString('it-IT', {'weekday': 'long', 'month': 'long', 'day':
+                        '2-digit'})}}</h3></li>
+                    <li v-for="group in groupFind" class="groupName">
+                        <ul style="list-style-type: none">
+                            <li><h4><a v-bind:href="'/group_page/'+group.groupId">&nbsp {{group.groupName}}</a></h4>
+                            </li>
+
+                            <li><img src="https://source.unsplash.com/random/40x40" class="profile-image img-circle">Parteciperanno
+                                all'evento: {{group.members.length}} Persone
+                            </li>
+                            <li> Location: {{group.location.name}}</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
 
 
             DATA
         </div>
 
         <!-- ------------------------------ USER OR GROUPNAME ------------------------------------ -->
+
+        <div v-if="getTypeSearch == 'userOrGroup'">
+            <div class="container">
+                <ul v-if="groupFind != null && groupFind.length > 0">
+                    <li v-for="group in groupFind">
+                        <a v-bind:href="'/group_page/'+group.groupId"><img
+                                src="https://source.unsplash.com/random/40x40"
+                                class="profile-image img-circle"> &nbsp;{{group.groupName}}</a>
+                        {{group.description}}
+                        {{group.creator}}
+                        {{group.groupDate}}
+
+                        <hr>
+                    </li>
+                </ul>
+                USER OR GROUPNAME
+            </div>
+        </div>
 
 
         <!--
@@ -231,13 +266,14 @@
                 <div id="subSectionNewTag"
                      class="w100 containerFlex flexFlowRow"
                 >
-                    <div class="w35">Inventa un Tag o<br>Cerca qui sotto</div>
+                    <div class="w35">Inventa un Tag<br>o<br>Cerca qui sotto</div>
                     <input type="text"
                            class="w50"
                            v-model="tagNewAndFilter"
                            placeholder="Type the new Tag or the filter for existing ones"
                            @input="applyFilter"
                     >
+                    <!-- TODO non so se funziona questa riga ...-->
                     <button class="w15" @click="addTag()">Aggiungi tag</button>
                 </div>
 
@@ -251,6 +287,11 @@
                             @click="addTagFromExisting(tag.name)">
                         {{tag.name}}
                     </button>
+                    <!--  TODO cose da fare:
+                        - usare tagNewAndFilter per filtrare i tag
+                        - elencare dei pulsanti dei tag filtrati (@"
+                        - tale elenco va a capo da solo (wrap)
+                    -->
                 </div>
             </div>
         </div>
@@ -258,27 +299,24 @@
         <div v-if="groupFind != null && groupFind.length > 0 " class="borderNice">
             <ul>
                 <li v-for="group in groupFind">
-                    <div v-if="group !== undefined && group != undefined"
-                         class="container containerFlex flexFlowCol">
+                    <div class="container containerFlex flexFlowCol">
                         <div class="w100">
                             <div class="containerFlex flexFlowCol w35">
                                 <a v-bind:href="'/group_page/' + group.groupId"><img
-                                        src="https://source.unsplash.com/random/40x40">
-                                </a>
-                                <div>Creatore: {{group.creator}}</div>
-                                <div>Data: {{group.groupDate}}</div>
-                                <div>Location: {{group.location.name}}</div>
-                                <div>Membri: {{group.members.length}}</div>
-                                <textarea class="w65" rows="10" cols="100">
+                                        src="https://source.unsplash.com/random/40x40"
+                                    <div>Creatore: {{group.creator}}</div>
+                                    <div>Data: {{group.groupDate}}</div>
+                                    <div>Location: {{group.location.name}}</div>
+                                    <div>Membri: {{group.members.length}}</div>
+                            </div>
+                            <textarea class="w65" rows="10" cols="100">
                                 {{group.description}}
-                                </textarea>
-                            </div>
-                            <div class="w100 containerFlex flexFlowRow overFlowY">
-                                <div class="btnTag borderNice" v-for="tag in group.tags">{{tag.name}}</div>
-                            </div>
+                            </textarea>
+                        </div>
+                        <div class="w100 containerFlex flexFlowRow overFlowY">
+                            <div class="btnTag borderNice" v-for="tag in group.tags">{{tag.name}}</div>
                         </div>
                     </div>
-                    <div v-else>group undefined</div>
                     <hr>
                 </li>
             </ul>

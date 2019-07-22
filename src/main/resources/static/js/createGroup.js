@@ -9,26 +9,29 @@ let app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class NewGroupProgression{
-    constructor(){
+class NewGroupProgression {
+    constructor() {
         this.actualStep = 0;
         this.maxSteps = 3;
     }
 
-    toNextStep(){
-        if(this.actualStep < this.maxSteps){
+    toNextStep() {
+        if (this.actualStep < this.maxSteps) {
             this.actualStep = this.actualStep + 1;
         }
     }
-    toPreviousStep(){
-        if(this.actualStep > 0){
+
+    toPreviousStep() {
+        if (this.actualStep > 0) {
             this.actualStep = this.actualStep - 1;
         }
     }
-    getActualStep(){
+
+    getActualStep() {
         return this.actualStep;
     }
-    getMaxSteps(){
+
+    getMaxSteps() {
         return this.maxSteps;
     }
 }
@@ -45,53 +48,52 @@ function initAll() {
             toGroupAPI: new ToGroup()
             , messages: new NotificationsMessage()
             , tag: ""
-            , tag1:""
+            , tag1: ""
             , terms: false
             , locationSearch: "Torino"
             , newGroupInfo: new GroupNew()
-            , creationProgression : new NewGroupProgression()
-            , allTags : []
+            , creationProgression: new NewGroupProgression()
+            , allTags: []
             , tags: [
-                {id: 1, name:'Famiglia'},
-                {id: 2, name:'Montagna'},
-                {id: 3,name:'Escursioni'},
-                {id: 4,name:'Corsa'},
-                {id: 5,name:'Appuntamenti'},
-                {id: 6,name:'Studio'},
-                {id: 7,name:'Gruppo Lavoro'},
-                {id: 8,name:'Danza'},
-                {id: 9,name:'Karate'},
-                {id: 10,name:'Yoga'},
-                {id: 11,name:'Mare'},
-                {id: 12,name:'Intrattenimento'},
-                {id: 13,name:'Sport'},
-                {id: 14,name:'Lavoro'},
-                ] //yet existing tags on database
-            , filteredTags : []
+                {id: 1, name: 'Famiglia'},
+                {id: 2, name: 'Montagna'},
+                {id: 3, name: 'Escursioni'},
+                {id: 4, name: 'Corsa'},
+                {id: 5, name: 'Appuntamenti'},
+                {id: 6, name: 'Studio'},
+                {id: 7, name: 'Gruppo Lavoro'},
+                {id: 8, name: 'Danza'},
+                {id: 9, name: 'Karate'},
+                {id: 10, name: 'Yoga'},
+                {id: 11, name: 'Mare'},
+                {id: 12, name: 'Intrattenimento'},
+                {id: 13, name: 'Sport'},
+                {id: 14, name: 'Lavoro'},
+            ] //yet existing tags on database
+            , filteredTags: []
             , filterTags: ''
             , isActive: true
-            , activeClass : 'btn activeButton'
+            , activeClass: 'btn activeButton'
             , deactiveClass: 'btn deactiveButton'
             , googleMaps: false
-            , selectedTag: []
             , userLogged: new UserLogged()
-            , newTag : ""
+            , newTag: ""
 
             //google maps
             , gMapData: {
-                map			: null,
-                mapOptions	: {
+                map: null,
+                mapOptions: {
                     zoom: 8,
                     center: null
                 },
-                defaultBounds : null,
+                defaultBounds: null,
                 optionsAutocomplete: null,
                 autocomplete: null
 
             }
         },
-        mounted(){
-            if ( this.userLogged.reloadUserInfo()) { //not logged
+        mounted() {
+            if (this.userLogged.reloadUserInfo()) { //not logged
                 this.newGroupInfo.creatorId = this.userLogged.id;
                 this.newGroupInfo.creator = this.userLogged.username;
             } else {
@@ -103,33 +105,42 @@ function initAll() {
         created() {
             let thisVue = this;
             this.ping();
-            setTimeout( ()=>{thisVue.fetchYetExistingTags();}, 1000);
+            setTimeout(() => {
+                thisVue.fetchYetExistingTags();
+            }, 1000);
 
             this.removeLoader();
         },
         computed: {
-            isDisabled:function(){
+            isLogged() {
+                return (this.userLogged != null && this.userLogged !== undefined) ? this.userLogged.isLogged : false;
+            },
+            isDisabled: function () {
                 return this.terms;
 
             },
 
-          getFilteredTags(){
-              if(this.filterTags === '') {
-                  return this.allTags;
-              }
-              this.applyFilter();
-              return this.filteredTags;
-          }
+            getFilteredTags() {
+                if (this.filterTags === '') {
+                    return this.allTags;
+                }
+                this.applyFilter();
+                return this.filteredTags;
+            }
+
+            , selectedTags(){
+                return this.newGroupInfo.tags == null ? "" : this.newGroupInfo.tags.join(", ");
+            }
         },
         methods: {
 
-            removeLoader(){
+            removeLoader() {
                 document.getElementById('loaderCustom').style.visibility = 'hidden';
                 document.getElementById('appNewGroup').style.visibility = 'visible';
                 document.getElementById('map').style.visibility = 'visible';
             },
 
-            setLocation(location){
+            setLocation(location) {
                 console.log("dentro SetLocation");
                 console.log(location.lng);
                 console.log(location.lat);
@@ -137,15 +148,15 @@ function initAll() {
                 this.newGroupInfo.location = location;
             },
 
-            activateMaps(){
+            activateMaps() {
                 this.googleMaps = true;
             },
-            disactivateMaps(){
+            disactivateMaps() {
                 this.googleMaps = false;
             },
 
 
-            setUpGoogleMapsStuffs(){
+            setUpGoogleMapsStuffs() {
                 var inputElement, thisVue;
                 thisVue = this;
                 inputElement = document.getElementById("locationQuery");
@@ -183,10 +194,7 @@ function initAll() {
             }
 
 
-            , toNextStep(){
-                if(this.creationProgression.actualStep == 1) {
-                    this.addTag();
-                }
+            , toNextStep() {
                 this.creationProgression.toNextStep();
                 this.checkActualStep();
             }
@@ -194,36 +202,34 @@ function initAll() {
                 this.creationProgression.toPreviousStep();
                 this.checkActualStep();
             }
-            , checkActualStep(){
+            , checkActualStep() {
                 console.log("Entrato checkActual");
-                if(this.creationProgression.getActualStep() == 0){
+                if (this.creationProgression.getActualStep() == 0) {
                     document.getElementById('map').style.visibility = 'visible';
-                }else{
+                } else {
                     document.getElementById('map').style.visibility = 'hidden';
                 }
             }
 
             , selectTag(tagName) {
-                for(tag in this.selectedTag) {
-                    console.log(this.selectedTag[tag]);
-                }
-                buttonTag = document.getElementById(tagName);
-                if (!this.selectedTag.includes(tagName)) {
+
+                let buttonTag = document.getElementById(tagName);
+                if ((this.newGroupInfo.tags == null) || (!this.newGroupInfo.tags.includes(tagName))) {
                     buttonTag.className = "btn activate-tag";
-                    this.selectedTag.push(tagName);
+                    this.newGroupInfo.addTag(tagName);
                 } else {
                     buttonTag.className = "btn deactivate-tag";
-                    this.selectedTag = this.selectedTag.filter(tag => tag !== tagName);
+                    this.newGroupInfo.removeTag(tagName); // selectedTag = this.selectedTag.filter(tag => tag !== tagName);
                 }
             }
 
             , addTag(){
-                this.newGroupInfo.addTag(this.selectedTag);
+                this.newGroupInfo.addTag(this.newTag);
             }
 
-            , createNewTag(){
+            , createNewTag() {
                 console.log("Entra in createTag");
-                if(this.newTag != ""){
+                if (this.newTag != "") {
                     this.toGroupAPI
                         .getGroupEndpoint()
                         .createNewTag(this.newTag.trim())
@@ -236,53 +242,53 @@ function initAll() {
             }
 
 
-                /*if (this.terms == true) {//disattivato
-                // 20/07/2019 Marco: usare i metodi che ho gia' fatto di newGroupInfo, o meglio della sua classe di toGroupAPI.js
-                    this.terms = false;
-                    if (!this.selectedTag.includes(tagName)) {
-                        this.selectedTag.push(tagName);
-                    }
-                } else {
-                    this.term = true;
-                    if (this.selectedTag.includes(tagName)) {
-                        this.selectedTag.splice(tagName);
-                    }
-                }*/
+            /*if (this.terms == true) {//disattivato
+            // 20/07/2019 Marco: usare i metodi che ho gia' fatto di newGroupInfo, o meglio della sua classe di toGroupAPI.js
+                this.terms = false;
+                if (!this.selectedTag.includes(tagName)) {
+                    this.selectedTag.push(tagName);
+                }
+            } else {
+                this.term = true;
+                if (this.selectedTag.includes(tagName)) {
+                    this.selectedTag.splice(tagName);
+                }
+            }*/
 
-                /*if( this.newGroupInfo.addTag(this.tag.trim())){
-                    this.selectedTag.push(this.tag.trim)
-                    this.tag = "";
-                }*/
+            /*if( this.newGroupInfo.addTag(this.tag.trim())){
+                this.selectedTag.push(this.tag.trim)
+                this.tag = "";
+            }*/
 
 
-            , addTagFromExisting(tag){
+            , addTagFromExisting(tag) {
                 let prevTag = this.tag;
                 this.tag = tag.trim();
                 this.addTag();
                 this.tag = prevTag;
             }
 
-            , removeTag(tag, index){
+            , removeTag(tag, index) {
                 this.newGroupInfo.removeTag(tag, index);
             }
-            , applyFilter(){
-                if(this.filterTags == null || this.filterTags === '') {
+            , applyFilter() {
+                if (this.filterTags == null || this.filterTags === '') {
                     return;
                 }
                 let filter = this.filterTags.trim();
-                this.filteredTags = this.allTags.filter( record => {
+                this.filteredTags = this.allTags.filter(record => {
                     record = record["name"];
                     return record === filter || record.includes(filter);
                 });
             }
 
-            , formatDateGroup(dg){
+            , formatDateGroup(dg) {
                 var splitted;
                 splitted = dg.split("-");
                 console.log("original date: " + dg + ", splitted: " + JSON.stringify(splitted));
-                if(splitted[0].length != 4){
+                if (splitted[0].length != 4) {
                     //so, the format is not yyyy-mm-dd and should be like this !
-                    console.log("then reverse: : " + JSON.stringify(splitted.reverse()) + ", and joined: " + splitted.reverse().join("-") );
+                    console.log("then reverse: : " + JSON.stringify(splitted.reverse()) + ", and joined: " + splitted.reverse().join("-"));
                     return splitted.reverse().join("-");
                 }
                 return dg;
@@ -294,11 +300,11 @@ function initAll() {
                 this.toGroupAPI.ping().then(resp => console.log("pinged :D " + resp));
             }
 
-            , createGroup(){
+            , createGroup() {
                 let thisVue = this, ngi;
 
 
-                if(this.locationSearch == null || this.locationSearch === '') {
+                if (this.locationSearch == null || this.locationSearch === '') {
                     alert("Location not setted");
                     return;
                 }
@@ -314,13 +320,13 @@ function initAll() {
                 console.log("creating group:");
                 console.log(JSON.stringify(ngi));
 
-                if((ngi.creatorId == null || ngi.creatorId === '')
+                if ((ngi.creatorId == null || ngi.creatorId === '')
                     || (ngi.creator == null || ngi.creator === '')
                     || (ngi.groupName == null || ngi.groupName === '')
                     || (ngi.description == null || ngi.description === '')
                     || (ngi.location == null || ngi.location === '')
-                    || (ngi.tags == null || ngi.tags.size <= 0)
-                   ){
+                    || (ngi.tags == null || ngi.tags.length <= 0)
+                ) {
                     alert("fill all new group info");
                     return;
                 }
@@ -335,22 +341,22 @@ function initAll() {
                     .catch(this.createErrorHandler("create group"));
             }
 
-            , fetchYetExistingTags(){
+            , fetchYetExistingTags() {
                 let thisVue = this;
                 console.log("entro in fetch");
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .listAllTags()
                     .then(response => {
-                        if(response != null && response !== undefined && response.length > 0) {
+                        if (response != null && response !== undefined && response.length > 0) {
                             thisVue.allTags = thisVue.filteredTags = response;
                         }
                     })
                     .catch(this.createErrorHandler("list all tags"));
             }
 
-            , getLocationFromAddress(){
-                console.log("locationSearch: "+locationSearch);
+            , getLocationFromAddress() {
+                console.log("locationSearch: " + locationSearch);
                 // https://maps.googleapis.com/maps/api/place/js/AutocompletionService.GetPredictions?1sTorino polo del
                 // &4sit-IT&6m6&1m2&1d44.96502155524857&2d7.43074650610356&2m2&1d45.18613135982509&2d7.917921493896529&14e3&15e3&20sCC2E2C53-0C2D-4E4F-9F4B-CCD975A78F2964w8tengi17z&21m1&2e1&callback=_xdc_._uwrn9u&client=gme-addictive&channel=geocoder-tool&token=44656
                 //googleGeolocalisation
@@ -361,13 +367,13 @@ function initAll() {
 
 window.onload = _ => {
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('#linkToLogin').click(switchFromRegistModalToLogin);
         $('#linkToRegistration').click(switchFromLoginModalToRegistration);
-        $('#nav-linkRegister').click(function(){
+        $('#nav-linkRegister').click(function () {
             $('#registerModal').modal('show');
         });
-        $('#nav-linkToLogin').click(function(){
+        $('#nav-linkToLogin').click(function () {
             $('#loginModal').modal('show');
         });
     });

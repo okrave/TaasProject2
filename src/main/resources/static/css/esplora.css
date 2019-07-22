@@ -77,16 +77,30 @@ body{background-color: white;}
     display: flex;
     flex-wrap: nowrap;
     align-content: center;
-    align-items: center;
     /*
+    align-items: center;
     flex-direction: row;
      */
 }
 .flexFlowRow{
     flex-flow: row;
+    /*
+    overflow-x: auto;
+     */
 }
 .flexFlowCol{
     flex-flow: column;
+    /*
+    overflow-y: auto;
+     */
+}
+.overFlowY{ overflow-y: auto; }
+.overFlowX{ overflow-x: auto; }
+.flexAlignLeft {
+    align-content: start;
+}
+.justifyCenter{
+    justify-content: center;
 }
 
 
@@ -96,6 +110,8 @@ body{background-color: white;}
 .w25  { width: 25%; }
 .w35  { width: 35%; }
 .w50  { width: 50%; }
+.w65  { width: 65%; }
+.w60  { width: 60%; }
 .w70  { width: 70%; }
 .w75  { width: 75%; }
 .w80  { width: 80%; }
@@ -107,6 +123,7 @@ body{background-color: white;}
     border: 1px solid #2e6da4;
     border-radius: 5px;
     overflow-x: auto;
+    margin: 5px;
 }
 
 .filterTagContainer{
@@ -114,4 +131,24 @@ body{background-color: white;}
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
+}
+
+#advSearch > div{
+    border: 1px solid #2e6da4;
+    margin: 5px;
+}
+
+.containerExistingTags {
+    max-height: 200px;
+    overflow-y: auto;
+    flex-wrap: wrap;
+}
+.borderNice {
+    border: 1px solid #2e6da4;
+    border-radius: 5px;
+    margin: 5px;
+}
+.btnTag{
+    height: 30px;
+    max-height: 30px;
 }

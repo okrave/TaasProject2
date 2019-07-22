@@ -58,6 +58,10 @@ window.onload = _ => {
         },
 
         computed: {
+            isLogged(){
+                return (this.userLogged != null && this.userLogged  !== undefined) ? this.userLogged.isLogged : false;
+            },
+
             amountCarouselSections(){
                 if(this.groupsCarousel == null ){
                     return 0;
@@ -213,6 +217,15 @@ window.onload = _ => {
                 .catch(this.createErrorHandler("register"));
             }
 
+            , logout(){
+                $.post("/logout", function() {
+                    $("#user").html('');
+                    $(".unauthenticated").show();
+                    $(".authenticated").hide();
+                });
+                return true;
+            }
+
             // group
 
             , fetchGroupSimple(){
@@ -300,16 +313,6 @@ window.onload = _ => {
         $(".authenticated").show();
     });
 
-
-
-    var logout = function() {
-        $.post("/logout", function() {
-            $("#user").html('');
-            $(".unauthenticated").show();
-            $(".authenticated").hide();
-        });
-        return true;
-    }
 
 
 };

@@ -51,6 +51,9 @@ window.onload = _ =>{
         },
 
         computed:{
+            isLogged(){
+                return (this.userLogged != null && this.userLogged  !== undefined) ? this.userLogged.isLogged : false;
+            },
             isUserLogged() {
                 return this.userLogged.isLogged;
             }
