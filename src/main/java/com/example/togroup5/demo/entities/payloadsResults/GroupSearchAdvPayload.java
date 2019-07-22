@@ -10,7 +10,9 @@ import java.util.List;
 
 public class GroupSearchAdvPayload implements Serializable {
 
-    private String groupName, creator; // genre
+    private boolean isSearchingByCreator = true;
+
+    private String groupName, creatorMember;
 
     private java.sql.Date dateStartRange, dateEndRange;
 
@@ -22,19 +24,21 @@ public class GroupSearchAdvPayload implements Serializable {
 
     //
 
-    public GroupSearchAdvPayload() {    }
+    public GroupSearchAdvPayload() {
+    }
 
     @JsonCreator
     public GroupSearchAdvPayload(
-        @JsonProperty("creator")        String creator,
-        @JsonProperty("groupName")      String groupName,
-        @JsonProperty("location")       GoogleLocation location,
-        //@JsonProperty("genre")        String genre,
-        @JsonProperty("dateStartRange") Date dateStartRange,
-        @JsonProperty("dateEndRange")   Date dateEndRange,
-        @JsonProperty("maxDistance")    Double maxDistance,
-        @JsonProperty("tags")           List<String> tags) {
-        this.creator = creator;
+            @JsonProperty("isSearchingByCreator") boolean isSearchingByCreator,
+            @JsonProperty("creatorMember") String creatorMember,
+            @JsonProperty("groupName") String groupName,
+            @JsonProperty("location") GoogleLocation location,
+            //@JsonProperty("genre")        String genre,
+            @JsonProperty("dateStartRange") Date dateStartRange,
+            @JsonProperty("dateEndRange") Date dateEndRange,
+            @JsonProperty("maxDistance") Double maxDistance,
+            @JsonProperty("tags") List<String> tags) {
+        this.creatorMember = creatorMember;
         this.groupName = groupName;
         this.location = location;
         //this.genre = genre;
@@ -47,6 +51,14 @@ public class GroupSearchAdvPayload implements Serializable {
     //
 
 
+    public boolean isSearchingByCreator() {
+        return isSearchingByCreator;
+    }
+
+    public void setSearchingByCreator(boolean searchingByCreator) {
+        isSearchingByCreator = searchingByCreator;
+    }
+
     public String getGroupName() {
         return groupName;
     }
@@ -55,12 +67,12 @@ public class GroupSearchAdvPayload implements Serializable {
         this.groupName = groupName;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getCreatorMember() {
+        return creatorMember;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setCreatorMember(String creatorMember) {
+        this.creatorMember = creatorMember;
     }
 
     public Date getDateStartRange() {
@@ -106,7 +118,8 @@ public class GroupSearchAdvPayload implements Serializable {
     @Override
     public String toString() {
         return "GroupSearchAdvPayload{" +
-                "creator='" + creator + '\'' +
+                "isSearchingByCreator=" + isSearchingByCreator +
+                ", creatorMember='" + creatorMember + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", location='" + location + '\'' +
                 //", genre='" + genre + '\'' +

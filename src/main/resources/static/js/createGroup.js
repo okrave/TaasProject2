@@ -91,18 +91,13 @@ function initAll() {
             }
         },
         mounted(){
-            if (! this.userLogged.reloadUserInfo()) { //not logged
-                this.userLogged.isLogged = false;
-
-                /*
-                TODO 20/07/2019 by Marco
-                testare quale delle due soluzioni (oppure altre) funziona per redirezionare alla Home
-                */
-                window.location = "Home";
-                //this.$router.push('Home');
-            }else{
+            if ( this.userLogged.reloadUserInfo()) { //not logged
                 this.newGroupInfo.creatorId = this.userLogged.id;
                 this.newGroupInfo.creator = this.userLogged.username;
+            } else {
+                this.userLogged.isLogged = false;
+                window.location = "Home";
+                //this.$router.push('Home');
             }
         },
         created() {

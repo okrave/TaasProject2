@@ -62,8 +62,8 @@ window.onload = _ => {
                 if(this.groupsCarousel == null ){
                     return 0;
                 }
-                return Math.trunc(((this.groupsCarousel.length % this.groupEachSection) == 0) ? (this.groupsCarousel.length / this.groupEachSection)
-                    : ((this.groupsCarousel.length / this.groupEachSection) + 1));
+                return ((this.groupsCarousel.length % this.groupEachSection) == 0) ? Math.trunc(this.groupsCarousel.length / this.groupEachSection)
+                    : (Math.trunc(this.groupsCarousel.length / this.groupEachSection) + 1);
             },
 
             groupToGroupsCarousel() {

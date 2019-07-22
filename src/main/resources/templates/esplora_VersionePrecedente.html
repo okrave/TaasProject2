@@ -88,7 +88,11 @@
 
     <!-- ------------------------------ TAGS ------------------------------------ -->
     <div v-if="getTypeSearch == 'tags'">
+
+
         <div class="container">
+
+
             <div class="row">
                 <div class="col-sm-6 col-md-2" v-for="tag in allTags">
                     <div class="thumbnail" @click="findGroupByTag(tag.name)">
@@ -98,8 +102,10 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
+
     </div>
     <!-- ------------------------------ MAPS ------------------------------------ -->
     <div v-if="getTypeSearch == 'maps'">
@@ -160,119 +166,6 @@
 
 
 
-    <!--
-    rifatta da Marco 22-07-2019
-    -->
-
-
-    <div id="advSearch"
-        class="containerFlex flexFlowCol"
-        >
-        <div id="sectionBtnSearch">
-            <button @click="searchAdvanced()" type="submit" class="btn button__search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-        </div>
-        <div id="sectionOthers"
-            class="containerFlex flexFlowRow"
-            >
-            <div id="subSectionUserCreatorTitleDate"
-                class="v flexFlowCol w50"
-                >
-                <label>
-                    <div id="fieldTitle" class="containerFlex flexFlowRow">
-                        <div class="w15">Title</div>
-                        <div class="w85"><input type="text" v-model="filters.groupName"></div>
-                    </div>
-                </label>
-                <label>
-                    <div id="fieldCreatorOrMember" class="containerFlex flexFlowRow">
-                        <button class="w15" @click="switchFilterCreatorOrMember()">{{filters.creatorMembe ? "Creator, click for Member" : "Member, click for Creator"}}</button>
-                        <div class="w85"><input type="text" v-model="filters.creatorMember"></div>
-                    </div>
-                </label>
-                <label>
-                    <div id="fieldDateStartRange" class="containerFlex flexFlowRow">
-                        <div class="w15">Date Start</div>
-                        <div class="w85"><input type="date" v-model="filters.dateStartRange"></div>
-                    </div>
-                </label>
-                <label>
-                    <div id="fieldDateEndRange" class="containerFlex flexFlowRow">
-                        <div class="w15">Date End</div>
-                        <div class="w85"><input type="date" v-model="filters.dateEndRange"></div>
-                    </div>
-                </label>
-            </div>
-            <div id="subSectionLocationDistance"
-                class="containerFlex flexFlowCol w50"
-                >
-                <label>
-                    <div id="fieldMaxDistance" class="containerFlex flexFlowRow">
-                        <div class="w15">MaxDistance</div>
-                        <div class="w85"><input type="text" v-model="filters.maxDistance"></div>
-                    </div>
-                </label>
-                <label>
-                    <div id="fieldLocationSearch" class="containerFlex flexFlowRow">
-                        <div class="w15">Location</div>
-                        <div class="w70"><input type="text" v-model="myLocation"></div>
-                        <button class="w15" @click="searchLocationThroughGoogleMaps()">Search</button>
-                    </div>
-                </label>
-                <label>
-                    <div id="viewGoogleMaps" class="">
-                        GOOGLE MAPS TO BE IMPLEMENTED
-                    </div>
-                </label>
-            </div>
-        </div>
-        <div id="sectionTags"
-            class="containerFlex flexFlowCol"
-            >
-            <p>Tags</p>
-            <div id="subSectionNewTag"
-                class="containerFlex flexFlowRow"
-                >
-                <div class="w35">Inventa un Tag<br>o<br>Cerca qui sotto</div>
-                <input type="text"
-                       class="w50"
-                       v-model="tagNewAndFIlter"
-                       placeholder="Type the new Tag or the filter for existing ones"
-                       :oninput="applyFilter()" <!-- TODO non so se funziona questa riga ...-->
-                >
-                <button class="w15" @click="addTag()">Aggiungi tag</button>
-            </div>
-            <div id="subSectionSelectedTags">
-                <!--
-                <input
-                        type="text"
-                        class="w100"
-                        readonly
-                        v-model=""
-                    >
-                    -->
-                <div v-if="filters.tags.length > 0"
-                    class="choosenTags"
-                    ><!--inserire un bordo -->
-                    <button
-                        v-for="(tag, index) in filters.tags"
-                        :value="tag"@click="removeTag(tag, index)"
-                    >{{tag}}</button>
-                </div>
-            </div>
-            <div id="subSectionYetExistingTags">
-
-                <button v-for="(tagAggiunto, index) in getFilteredTags"
-                        @click="addTagFromExisting(tagAggiunto)>
-
-                </button>
-            <!--  TODO cose da fare:
-                - usare tagNewAndFIlter per filtrare i tag
-                - elencare dei pulsanti dei tag filtrati (@"
-                - tale elenco va a capo da solo (wrap)
-            -->
-            </div>
-        </div>
-    </div>
 </div>
 
 <div>

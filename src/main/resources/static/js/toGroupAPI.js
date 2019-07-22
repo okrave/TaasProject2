@@ -677,17 +677,28 @@ class GroupNew extends GroupBasic{
 /** Represents a search-Group informations*/
 class GroupSearch extends GroupBasic{
 //it's the API response
-	constructor(creator="", groupName="", location=null, tags=null,
+	constructor(isSearchingByCreator = true, creator="", groupName="", location=null, tags=null,
 				dateStartRange=null, dateEndRange=null, maxDistance="0.0") {
 		super(creator, groupName,location, tags);
+        this.isSearchingByCreator = isSearchingByCreator;
+        this.creatorMember = creator;
 		this.dateStartRange = dateStartRange;
 		this.dateEndRange = dateEndRange;
 		this.maxDistance = maxDistance; // only for search o.o
 	}
 
-	setCreator(creator){
-		this.creator = creator
-	}
+    setCreator(creator){
+        this.creator = creator;
+        this.creatorMember = creator;
+    }
+    setCreatorMember(creatorMember){
+        this.creator = creatorMember;
+        this.creatorMember = creatorMember;
+    }
+
+    setIsSearchingByCreator(isSearchingByCreator){
+	    this.isSearchingByCreator = isSearchingByCreator;
+    }
 
 	setGroupName(groupName){
 		this.groupName = groupName;

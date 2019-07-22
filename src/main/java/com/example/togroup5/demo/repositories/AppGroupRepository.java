@@ -1,9 +1,6 @@
 package com.example.togroup5.demo.repositories;
 
-import com.example.togroup5.demo.entities.AppGroup;
-import com.example.togroup5.demo.entities.AppTag;
-import com.example.togroup5.demo.entities.GroupTag;
-import com.example.togroup5.demo.entities.GroupUser;
+import com.example.togroup5.demo.entities.*;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -76,7 +73,7 @@ public class AppGroupRepository {
         }
     }
 
-    public List<AppGroup> listGroupsByUserId(Long userId){
+    public List<AppGroup> listGroupsByUserId(Long userId) {
         try {
             String sql = "Select g from " + AppGroup.class.getName() //
                     + " g JOIN " + GroupUser.class.getName() + " gu ON (gu.groupId = g.groupId)" //
@@ -112,16 +109,25 @@ public class AppGroupRepository {
                 appliedFields.add(new SingleFilter("g.groupName = :groupName", "groupName", filters.getGroupName()));
             }
 
-            if (filters.getCreator() != null && (!filters.getCreator().equals(""))) {
-                appliedFields.add(new SingleFilter("g.creator = :creator", "creator", filters.getCreator()));
+            if (filters.getCreatorMember() != null && (!filters.getCreatorMember().equals(""))) {
+                String creatorMember;
+                creatorMember = filters.getCreatorMember();
+                if (filters.isSearchingByCreator())
+                    appliedFields.add(new SingleFilter("g.creator = :creator", "creator", creatorMember));
+                else
+                    appliedFields.add(new SingleFilter( // test se creatorMember e' membro del gruppo dato
+                            " 0 < (SELECT count(*) FROM "+ AppUser.class.getName() //
+                                    + " u JOIN " + GroupUser.class.getName() + //
+                                    " gu ON u.userId = gu.userId WHERE u.userName = :member )", //
+                            "member", creatorMember));
             }
 
-            hasStartDate    = filters.getDateStartRange() != null;
-            hasEndDate      = filters.getDateEndRange() != null;
-            if(hasStartDate && hasEndDate){
+            hasStartDate = filters.getDateStartRange() != null;
+            hasEndDate = filters.getDateEndRange() != null;
+            if (hasStartDate && hasEndDate) {
                 appliedFields.add(new SingleFilter("g.groupDate >= :dateStartRange", "dateStartRange", filters.getDateStartRange()));
                 appliedFields.add(new SingleFilter("g.groupDate <= :dateEndRange", "dateEndRange", filters.getDateEndRange()));
-            } else if (hasStartDate ^ hasEndDate){
+            } else if (hasStartDate ^ hasEndDate) {
                 //solo uno delle due= cerchiamo la data esatta
                 Date exactDate;
                 exactDate = hasStartDate ? filters.getDateStartRange() : filters.getDateEndRange();
@@ -177,7 +183,6 @@ public class AppGroupRepository {
             return null;
         }
     }
-
 
 
     static class SingleFilter {

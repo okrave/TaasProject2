@@ -70,3 +70,48 @@ body{background-color: white;}
     margin-bottom: 10px;
     margin-left: 35px;
 }
+
+
+
+.containerFlex {
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
+    /*
+    flex-direction: row;
+     */
+}
+.flexFlowRow{
+    flex-flow: row;
+}
+.flexFlowCol{
+    flex-flow: column;
+}
+
+
+.w5   { width: 5%; }
+.w10  { width: 10%; }
+.w15  { width: 15%; }
+.w25  { width: 25%; }
+.w35  { width: 35%; }
+.w50  { width: 50%; }
+.w70  { width: 70%; }
+.w75  { width: 75%; }
+.w80  { width: 80%; }
+.w85  { width: 85%; }
+.w100 { width: 100%; }
+.h100 { height: 100%; }
+
+.choosenTags{
+    border: 1px solid #2e6da4;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.filterTagContainer{
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+}

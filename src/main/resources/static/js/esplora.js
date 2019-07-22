@@ -1,3 +1,4 @@
+var app;
 
 
 function initMap() {
@@ -76,9 +77,28 @@ window.onload = _ =>{
             service: null,
             infowindow: null,
             myLocation: "torino",
-            allTags : [],
-            filteredTags : []
 
+            //tags
+            tagNewAndFIlter: "", // agisce sia come "nuovo tag" che come filtro di quelli gia' esistenti
+            allTags : [],
+            filteredTags: [],
+            filterTags: ""
+
+            , filters: new GroupSearch()/*{
+                groupName: "",
+                creatorMember: "", //name, not id
+                isSearchingByCreator: true, // if false, search by member
+                dateStartRnge: null,
+                dateEndRAnge: null,
+                location: null,
+                maxDistance: 0.0,
+                tags: []
+            }*/
+            /*
+            GroupSearch
+	            (creator="", groupName="", location=null, tags=null,
+				dateStartRange=null, dateEndRange=null, maxDistance="0.0")
+            * */
         },
 
         mounted(){
@@ -94,9 +114,18 @@ window.onload = _ =>{
                 return this.typeSearch;
             }
 
+            , getFilteredTags(){
+                if(this.filterTags === '') {
+                    return this.allTags;
+                }
+                this.applyFilter();
+                return this.filteredTags;
+            }
 
-
-         },
+            , getSelectedTagsAsList(){ // deprecated
+                return this.filters.tags.join(", ");
+            }
+        },
 
         methods:{
             removeLoader(){
@@ -104,9 +133,44 @@ window.onload = _ =>{
                 document.getElementById('appGroupEsplora').style.visibility = 'visible';
             }
 
+            , switchFilterCreatorOrMember(){
+                this.filters.creatorMember = ! this.filters.creatorMember;
+            }
+
+            , searchLocationThroughGoogleMaps(){
+                // TODO to be implemented
+                console.log("searchLocationThroughGoogleMaps TO BE IMPLEMENTED");
+            }
+
+            , addTag(){
+                if( this.filters.addTag(this.tagNewAndFIlter.trim())){
+                    this.tagNewAndFIlter = "";
+                }
+            }
+            , addTagFromExisting(tag){
+                let prevTag = this.tagNewAndFIlter;
+                this.tagNewAndFIlter = tag.trim();
+                this.addTag();
+                this.tagNewAndFIlter = prevTag;
+            }
+            , removeTag(tag, index){
+                this.filters.removeTag(tag, index);
+            }
+            , applyFilter(){
+                if(this.tagNewAndFIlter == null || this.tagNewAndFIlter === '') {
+                    return;
+                }
+                let filter = this.tagNewAndFIlter.trim();
+                this.filteredTags = this.allTags.filter( record => {
+                    record = record["name"];
+                    return record === filter || record.includes(filter);
+                });
+            }
+            /*
+            * */
+
             ,findGroupByTag(tagName){
                 console.log(tagName);
-
             }
 
             ,mapsSearch(){
@@ -179,6 +243,10 @@ window.onload = _ =>{
 
             }
 
+            , searchAdvanced(){
+                // TODO to be implemented
+                console.log("ricerca avanzata");
+            }
             ,searchGroup(filters){
                 this.toGroupAPI
                     .getGroupEndpoint()
@@ -186,6 +254,8 @@ window.onload = _ =>{
                     .then(response => {
                         console.log("Risposta search group: ");
                         console.log(response[0]);
+                        console.log("tutta la response search group: ");
+                        console.log(JSON.stringify(response));
                         this.groupFind = response;
                         this.viewGroupFind();
                     }).catch(this.createErrorHandler("create group"));
