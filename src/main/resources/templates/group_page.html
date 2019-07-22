@@ -40,7 +40,7 @@
         <hr>
         <div class="group-bar">
             <ul class="nav nav-pills" role="tablist">
-                <li id="li2" role="presentation" @click="setListElement(1)"><a >Membri</a></li>
+                <li id="li2" role="presentation" @click="setListElement(1)"><a >Membri<span class="badge">{{this.groupInfo.members.length}}</span></a></li>
                 <li id="li3" role="presentation" @click="setListElement(2)"><a >Messages <span class="badge">3</span></a></li>
                 <li id="li4" role="presentation" @click="setListElement(3)"><a >Foto <span class="badge">5</span></a></li>
                 <li class = "navbar-right" role="presentation">
