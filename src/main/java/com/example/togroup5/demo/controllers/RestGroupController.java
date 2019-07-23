@@ -115,9 +115,12 @@ public class RestGroupController {
         System.out.println("found " + groups.size() + " groups, now add tags");
         return groupFullDetailFromGroups(groups);
     }
+    @RequestMapping(value = "/advGroupSearch2", method = RequestMethod.POST)
+    public List<GroupFullDetail> searchGroupAdvanced2(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
+        return searchGroupAdvanced(groupSearchFilters);
+    }
 
-
-    @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
+        @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
     public boolean addUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo) {
         System.out.println(userGroupInfo);
         UserGroupFound guf;
@@ -144,6 +147,10 @@ public class RestGroupController {
         return true;
     }
 
+    @RequestMapping(value = "/removeMember2", method = RequestMethod.POST)
+    public boolean removeUserToGroupMember2(@RequestBody MemberGroupPayload userGroupInfo) {
+        return  removeUserToGroupMember(userGroupInfo);
+    }
 
     @RequestMapping(value = "/isMember", method = RequestMethod.PATCH)
     public boolean isMember(@RequestBody MemberGroupPayload userGroupInfo) {
@@ -151,6 +158,11 @@ public class RestGroupController {
         UserGroupFound guf;
         guf = fetchGroupUser(userGroupInfo);
         return (guf != null && guf.gu != null);
+    }
+
+    @RequestMapping(value = "/isMember2", method = RequestMethod.POST)
+    public boolean isMember2(@RequestBody MemberGroupPayload userGroupInfo) {
+        return isMember(userGroupInfo);
     }
 
 
@@ -244,6 +256,11 @@ public class RestGroupController {
                 }
         );
         return new MessagesGroupResponse(msgQuery.getGroupId(), msgs);
+    }
+
+    @RequestMapping(value = "/fetchMessages2", method = RequestMethod.POST)
+    public MessagesGroupResponse fetchMessages2(@RequestBody MessageQueryPayload msgQuery) {
+        return fetchMessages(msgQuery);
     }
 
     //-------------------------------------Fine Messaggi---------------------------

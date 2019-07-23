@@ -81,8 +81,7 @@ public class RestHomeController {
 
     @RequestMapping(value = "/User/login", method = PATCH)
     public AppUser logIn(//@RequestParam String email, @RequestParam String password OLD VERSION
-                         @RequestBody UserLoginPayload logInInfo
-    ) {
+                         @RequestBody UserLoginPayload logInInfo) {
 
         AppUser user;
         UserLoginPayload userPayload;
@@ -94,6 +93,11 @@ public class RestHomeController {
         if (user == null)
             return null;
         return user; // new UserIDName(user.getUserId(), user.getUserName());
+    }
+    @RequestMapping(value = "/User/login2", method = POST)
+    public AppUser logIn2(//@RequestParam String email, @RequestParam String password OLD VERSION
+                         @RequestBody UserLoginPayload logInInfo){
+        return logIn(logInInfo);
     }
 
 
