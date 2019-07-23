@@ -60,6 +60,11 @@ public class HomeController {
     }
 
 
+    @GetMapping(value="userPageJ2ee")
+    public String userPageJ2ee(){
+        return "user_page_j2ee";
+    }
+
     @GetMapping(value = "/esplora")
     public String esplora(){
         return "esplora";

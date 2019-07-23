@@ -21,6 +21,10 @@
 #appUserPage{
     visibility: hidden;
 }
+
+#appUserPageJ2ee{
+    visibility: hidden;
+}
 .descriptionInput{
     padding: 2%;
     width: 100%;
