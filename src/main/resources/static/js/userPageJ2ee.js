@@ -34,9 +34,9 @@ window.onload = _ => {
                 resultElement.innerHTML = '';
 
                 var p =  new Promise((resolve, reject) => {
-                        fetch("http://localhost:8081/J2EEToGroup-web/NewServlet", {
+                        fetch("http://localhost:8081/J2EEToGroup-web/NewServlet?id=5", {
                         method: "GET",
-                        mode: 'cors',
+                        mode: 'no-cors',
                         credentials: "include"
                     })
 
