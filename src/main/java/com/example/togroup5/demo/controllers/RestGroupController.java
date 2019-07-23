@@ -160,6 +160,13 @@ public class RestGroupController {
         return (guf != null && guf.gu != null);
     }
 
+    @RequestMapping(value = "/isMember", method = RequestMethod.POST)
+    public boolean isMemberPost(@RequestBody MemberGroupPayload userGroupInfo) {
+        UserGroupFound guf;
+        guf = fetchGroupUser(userGroupInfo);
+        return (guf != null && guf.gu != null);
+    }
+
     @RequestMapping(value = "/isMember2", method = RequestMethod.POST)
     public boolean isMember2(@RequestBody MemberGroupPayload userGroupInfo) {
         return isMember(userGroupInfo);
