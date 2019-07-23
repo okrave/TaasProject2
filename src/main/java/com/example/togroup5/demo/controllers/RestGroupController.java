@@ -135,8 +135,34 @@ public class RestGroupController {
         return true;
     }
 
+
+    @RequestMapping(value = "/addMember", method = RequestMethod.POST)
+    public boolean addUserToGroupMemberAndroid(@RequestBody MemberGroupPayload userGroupInfo) {
+        UserGroupFound guf;
+        guf = fetchGroupUser(userGroupInfo);
+        if (guf == null) {
+            System.out.println("errore fetchGroupUser");
+            return false; // error
+        }
+        if (guf.gu != null) return true; // yet present but it's not an error. TODO: is it an error?
+        groupService.addMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId());
+        return true;
+    }
+
     @RequestMapping(value = "/removeMember", method = RequestMethod.PATCH)
     public boolean removeUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo) {
+
+        UserGroupFound guf;
+        guf = fetchGroupUser(userGroupInfo);
+        if (guf == null) return false; // error
+        if (guf.gu == null) return true; // not present but it's not an error. TODO: is it an error?
+
+        groupService.removeMembershipByGroupUserId(guf.gu.getId());
+        return true;
+    }
+
+    @RequestMapping(value = "/removeMember", method = RequestMethod.POST)
+    public boolean removeUserToGroupMemberAndroid(@RequestBody MemberGroupPayload userGroupInfo) {
 
         UserGroupFound guf;
         guf = fetchGroupUser(userGroupInfo);
