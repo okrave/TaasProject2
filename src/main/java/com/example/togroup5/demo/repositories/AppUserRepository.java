@@ -117,15 +117,12 @@ public class AppUserRepository {
         }
     }
     public AppUser findByEmailOrUsernameAndPassword(UserLoginPayload userEnailPassword){
-        //return appUserJpa.findAppUserByUserName()
         try {
             String sql = "Select u from " + AppUser.class.getName() + //
                     " u WHERE (u.userEmail = :email OR u.userName = :email) ";// AND u.encrytedPassword = :pwd";
 
-            System.out.println("Query: " + sql);
             Query query = entityManager.createQuery(sql, AppUser.class);
             query.setParameter("email", userEnailPassword.getEmail());
-            //query.setParameter("pwd", userEnailPassword.getPassword());
             return  (AppUser) query.getSingleResult();
         } catch (NoResultException e) {
             return null;

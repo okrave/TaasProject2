@@ -1,6 +1,7 @@
 package com.example.togroup5.demo.entities;
 
 import com.example.togroup5.demo.utils.EncryptedPasswordUtils;
+
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
@@ -19,7 +20,7 @@ public class AppUser implements Serializable {
     @Column(unique = true)
     private String userName;
 
-    private String encrytedPassword;
+    private String encryptedPassword;
 
     private String userEmail;
 
@@ -27,13 +28,14 @@ public class AppUser implements Serializable {
 
     private Date dateCreated;
 
-    public AppUser (){}
+    public AppUser() {
+    }
 
-    public AppUser(String userName, String encrytedPassword, String userEmail, boolean enabled) {
+    public AppUser(String userName, String encryptedPassword, String userEmail, boolean enabled) {
         this.userName = userName;
-        this.encrytedPassword = encrytedPassword;
-        this.userEmail  = userEmail;
-        this.enabled = enabled?1:0;
+        this.encryptedPassword = encryptedPassword;
+        this.userEmail = userEmail;
+        this.enabled = enabled ? 1 : 0;
         this.dateCreated = new java.sql.Date(Calendar.getInstance().getTime().getTime());
     }
 
@@ -53,12 +55,12 @@ public class AppUser implements Serializable {
         this.userName = userName;
     }
 
-    public String getEncrytedPassword() {
-        return encrytedPassword;
+    public String getEncryptedPassword() {
+        return encryptedPassword;
     }
 
-    public void setEncrytedPassword(String encrytedPassword) {
-        this.encrytedPassword = encrytedPassword;
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 
     public Integer isEnabled() {
@@ -81,7 +83,7 @@ public class AppUser implements Serializable {
         return enabled;
     }
 
-    public String toString(){
-        return "{id:"+ userId + "userName:"+ this.userEmail+ ", password: "+ this.encrytedPassword  +"}";
+    public String toString() {
+        return "{id:" + userId + "userName:" + this.userEmail + ", password: " + this.encryptedPassword + "}";
     }
 }

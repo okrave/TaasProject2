@@ -33,7 +33,6 @@ public class GroupSearchAdvPayload implements Serializable {
             @JsonProperty("creatorMember") String creatorMember,
             @JsonProperty("groupName") String groupName,
             @JsonProperty("location") GoogleLocation location,
-            //@JsonProperty("genre")        String genre,
             @JsonProperty("dateStartRange") Date dateStartRange,
             @JsonProperty("dateEndRange") Date dateEndRange,
             @JsonProperty("maxDistance") Double maxDistance,
@@ -123,7 +122,6 @@ public class GroupSearchAdvPayload implements Serializable {
                 ", creatorMember='" + creatorMember + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", location='" + location + '\'' +
-                //", genre='" + genre + '\'' +
                 ", dateStartRange=" + dateStartRange +
                 ", dateEndRange=" + dateEndRange +
                 ", maxDistance=" + maxDistance +

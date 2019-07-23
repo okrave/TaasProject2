@@ -10,6 +10,9 @@ let app;
 //----------------------------------------------------------------------------------------------------------------------
 
 window.onload = _ => {
+
+    $(document).ready(attachClicksToModalButtonsLoginRegister);
+
     app = new Vue({
         el: "#appListUser",
         data: {
@@ -20,6 +23,12 @@ window.onload = _ => {
         },
         created() {
             this.ping();
+        },
+
+        computed: {
+            isLogged(){
+                return (this.userLogged != null && this.userLogged  !== undefined) ? this.userLogged.isLogged : false;
+            }
         },
 
         methods: {

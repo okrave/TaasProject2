@@ -63,6 +63,8 @@ function setOneMarkerMaps(latlng, contentInfo) {
 
 window.onload = _ => {
 
+    $(document).ready(attachClicksToModalButtonsLoginRegister);
+
     app = new Vue({
         el: "#appGroupEsplora",
         data: {
@@ -100,9 +102,9 @@ window.onload = _ => {
         computed: {
             isLogged(){
                 return (this.userLogged != null && this.userLogged  !== undefined) ? this.userLogged.isLogged : false;
-            }
+            },
 
-            , getFilteredTags() {
+            getFilteredTags() {
                 if (this.filterTags === '') {
                     return this.allTags;
                 }

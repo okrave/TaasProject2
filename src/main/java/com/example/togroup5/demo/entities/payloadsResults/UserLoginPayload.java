@@ -10,14 +10,15 @@ public class UserLoginPayload implements Serializable {
     private String email, password;
 
 
-    public UserLoginPayload (){}
+    public UserLoginPayload() {
+    }
 
     @JsonCreator
-    public UserLoginPayload (
-            @JsonProperty("email")      String email,
-            @JsonProperty("password")   String password) {
+    public UserLoginPayload(
+            @JsonProperty("email") String email,
+            @JsonProperty("password") String password) {
         this.email = email;
-        this.setAndEncryptPassword(password);
+        this.password = password;
     }
 
     public String getEmail() {
@@ -32,12 +33,8 @@ public class UserLoginPayload implements Serializable {
         return password;
     }
 
-    public void setPassword(String password) { this.password = password; }
-
-    public void setAndEncryptPassword(String password) {
-
-        this.password = EncryptedPasswordUtils.encryptePassword(password);
-
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

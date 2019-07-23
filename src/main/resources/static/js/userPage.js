@@ -1,17 +1,6 @@
 window.onload = _ => {
 
-
-    $(document).ready(function(){
-        $('#linkToLogin').click(switchFromRegistModalToLogin);
-        $('#linkToRegistration').click(switchFromLoginModalToRegistration);
-        $('#nav-linkRegister').click(function(){
-            $('#registerModal').modal('show');
-        });
-        $('#nav-linkToLogin').click(function(){
-            $('#loginModal').modal('show');
-        });
-    });
-
+    $(document).ready(attachClicksToModalButtonsLoginRegister);
 
     app = new Vue({
         el:"#appUserPage",
@@ -29,9 +18,6 @@ window.onload = _ => {
             descriptionRead: false
             ,userLogged: new UserLogged()
             , userGroups : []
-
-
-
         },
         mounted(){
             this.userLogged.reloadUserInfo();
@@ -42,6 +28,12 @@ window.onload = _ => {
             this.ping();
             this.loadUser(currentUrl);
             this.removeLoader();
+        },
+
+        computed: {
+            isLogged(){
+                return (this.userLogged != null && this.userLogged  !== undefined) ? this.userLogged.isLogged : false;
+            }
         },
 
         methods:{

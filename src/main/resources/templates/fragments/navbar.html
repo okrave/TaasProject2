@@ -6,8 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Navbar</title>
-    <script src="js/navbar.js"  th:src="@{/js/navbar.js}"></script>
-
+    <th:block th:fragment="navbarInclusions">
+        <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
+        <script src="js/navbar.js"  th:src="@{/js/navbar.js}"></script>
+    </th:block>
 </head>
 
 <body>

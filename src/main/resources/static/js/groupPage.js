@@ -4,16 +4,7 @@ const RELOAD_MSG_INTERVAL = 5000;
 
 window.onload = _ =>{
 
-    $(document).ready(function(){
-        $('#linkToLogin').click(switchFromRegistModalToLogin);
-        $('#linkToRegistration').click(switchFromLoginModalToRegistration);
-        $('#nav-linkRegister').click(function(){
-            $('#registerModal').modal('show');
-        });
-        $('#nav-linkToLogin').click(function(){
-            $('#loginModal').modal('show');
-        });
-    });
+    $(document).ready(attachClicksToModalButtonsLoginRegister);
 
     app = new Vue({
         el:"#appGroupPage",

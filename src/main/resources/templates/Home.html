@@ -6,10 +6,8 @@
 
     <title> Home </title>
     <th:block th:replace="fragments/header.html :: headerInclusions" />
-    <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
+
     <link rel="stylesheet" href="../static/css/Home.css" th:href="@{/css/Home.css}">
-
-
     <script src="js/loginRegister.js"      th:src="@{/js/loginRegister.js}"></script>
 
 </head>
@@ -52,17 +50,10 @@
             <section class="item active" >
 
                 <div class="thumbnail"
-                     v-if ="groupToGroupsCarousel.length > 0 && groupToGroupsCarousel[0].length > 0"
+                     v-if ="groupToGroupsCarousel != null && groupToGroupsCarousel.length > 0 && groupToGroupsCarousel[0].length > 0"
                      v-for="group in groupToGroupsCarousel[0]"
                      @click="loadGroupPage(group.groupId)" >
 
-
-                    <!--
-                    v-bind:href="'localhost:8080/groupPage/'+ group.groupId"
-                    <section v-for="(groupsEachSection, indexGES) in groupToGroupsCarousel" :key="indexGES" class="(indexGES == 0 ? 'item active' : 'item')" >
-
-                         <div class="thumbnail" v-for="group in groupsEachSection">
-                    -->
                     <img src="https://source.unsplash.com/category/nature/400x260" alt="">
                     <div class="post__date">
                         <span class="date">25</span>
@@ -92,12 +83,14 @@
             </section>
 
             <section class="item"
-                     v-if ="groupToGroupsCarouselInactive.length > 0"
+                     v-if ="groupToGroupsCarouselInactive != null && groupToGroupsCarouselInactive.length > 0"
                      v-for="(groupsEachSection, indexGES) in groupToGroupsCarouselInactive"
                      :key="indexGES"
                      @click="loadGroupPage(group.groupId)" >
 
-                <div class="thumbnail" v-for="group in groupsEachSection" >
+                <div class="thumbnail"
+                     v-if="groupsEachSection != null && groupsEachSection"
+                     v-for="group in groupsEachSection" >
                     <img src="https://source.unsplash.com/category/nature/400x260" alt="">
                     <div class="post__date">
                         <span class="date">25</span>

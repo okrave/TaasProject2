@@ -4,13 +4,13 @@ import com.example.togroup5.demo.entities.AppUser;
 import com.example.togroup5.demo.entities.payloadsResults.AppUserRegistration;
 import com.example.togroup5.demo.entities.payloadsResults.UserLoginPayload;
 import com.example.togroup5.demo.servicies.UserService;
+import com.example.togroup5.demo.utils.EncryptedPasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 
@@ -50,29 +50,6 @@ public class RestHomeController {
         return false;
     }
 
-    @RequestMapping(value = "/User/customLogin", method = POST)
-    public AppUser login(@RequestBody AppUserRegistration newUser, final HttpServletRequest request) {
-        //Ricevo la password già criptata
-        System.out.println(newUser);
-/*
-        UsernamePasswordAuthenticationToken authReq =
-                new UsernamePasswordAuthenticationToken(newUser.getUserName(), newUser.getPassword());
-        Authentication auth = authManager.authenticate(authReq);
-        SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
-        HttpSession session = request.getSession(true);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", sc);*/
-
-        AppUser x = userService.findAppUserByUserName(newUser.getUserName());
-        if (x != null && newUser.getPassword() == x.getEncrytedPassword()) {
-            return x;
-
-        }
-        return null;
-        //System.out.println("Trovato L'utente: " + x) ;
-        //return x;
-    }
-
 
     @RequestMapping("/User/facebookUser")
     public Principal user(Principal principal) {
@@ -80,23 +57,17 @@ public class RestHomeController {
     }
 
     @RequestMapping(value = "/User/login", method = PATCH)
-    public AppUser logIn(//@RequestParam String email, @RequestParam String password OLD VERSION
-                         @RequestBody UserLoginPayload logInInfo) {
-
+    public AppUser logIn(@RequestBody UserLoginPayload logInInfo) {
         AppUser user;
-        UserLoginPayload userPayload;
-        //userPayload = new UserLoginPayload(email, password);
 
-        System.out.println(logInInfo);
         user = userService.findByEmailOrUsernameAndPassword(logInInfo);
-        System.out.println("Dentro login controller: " + user);
-        if (user == null)
+        if (user == null || (!EncryptedPasswordUtils.testPassword(logInInfo.getPassword(), user)))
             return null;
         return user; // new UserIDName(user.getUserId(), user.getUserName());
     }
-    @RequestMapping(value = "/User/login2", method = POST)
-    public AppUser logIn2(//@RequestParam String email, @RequestParam String password OLD VERSION
-                         @RequestBody UserLoginPayload logInInfo){
+
+    @RequestMapping(value = "/User/login", method = POST)
+    public AppUser logInAndroid(@RequestBody UserLoginPayload logInInfo) {
         return logIn(logInInfo);
     }
 
