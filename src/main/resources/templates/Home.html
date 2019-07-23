@@ -93,7 +93,7 @@
                      :key="indexGES"
             >
                 <div class="thumbnail"
-                     v-if="groupsEachSection != null && groupsEachSection"
+                     v-if="groupsEachSection != null && groupsEachSection.length > 0"
                      v-for="group in groupsEachSection">
                     <!--
                     <div @click="loadGroupPage(group.groupId)">
@@ -135,11 +135,12 @@
         <!-- Indicators -->
 
         <section class="indicators">
-            <ol class="carousel-indicators">
+            <ol class="carousel-indicators"
+                v-if="amountCarouselSections > 1">
                 <li data-target="#carousel-example-generic"
                     data-slide-to="0" class="active"></li>
+
                 <li data-target="#carousel-example-generic"
-                    v-if="amountCarouselSections > 1"
                     v-for="x in (amountCarouselSections - 1)"
                     :data-slide-to="x"></li>
             </ol>
