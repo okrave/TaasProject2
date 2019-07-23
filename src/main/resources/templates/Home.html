@@ -1,14 +1,12 @@
-
-
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
 
     <title> Home </title>
-    <th:block th:replace="fragments/header.html :: headerInclusions" />
+    <th:block th:replace="fragments/header.html :: headerInclusions"/>
 
     <link rel="stylesheet" href="../static/css/Home.css" th:href="@{/css/Home.css}">
-    <script src="js/loginRegister.js"      th:src="@{/js/loginRegister.js}"></script>
+    <script src="js/loginRegister.js" th:src="@{/js/loginRegister.js}"></script>
 
 </head>
 
@@ -16,7 +14,7 @@
 
 <div id="loaderCustom"></div>
 <div id="appLoginRegister">
-    <th:block th:replace="fragments/navbar :: navbar" />
+    <th:block th:replace="fragments/navbar :: navbar"/>
 
 
     <!----------------------------------------------
@@ -47,50 +45,59 @@
 
             <!--
             -->
-            <section class="item active" >
+            <section class="item active">
 
                 <div class="thumbnail"
-                     v-if ="groupToGroupsCarousel != null && groupToGroupsCarousel.length > 0 && groupToGroupsCarousel[0].length > 0"
+                     v-if="groupToGroupsCarousel != null && groupToGroupsCarousel.length > 0 && groupToGroupsCarousel[0].length > 0"
                      v-for="group in groupToGroupsCarousel[0]"
-                     @click="loadGroupPage(group.groupId)" >
-
-                    <img src="https://source.unsplash.com/category/nature/400x260" alt="">
-                    <div class="post__date">
-                        <span class="date">25</span>
-                        <span class="month">nov</span>
-                    </div>
-
-                    <div class="caption">
-                        <div class="row">
-                            <div class="col-md-10"><h4>{{group.groupDate}}</h4></div>
-                            <div class="col-md-2"> <a class="link_card" href=""><i class="far fa-heart"></i></a></div>
-
+                >
+                    <!--
+                    <div @click="loadGroupPage(group.groupId)">
+                    -->
+                        <img src="https://source.unsplash.com/category/nature/400x260" alt="">
+                        <div class="post__date">
+                            <span class="date">25</span>
+                            <span class="month">nov</span>
                         </div>
 
-                        <h3> <a @click="loadGroupPage(group.groupId)" >{{group.groupName}}</a></h3> <!-- v-bind:href="'/group_page/'+group.groupId" -->
-                        <p>{{group.description}}</p>
+                        <div class="caption">
+                            <div class="row">
+                                <div class="col-md-10"><h4>{{group.groupDate}}</h4></div>
+                                <div class="col-md-2"><a class="link_card" href=""><i class="far fa-heart"></i></a>
+                                </div>
 
+                            </div>
+
+                            <h3><a @click="loadGroupPage(group.groupId)">{{group.groupName}}</a></h3>
+                            <!-- v-bind:href="'/group_page/'+group.groupId" -->
+                            <p>{{group.description}}</p>
+
+                        </div>
+                        <div class="card__footer">
+                            <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40"
+                                 alt="">
+
+                            <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    <!--
                     </div>
-                    <div class="card__footer" >
-                        <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
-
-                        <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
-
-                        <div class="clearfix"></div>
-                    </div>
-
+                    -->
                 </div>
             </section>
 
             <section class="item"
-                     v-if ="groupToGroupsCarouselInactive != null && groupToGroupsCarouselInactive.length > 0"
+                     v-if="groupToGroupsCarouselInactive != null && groupToGroupsCarouselInactive.length > 0"
                      v-for="(groupsEachSection, indexGES) in groupToGroupsCarouselInactive"
                      :key="indexGES"
-                     @click="loadGroupPage(group.groupId)" >
-
+            >
                 <div class="thumbnail"
                      v-if="groupsEachSection != null && groupsEachSection"
-                     v-for="group in groupsEachSection" >
+                     v-for="group in groupsEachSection">
+                    <!--
+                    <div @click="loadGroupPage(group.groupId)">
+                    -->
                     <img src="https://source.unsplash.com/category/nature/400x260" alt="">
                     <div class="post__date">
                         <span class="date">25</span>
@@ -100,21 +107,26 @@
                     <div class="caption">
                         <div class="row">
                             <div class="col-md-10"><h4>{{group.groupDate}}</h4></div>
-                            <div class="col-md-2"> <a class="link_card" href=""><i class="far fa-heart"></i></a></div>
+                            <div class="col-md-2"><a class="link_card" href=""><i class="far fa-heart"></i></a>
+                            </div>
 
                         </div>
 
-                        <h3> <a @click="loadGroupPage(group.groupId)" >{{group.groupName}}</a></h3> <!-- v-bind:href="'/group_page/'+group.groupId" -->
+                        <h3><a @click="loadGroupPage(group.groupId)">{{group.groupName}}</a></h3>
+                        <!-- v-bind:href="'/group_page/'+group.groupId" -->
                         <p>{{group.description}}</p>
 
                     </div>
-                    <div class="card__footer" >
-                        <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40" alt="">
+                    <div class="card__footer">
+                        <img class="img-circle immagine_creatore" src="https://source.unsplash.com/random/40x40"
+                             alt="">
 
                         <h4 class="organizzato">Organizzato da {{group.creator}}</h4>
                         <div class="clearfix"></div>
                     </div>
-
+                    <!--
+                    </div">
+                    -->
                 </div>
             </section>
         </div>
@@ -129,7 +141,7 @@
                 <li data-target="#carousel-example-generic"
                     v-if="amountCarouselSections > 1"
                     v-for="x in (amountCarouselSections - 1)"
-                    :data-slide-to="x" ></li>
+                    :data-slide-to="x"></li>
             </ol>
         </section>
     </div>
@@ -143,7 +155,9 @@
         </div>
         <div class="authenticated" style="display: none">
             Logged in as: <span id="user"></span>
-            <div><button onClick="logout()" class="btn">Logout</button></div>
+            <div>
+                <button @click="logout()" class="btn">Logout</button>
+            </div>
         </div>
     </div>
 
@@ -158,32 +172,37 @@
                     <h4 class="modal-title scritta-accedi">Accedi</h4>
                 </div>
 
-                <div class="modal-body" >
+                <div class="modal-body">
 
                     <!--
                     <th:block th:insert="fragments/header.html :: notificationMessages" />
                     -->
 
-                    <input type="text" id="username" name="username" class="form-control login-input " placeholder= "Username"
+                    <input type="text" id="username" name="username" class="form-control login-input "
+                           placeholder="Username"
                            v-model="userInfo.username"
                     />
-                    <br />
-                    <input type="password" id="password" name="password" class="form-control control login-input " placeholder="Password"
+                    <br/>
+                    <input type="password" id="password" name="password" class="form-control control login-input "
+                           placeholder="Password"
                            v-model="userInfo.password"
                     />
-                    <br />
-                    <button type="submit" name="submit" value="submit" class="btn-l" @click="customLogin()">Login</button>
-                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" role="button" onclick="switchFromLoginModalToRegistration()"> Registrati qui </a></h5>
-
+                    <br/>
+                    <button type="submit" name="submit" value="submit" class="btn-l" @click="customLogin()">Login
+                    </button>
+                    <h5 style="margin-top: 10px;">Non hai un account ? <a id="linkToRegistration" role="button"
+                                                                          onclick="switchFromLoginModalToRegistration()">
+                        Registrati qui </a></h5>
 
 
                 </div>
 
-                <form  role="form" method="POST" th:action="@{/j_spring_security_check}">
+                <form role="form" method="POST" th:action="@{/j_spring_security_check}">
                     <div class="modal-footer">
                         <h4 style="text-align: center;">Or</h4>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f" ></i>Facebook</button>
+                            <button type="submit" class="btn-facebook"><i class="fab fa-facebook-f"></i>Facebook
+                            </button>
                         </div>
                         <div class="col-sm-6">
                             <button type="submit" class="btn-google"><i class="fab fa-google"></i>Google</button>
@@ -196,7 +215,7 @@
     </div>
     <!-- Modal Registrazione-->
 
-    <div th:action="@{/registration}" id="registerModal" class="modal  animated bounceInUp" role="form" method="POST" >
+    <div th:action="@{/registration}" id="registerModal" class="modal  animated bounceInUp" role="form" method="POST">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -205,7 +224,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <th:block th:insert="fragments/header.html :: notificationMessages" />
+                    <th:block th:insert="fragments/header.html :: notificationMessages"/>
                     <!--
                    <input type="text" class="form-control registration-input-input " id="errorMessageSection" v-if="messages.errorMessage != null" v-model="messages.errorMessage" >
                    <input type="text" class="form-control registration-input-input " id="infoMessageSection" v-if="messages.infoMessage != null" v-model="messages.infoMessage" >
@@ -213,29 +232,37 @@
                    -->
 
 
-                    <input type="text" name="username"   class="form-control registration-input " placeholder= "Username" required
+                    <input type="text" name="username" class="form-control registration-input " placeholder="Username"
+                           required
                            v-model="userInfo.username"
                     />
-                    <br />
+                    <br/>
 
-                    <input type="email" name="email" class="form-control control registration-input " placeholder="Email" required
+                    <input type="email" name="email" class="form-control control registration-input "
+                           placeholder="Email" required
                            v-model="userInfo.email"
                     />
-                    <br />
-                    <input type="password" name="password"  class="form-control control registration-input " placeholder="Password" required
+                    <br/>
+                    <input type="password" name="password" class="form-control control registration-input "
+                           placeholder="Password" required
                            v-model="userInfo.password"
                     />
-                    <br />
-                    <input type="password" name="repeatPassword"  id="repeatPassword" class="form-control control registration-input " placeholder="Reinserisci la password" required
+                    <br/>
+                    <input type="password" name="repeatPassword" id="repeatPassword"
+                           class="form-control control registration-input " placeholder="Reinserisci la password"
+                           required
                            v-model="userInfo.passwordConfirmation"
                     />
-                    <br />
+                    <br/>
                     <div class="div_button">
-                        <button type="button" name="login_button" id="login_button" class="btn-l" @click="register()">Registrati</button>
+                        <button type="button" name="login_button" id="login_button" class="btn-l" @click="register()">
+                            Registrati
+                        </button>
                     </div>
                     <div class="link_registrazione">
 
-                        <h5 >Hai già un account ? <a id="linkToLogin" role="button" onclick="switchFromRegistModalToLogin()"> Accedi </a></h5>
+                        <h5>Hai già un account ? <a id="linkToLogin" role="button"
+                                                    onclick="switchFromRegistModalToLogin()"> Accedi </a></h5>
                     </div>
                 </div>
             </div>
@@ -244,15 +271,20 @@
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script>
 
 
 <script>
 
-    if (window.location.hash == '#_=_'){
+    if (window.location.hash == '#_=_') {
         history.replaceState
             ? history.replaceState(null, null, window.location.href.split('#')[0])
             : window.location.hash = '';
@@ -262,7 +294,6 @@
 
 
 </body>
-
 
 
 </html>

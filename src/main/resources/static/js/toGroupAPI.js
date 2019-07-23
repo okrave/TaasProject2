@@ -95,12 +95,9 @@ class UserAPI {
             })
                 .then(response => response.json())
                 .then(response => {
-                    console.log("asdasdads");
-                    console.log(JSON.stringify(response));
                     if (checkResponseHoldsErrors(response)) {
                         reject(response);
                     }
-                    console.log("entra in resolve");
                     resolve(response);
                 }).catch(reject);
 
@@ -115,12 +112,9 @@ class UserAPI {
             })
                 .then(response => response.json())
                 .then(response => {
-                    console.log("asdasdads");
-                    console.log(JSON.stringify(response));
                     if (checkResponseHoldsErrors(response)) {
                         reject(response);
                     }
-                    console.log("entra in resolve");
                     resolve(response);
                 }).catch(reject);
 
@@ -180,7 +174,6 @@ class UserAPI {
                         reject(response);
                     }
                     resolve(response);
-                    console.log(response);
                 }).catch(reject);
         });
 
@@ -203,7 +196,6 @@ class UserAPI {
                         reject(response);
                     }
                     resolve(response);
-                    console.log(response);
                 })
                 .catch(reject);
         });
@@ -246,8 +238,6 @@ class GroupAPI {
     }
 
     isMember(groupMember) {
-        console.log("Entra in isMember APIgroup");
-        console.log(groupMember);
 
         return new Promise((resolve, reject) => {
             fetch(this.baseURL + `/isMember`, {
@@ -309,12 +299,9 @@ class GroupAPI {
             })
                 .then(response => response.json())
                 .then(response => {
-                    console.log("asdasdads");
-                    console.log(JSON.stringify(response));
                     if (checkResponseHoldsErrors(response)) {
                         reject(response);
                     }
-                    console.log("entra in resolve");
                     resolve(response);
                 })
                 .catch(reject);
@@ -396,12 +383,9 @@ class GroupAPI {
             })
                 .then(response => response.json())
                 .then(response => {
-                    console.log("asdasdads");
-                    console.log(JSON.stringify(response));
                     if (checkResponseHoldsErrors(response)) {
                         reject(response);
                     }
-                    console.log("entra in resolve");
                     resolve(response);
                 }).catch(reject);
 
@@ -417,9 +401,6 @@ class GroupAPI {
             })
                 .then(response => response.json())
                 .then(response => {
-                    console.log("asdasdads");
-                    console.log(JSON.stringify(response));
-                    console.log("entra in resolve");
                     resolve(response);
                 }).catch(reject);
 
@@ -684,11 +665,12 @@ class GroupSearch extends GroupBasic {
     setDateStart(date) {
         this.dateStartRange = date;
     }
+
     setDateEnd(date) {
         this.dateStartEnd = date;
     }
 
-    resetFields(){
+    resetFields() {
         this.isSearchingByCreator = true;
         this.setCreator("");
         this.groupName = "";

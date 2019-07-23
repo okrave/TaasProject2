@@ -73,7 +73,6 @@ class UserLogged {
             this.isLogged = true;
             this.username = userName;
             this.id = localStorage.getItem('connectedUserId');
-            console.log("In group page user loggato: " + userName);
             if (callback != null)
                 callback(this);
             return true;

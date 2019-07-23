@@ -30,7 +30,7 @@ window.onload = _ =>{
                 thisVue.newMessage.userId = ul.id;
             });
             this.recalculateIsMember();
-            this.getAllUser();
+            //this.getAllUser();
             this.reloadMessageList();
         },
 
@@ -136,8 +136,6 @@ window.onload = _ =>{
                     .getUserEndpoint()
                     .getAllUsers()
                     .then(resp => {
-                        console.log("tuttiGliUtenti:D");
-                        console.log(JSON.stringify(resp));
                         this.listUser = resp;
                     })
             }
@@ -145,14 +143,11 @@ window.onload = _ =>{
             ,loadGroup(){
                 var piecesUrl = this.currentUrl.split("/");
                 var groupId = piecesUrl[piecesUrl.length-1];
-                console.log(groupId);
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .getGroupInfo(groupId)
                     .then(resp => {
                         var gId;
-                        console.log("paginaGruppo:D - load group");
-                        console.log(JSON.stringify(resp));
                         gId = resp.groupId;
                         this.groupInfo.creatorId = resp.creatorId;
                         this.groupInfo.creator = resp.creator;
@@ -194,7 +189,6 @@ window.onload = _ =>{
             }
             , reloadMessageList(){
                 this.msgFilter.dateStart = this.lastMsgDate;
-                console.log("Reloading msg from date: " + this.msgFilter.dateStart);
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .fetchMessages(this.msgFilter)
