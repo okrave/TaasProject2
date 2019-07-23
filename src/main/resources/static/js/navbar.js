@@ -33,3 +33,16 @@ function switchFromLoginModalToRegistration(){
     $('#registerModal').modal('show');
     return false;
 }
+
+
+
+function attachClicksToModalButtonsLoginRegister(){
+    $('#linkToLogin').click(switchFromRegistModalToLogin);
+    $('#linkToRegistration').click(switchFromLoginModalToRegistration);
+    $('#nav-linkRegister').click(function(){
+        $('#registerModal').modal('show');
+    });
+    $('#nav-linkToLogin').click(function(){
+        $('#loginModal').modal('show');
+    });
+};

@@ -70,12 +70,6 @@ public class RestGroupController {
     }
 
 
-    @RequestMapping(value = "/createGroupString", method = RequestMethod.POST)
-    public void newGroup(@RequestBody String appGroup) {
-        System.out.println(appGroup);
-        //groupService.saveGroup(appGroup);
-    }
-
     @RequestMapping(value = "/createGroup", method = RequestMethod.POST)
     public boolean newGroup(@RequestBody AppGroupNew appGroupNew) {
         System.out.println(appGroupNew);
@@ -99,8 +93,8 @@ public class RestGroupController {
         return gfd;
     }
 
-    @RequestMapping(value="deleteGroup/{groupId}", method = RequestMethod.DELETE)
-    public boolean deleteGroupById(@PathVariable Long groupId){
+    @RequestMapping(value = "deleteGroup/{groupId}", method = RequestMethod.DELETE)
+    public boolean deleteGroupById(@PathVariable Long groupId) {
         return groupService.deleteGroupById(groupId);
     }
 
@@ -115,12 +109,13 @@ public class RestGroupController {
         System.out.println("found " + groups.size() + " groups, now add tags");
         return groupFullDetailFromGroups(groups);
     }
-    @RequestMapping(value = "/advGroupSearch2", method = RequestMethod.POST)
-    public List<GroupFullDetail> searchGroupAdvanced2(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
+
+    @RequestMapping(value = "/advGroupSearch", method = RequestMethod.POST)
+    public List<GroupFullDetail> searchGroupAdvanced_Android(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
         return searchGroupAdvanced(groupSearchFilters);
     }
 
-        @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/addMember", method = RequestMethod.PATCH)
     public boolean addUserToGroupMember(@RequestBody MemberGroupPayload userGroupInfo) {
         System.out.println(userGroupInfo);
         UserGroupFound guf;
@@ -130,23 +125,14 @@ public class RestGroupController {
             return false; // error
         }
         if (guf.gu != null) return true; // yet present but it's not an error. TODO: is it an error?
-
         groupService.addMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId());
         return true;
     }
 
 
     @RequestMapping(value = "/addMember", method = RequestMethod.POST)
-    public boolean addUserToGroupMemberAndroid(@RequestBody MemberGroupPayload userGroupInfo) {
-        UserGroupFound guf;
-        guf = fetchGroupUser(userGroupInfo);
-        if (guf == null) {
-            System.out.println("errore fetchGroupUser");
-            return false; // error
-        }
-        if (guf.gu != null) return true; // yet present but it's not an error. TODO: is it an error?
-        groupService.addMembership(userGroupInfo.getGroupId(), userGroupInfo.getUserId());
-        return true;
+    public boolean addUserToGroupMember_Android(@RequestBody MemberGroupPayload userGroupInfo) {
+        return addUserToGroupMember(userGroupInfo);
     }
 
     @RequestMapping(value = "/removeMember", method = RequestMethod.PATCH)
@@ -162,39 +148,19 @@ public class RestGroupController {
     }
 
     @RequestMapping(value = "/removeMember", method = RequestMethod.POST)
-    public boolean removeUserToGroupMemberAndroid(@RequestBody MemberGroupPayload userGroupInfo) {
-
-        UserGroupFound guf;
-        guf = fetchGroupUser(userGroupInfo);
-        if (guf == null) return false; // error
-        if (guf.gu == null) return true; // not present but it's not an error. TODO: is it an error?
-
-        groupService.removeMembershipByGroupUserId(guf.gu.getId());
-        return true;
-    }
-
-    @RequestMapping(value = "/removeMember2", method = RequestMethod.POST)
-    public boolean removeUserToGroupMember2(@RequestBody MemberGroupPayload userGroupInfo) {
-        return  removeUserToGroupMember(userGroupInfo);
+    public boolean removeUserToGroupMember_Android(@RequestBody MemberGroupPayload userGroupInfo) {
+        return removeUserToGroupMember(userGroupInfo);
     }
 
     @RequestMapping(value = "/isMember", method = RequestMethod.PATCH)
     public boolean isMember(@RequestBody MemberGroupPayload userGroupInfo) {
-        System.out.println("Dentro isMember: " + userGroupInfo);
         UserGroupFound guf;
         guf = fetchGroupUser(userGroupInfo);
         return (guf != null && guf.gu != null);
     }
 
     @RequestMapping(value = "/isMember", method = RequestMethod.POST)
-    public boolean isMemberPost(@RequestBody MemberGroupPayload userGroupInfo) {
-        UserGroupFound guf;
-        guf = fetchGroupUser(userGroupInfo);
-        return (guf != null && guf.gu != null);
-    }
-
-    @RequestMapping(value = "/isMember2", method = RequestMethod.POST)
-    public boolean isMember2(@RequestBody MemberGroupPayload userGroupInfo) {
+    public boolean isMember_Android(@RequestBody MemberGroupPayload userGroupInfo) {
         return isMember(userGroupInfo);
     }
 
@@ -219,7 +185,7 @@ public class RestGroupController {
     }
 
     @RequestMapping(value = "/removeAllMessages", method = RequestMethod.DELETE)
-    public void removeAllMessages(){
+    public void removeAllMessages() {
         messageService.removeAll();
     }
 
@@ -291,8 +257,8 @@ public class RestGroupController {
         return new MessagesGroupResponse(msgQuery.getGroupId(), msgs);
     }
 
-    @RequestMapping(value = "/fetchMessages2", method = RequestMethod.POST)
-    public MessagesGroupResponse fetchMessages2(@RequestBody MessageQueryPayload msgQuery) {
+    @RequestMapping(value = "/fetchMessages", method = RequestMethod.POST)
+    public MessagesGroupResponse fetchMessages_Android(@RequestBody MessageQueryPayload msgQuery) {
         return fetchMessages(msgQuery);
     }
 

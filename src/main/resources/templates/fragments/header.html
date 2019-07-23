@@ -43,6 +43,8 @@
         <script src="js/navbar.js" th:src="@{/js/navbar.js}"></script>
         <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
         <link rel="stylesheet" href="../static/css/common.css" th:href="@{/css/common.css}">
+
+        <th:block th:insert="fragments/navbar.html :: navbarInclusions" />
     </th:block>
 </head>
 <body>

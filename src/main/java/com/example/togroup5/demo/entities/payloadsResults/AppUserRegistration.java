@@ -65,8 +65,13 @@ public class AppUserRegistration implements Serializable {
     }
 
     @Override
-    public String toString(){
-        return "userName: " + this.userName+ "password: " + this.password + "email: "  + this.email;
+    public String toString() {
+        return "AppUserRegistration{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", repeatPassword='" + repeatPassword + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 
     public AppUser toAppUser(){
