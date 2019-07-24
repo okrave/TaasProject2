@@ -38,7 +38,9 @@ public class GroupService {
         return appGroupRepository.findAll();
     }
 
-    public AppGroup findGroupById(Long id){ return appGroupRepository.findAppGroupByID(id);}
+    public AppGroup findGroupById(Long id) {
+        return appGroupRepository.findAppGroupByID(id);
+    }
 
     public List<AppGroup> listGroupByCreator() {
         return appGroupRepository.findDistinctByCreator("ciao");
@@ -47,6 +49,7 @@ public class GroupService {
     public List<AppTag> listAllTag() {
         return appTagRepository.findAll();
     }
+
     public List<GoogleLocation> listAllGoogleLocation() {
         return locationRepository.findAll();
     }
@@ -61,7 +64,7 @@ public class GroupService {
         appGroupRepository.save(newGroup);
     }
 
-    public boolean deleteGroupById( Long groupId){
+    public boolean deleteGroupById(Long groupId) {
         return appGroupRepository.delete(groupId);
     }
 
@@ -75,16 +78,16 @@ public class GroupService {
         try {
             GoogleLocation locationYetPresent;
             locationYetPresent = locationRepository.findGoogleLocationByLatAndLng(location.getLat(), location.getLng());
-            if(locationYetPresent == null){
+            if (locationYetPresent == null) {
                 System.out.println("location saved: " + location);
                 locationRepository.save(location);
                 location = locationRepository.findGoogleLocationByLatAndLng(location.getLat(), location.getLng());
-            }else {
+            } else {
                 location = locationYetPresent;
             }
             newGroup.setLocation(location);
             // get the id
-             System.out.println("location found again: " + location);
+            System.out.println("location found again: " + location);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -99,8 +102,8 @@ public class GroupService {
 
 
         addMembership(g.getGroupId(),
-                        //appUserRepository.findAppUserByUserName(g.getCreator()).getUserId()
-                        g.getCreatorId());
+                //appUserRepository.findAppUserByUserName(g.getCreator()).getUserId()
+                g.getCreatorId());
 
         System.out.println(Arrays.toString(newGroup.getTags().toArray()));
         for (String ts : newGroup.getTags()) {
@@ -155,7 +158,7 @@ public class GroupService {
     public GoogleLocation findLocationByGroupId(Long groupId){
         return locationRepository.findGoogleLocationByLatAndLng()
     }*/
-    public GoogleLocation findLocationById(Long locationId){
+    public GoogleLocation findLocationById(Long locationId) {
         return locationRepository.findGoogleLocationByID(locationId);
     }
 
@@ -168,15 +171,16 @@ public class GroupService {
     public List<AppTag> listTagsByAppGroupId(Long groupId) {
         return appTagRepository.listTagsByGroupId(groupId);
     }
+
     public List<AppUser> listUsersByAppGroupId(Long groupId) {
         return appUserRepository.listUsersByGroupId(groupId);
     }
 
     /**
      * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
-     * @param userId the second {@link Long} is the {@link AppUser}'s ID
-     * */
-    public GroupUser findMembership(Long groupId, Long userId){
+     * @param userId  the second {@link Long} is the {@link AppUser}'s ID
+     */
+    public GroupUser findMembership(Long groupId, Long userId) {
         return groupUserRepository.findGroupUserByGroupIdAndUserId(groupId, userId);
     }
 
@@ -185,43 +189,47 @@ public class GroupService {
      * are performed BEFORE this call.
      *
      * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
-     * @param user the {@link AppUser} which desires to apply onto the given group
-     * */
-    public void addMembership(Long groupId, AppUser user){
+     * @param user    the {@link AppUser} which desires to apply onto the given group
+     */
+    public void addMembership(Long groupId, AppUser user) {
         addMembership(groupId, user.getUserId());
     }
+
     /**
      * Implementor's note: it's assumed that all checks about the existence of the group and the user
      * are performed BEFORE this call.
      *
      * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
-     * @param userId the second {@link Long} is the {@link AppUser}'s ID which desires to apply onto the given group
-     * */
-    public void addMembership(Long groupId, Long userId){
-        groupUserRepository.save(new GroupUser(groupId, userId) );
+     * @param userId  the second {@link Long} is the {@link AppUser}'s ID which desires to apply onto the given group
+     */
+    public void addMembership(Long groupId, Long userId) {
+        if (groupUserRepository.findGroupUserByGroupIdAndUserId(groupId, userId) == null)
+            groupUserRepository.save(new GroupUser(groupId, userId));
     }
+
     /**
      * Implementor's note: it's assumed that all checks about the existence of the group and the user
      * are performed BEFORE this call.
      *
      * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
-     * @param user the {@link AppUser} which desires to be removed from the given group
-     * */
-    public void removeMembership(Long groupId, AppUser user){
+     * @param user    the {@link AppUser} which desires to be removed from the given group
+     */
+    public void removeMembership(Long groupId, AppUser user) {
         removeMembership(groupId, user.getUserId());
     }
+
     /**
      * Implementor's note: it's assumed that all checks about the existence of the group and the user
      * are performed BEFORE this call.
      *
      * @param groupId the first {@link Long} is the {@link AppGroup}'s ID
-     * @param userId the second {@link Long} is the {@link AppUser}'s ID which desires to be removed from the given group
-     * */
-    public void removeMembership(Long groupId, Long userId){
+     * @param userId  the second {@link Long} is the {@link AppUser}'s ID which desires to be removed from the given group
+     */
+    public void removeMembership(Long groupId, Long userId) {
         groupUserRepository.deleteGroupUserByGroupIdAndUserId(groupId, userId);
     }
 
-    public void removeMembershipByGroupUserId(Long groupUserId){
+    public void removeMembershipByGroupUserId(Long groupUserId) {
         groupUserRepository.delete(groupUserId);
     }
 
@@ -230,7 +238,7 @@ public class GroupService {
     }
 
 
-    public List<AppGroup> listGroupByUserId(Long userId){
+    public List<AppGroup> listGroupByUserId(Long userId) {
         return appGroupRepository.listGroupsByUserId(userId);
     }
 }

@@ -158,7 +158,7 @@ alter table USER_ROLE
     add constraint USER_ROLE_FK2 foreign key (ROLE_ID)
         references APP_ROLE (ROLE_ID);
 
---
+-- group_tag
 
 alter table GROUP_TAG
     add constraint GROUP_TAG_UK unique (GROUP_ID, TAG_ID);
@@ -171,7 +171,7 @@ alter table GROUP_TAG
     add constraint GROUP_TAG_FK2 foreign key (TAG_ID)
         references APP_TAG (TAG_ID);
 
---
+-- group_user
 
 alter table GROUP_USER
     add constraint GROUP_USER_UK unique (GROUP_ID, USER_ID);
@@ -184,6 +184,12 @@ alter table GROUP_USER
     add constraint GROUP_USER_FK2 foreign key (USER_ID)
         references APP_USER (USER_ID);
 
+-- location
+
+/*
+alter table LOCATION
+    add constraint LOCATION_LAT_LNG_UNIQUE unique ()
+*/
 
 --- INSERTION
 
@@ -200,6 +206,7 @@ values (2, 'ROLE_USER');
 
 -- POSTGIS
 
+/*
 -- Enable PostGIS (includes raster)
 CREATE EXTENSION postgis;
 -- Enable Topology
@@ -220,6 +227,7 @@ CREATE EXTENSION postgis_tiger_geocoder;
 -- Upgrade PostGIS (includes raster) to latest version
 ALTER EXTENSION postgis UPDATE;
 ALTER EXTENSION postgis_topology UPDATE;
+*/
 
 --
 

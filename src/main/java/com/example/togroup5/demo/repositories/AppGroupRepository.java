@@ -128,7 +128,7 @@ public class AppGroupRepository {
                      * (Math.toDegrees(Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2)))
                      * 60 * 1.1515 * 1.609344)
                      * */
-                    calc = " ((" + calc + ") OR ( :dist >= abs(degrees( sin( :lat) * sin(radians(loc.lat)) + cos( :lat) * cos(radians(loc.lat)) * cos( :lng - radians(loc.lng)) ) * 60 * 1.1515 * 1.609344)) ) ";
+                    calc = " ((" + calc + ") OR ( :dist >= abs(degrees( acos(sin( :lat) * sin(radians(loc.lat)) + cos( :lat) * cos(radians(loc.lat)) * cos( :lng - radians(loc.lng)) ) ) * 60 * 1.1515 * 1.609344)) ) ";
                 }
                 appliedFields.add(new SingleFilter(calc, "lat", lat));
                 appliedFields.add(new SingleFilter("", "lng", lng));
