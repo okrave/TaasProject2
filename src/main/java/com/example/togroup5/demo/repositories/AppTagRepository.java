@@ -29,7 +29,8 @@ public class AppTagRepository {
 
     public void save(AppTag tag) {
         //AppTag supportTag =
-        appTagJpa.save(tag);
+        if(findTagByName(tag.getName()) == null)
+            appTagJpa.save(tag);
     }
 
     public boolean delete(Long tagId) {

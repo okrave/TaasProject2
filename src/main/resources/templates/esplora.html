@@ -215,7 +215,7 @@
         <!-- ------------------------------ VISUALIZZAZIONE RISULTATI ------------------------------------ -->
 
 
-        <div v-if="groupFind != null && groupFind.length > 0 && getTypeSearch != 'maps' && (getTypeSearch == 'results' || getTypeSearch == 'adv' || getTypeSearch == 'date')" class="borderNice">
+        <div v-if="groupFind != null && groupFind.length > 0 && getTypeSearch !== 'maps' && (getTypeSearch === 'results' || getTypeSearch === 'adv' || getTypeSearch === 'date')" class="borderNice">
             <ul>
                 <li class="container_risultati" v-for="group in groupFind">
                     <div v-if="group !== undefined && group != undefined"

@@ -117,10 +117,7 @@ public class RestHomeController {
     @GetMapping(value = "/User/createUser")
     public void createUsers() {
         //(String userName, String encrytedPassword, String userEmail, boolean enabled)
-        AppUser user = new AppUser("dbuser1", encryptePassword("123"), "lol@lol.it", true);
-        userService.save(user);
-        user = new AppUser("dbadmin1", encryptePassword("123"), "lol@lolool.it", true);
-        userService.save(user);
+        AppUser user ;
         user = new AppUser("ciao", encryptePassword("123"), "lol@lolool.it", true);
         userService.save(user);
         user = new AppUser("Luca", encryptePassword("Luca"), "luca@luca.com", true);

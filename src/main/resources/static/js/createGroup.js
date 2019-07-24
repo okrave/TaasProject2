@@ -216,7 +216,6 @@ function initAll() {
                 let buttonTag = document.getElementById(tagName);
                 if ((this.newGroupInfo.tags == null) || (!this.newGroupInfo.tags.includes(tagName))) {
                     buttonTag.className = "btn activate-tag";
-                    selected
                     this.newGroupInfo.addTag(tagName);
                 } else {
                     buttonTag.className = "btn deactivate-tag";
@@ -224,9 +223,10 @@ function initAll() {
                 }
             }
 
+            /*
             , addTag(){
                 this.newGroupInfo.addTag(this.newTag);
-            }
+            }*/
 
             , createNewTag() {
                 console.log("Entra in createTag");
@@ -263,13 +263,13 @@ function initAll() {
                 this.tag = "";
             }*/
 
-
+/*
             , addTagFromExisting(tag) {
                 let prevTag = this.tag;
                 this.tag = tag.trim();
                 this.addTag();
                 this.tag = prevTag;
-            }
+            }*/
 
             , removeTag(tag, index) {
                 this.newGroupInfo.removeTag(tag, index);
