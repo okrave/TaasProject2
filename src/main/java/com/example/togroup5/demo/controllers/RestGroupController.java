@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "Group")
@@ -444,7 +443,7 @@ public class RestGroupController {
         }
     }
 
-    protected class UserGroupFound {
+    protected static class UserGroupFound {
         //boolean found;
         GroupUser gu;
 
@@ -453,4 +452,5 @@ public class RestGroupController {
             this.gu = gu;
         }
     }
+
 }

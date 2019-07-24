@@ -35,7 +35,7 @@ public class GroupSearchAdvPayload implements Serializable {
             @JsonProperty("location") GoogleLocation location,
             @JsonProperty("dateStartRange") Date dateStartRange,
             @JsonProperty("dateEndRange") Date dateEndRange,
-            @JsonProperty("maxDistance") Double maxDistance,
+            @JsonProperty("maxDistance") Double maxDistance, // in kilometri
             @JsonProperty("tags") List<String> tags) {
         this.isSearchingByCreator = isSearchingByCreator;
         this.creatorMember = creatorMember;
@@ -91,6 +91,7 @@ public class GroupSearchAdvPayload implements Serializable {
         this.dateEndRange = dateEndRange;
     }
 
+    /** In kilometers*/
     public Double getMaxDistance() {
         return maxDistance;
     }
