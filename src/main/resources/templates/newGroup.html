@@ -48,7 +48,7 @@
                         <div class="gruppo-body">
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 text_search">
 
                                         <h3>Scegli Data</h3>
 
@@ -66,7 +66,7 @@
                                                name="location"
                                                v-model="locationSearch"
                                                placeholder="Please Enter Location">
-                                    <button onclick="changeLocation()"> Search</button>
+                                    <button class="button_search" onclick="changeLocation()"> Search</button>
 
 
 
@@ -75,6 +75,7 @@
                     -->
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -103,47 +104,7 @@
                             <button type="button" class="btn btn-primary btn-lg btn-block" @click="createNewTag()" style="margin-top: 10px">Crea tag</button>
                         </div>
 
-                        <!--
-                        <div class="d-flex flex-row flex-nowrap w-100" id="tagsSection">
-                            <div class="d-flex flex-column flex-nowrap w-50">
-                                <p>Your chosen tags</p>
-                                <div class="d-flex flex-row flex-nowrap w-100">
-                                    <input
-                                         type="text"
-                                         v-model="tag"
-                                         name="tag"
-                                         placeholder="Tag: 'computer science', 'math', 'football', ...">
-                                    <button name="addTag" value="Add tag" @click="addTag()">Add Tag</button>
-                                </div>
-                                <div id="tags" class="tagList d-flex flex-column flex-nowrap border border-primary rounded shadow-sm bg-white ">
-                                    <div class="flexInline" v-for="(tag, index) in newGroupInfo.tags">
-                                        <button value="X" @click="removeTag(tag, index)">X</button>
-                                        <p>{{tag}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-column flex-wrap w-50">
-                                <p>Pick up some tags from yet existing ones.</p>
-                                <div class="d-flex flex-row flex-nowrap w-100">
-                                    <input
-                                            type="text"
-                                            v-model="filterTags"
-                                            name="tagFilter"
-                                            placeholder="Search onto existing tags">
-                                    <button name="filterTag" value="Add filter" @click="applyFilter()">Apply filter</button>
-                                </div>
 
-                                <div class="tagList yetExistingTags d-flex flex-column flex-nowrap border border-primary rounded shadow-sm bg-white">
-
-                                    <div
-                                            v-for="tag in getFilteredTags">
-                                        <button @click="addTagFromExisting(tag.name)">{{tag.name}}</button>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        -->
                     </div>
 
                     <div v-if="creationProgression.actualStep == 2">

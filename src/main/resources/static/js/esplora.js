@@ -221,6 +221,10 @@ window.onload = _ => {
                 this.searchAdvanced();
             }
 
+
+            , advSearch() {
+                this.typeSearch = "adv";
+            }
             , mapsSearch() {
                 this.typeSearch = "maps";
                 document.getElementById('map').style.visibility = 'visible';

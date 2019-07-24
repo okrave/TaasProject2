@@ -29,7 +29,7 @@
         </section>
 
         <nav class="navbar navbar-inverse navbar-fixed-top search">
-            <div class="container">
+            <div class="container" id="searchBar">
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
@@ -51,19 +51,11 @@
 
                         </div>
                     </div>
-                    <div class=" searchNav">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Dropdown
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <li><a role="button" @click="mapsSearch()">Maps</a></li>
-                            <li><a role="button" @click="tagsSearch()">Tags</a></li>
-                            <li><a role="button" @click="dateSearch()">Date</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
+                    <div class="navbar-right buttons">
+                        <button class="btn" @click="mapsSearch()">Maps</button>
+                        <button class="btn" @click="tagsSearch()">Tags</button>
+                        <button class="btn" @click="dateSearch()">Date</button>
+                        <button class="btn" @click="advSearch()">Avanzata</button>
                     </div>
 
                 </div><!-- /.navbar-collapse -->
@@ -71,12 +63,13 @@
         </nav>
 
         <!-- ------------------------------ TAGS ------------------------------------ -->
-        <div v-if="getTypeSearch == 'tags'">
+        <div class="body" v-if="getTypeSearch == 'tags'">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-6 col-md-2" v-for="tag in allTags">
+                    <div class="col-sm-3 col-md-3 col-lg-2" v-for="tag in allTags">
                         <div class="thumbnail" @click="findGroupByTag(tag.name)">
-                            <img src="https://source.unsplash.com/user/erondu/171x180">
+                            <img src="https://source.unsplash.com/random/171x180">
+
                             <div class="caption">
                                 <h5>{{tag.name}}</h5>
                             </div>
@@ -86,12 +79,14 @@
             </div>
         </div>
         <!-- ------------------------------ MAPS ------------------------------------ -->
-        <div v-if="getTypeSearch == 'maps'">
+        <div class="body" v-if="getTypeSearch == 'maps'">
 
+            <div id="map">
 
+            </div>
         </div>
         <!-- ------------------------------ DATA ------------------------------------ -->
-        <div v-if="getTypeSearch == 'date'">
+        <div class="body" v-if="getTypeSearch == 'date'">
             <div class="container">
                 <label>Start date<input class="calendarGroup"
                                         type="date"
@@ -112,8 +107,6 @@
 
             </div>
 
-
-            DATA
         </div>
 
         <!-- ------------------------------ USER OR GROUPNAME ------------------------------------ -->
@@ -126,9 +119,11 @@
         <!-- ------------------------------ RICERCA AVANZATA ------------------------------------ -->
 
 
-        <div id="advSearch"
-             class="containerFlex flexFlowCol"
+        <div  id="advSearch"
+             class="containerFlex flexFlowCol body"
+             v-if="getTypeSearch == 'adv'"
         >
+
             <div id="sectionBtnSearch"
                  class="containerFlex justifyCenter"
             >
@@ -302,12 +297,6 @@
                 </li>
             </ul>
         </div>
-
-    </div>
-</div>
-
-<div>
-    <div id="map">
 
     </div>
 </div>

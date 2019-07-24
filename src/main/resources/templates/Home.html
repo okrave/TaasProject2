@@ -6,6 +6,7 @@
     <th:block th:replace="fragments/header.html :: headerInclusions"/>
 
     <link rel="stylesheet" href="../static/css/Home.css" th:href="@{/css/Home.css}">
+    <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
     <script src="js/loginRegister.js" th:src="@{/js/loginRegister.js}"></script>
 
 </head>
@@ -62,8 +63,8 @@
 
                         <div class="caption">
                             <div class="row">
-                                <div class="col-md-10"><h4>{{group.groupDate}}</h4></div>
-                                <div class="col-md-2"><a class="link_card" href=""><i class="far fa-heart"></i></a>
+                                <div class="col-md-8"><h4>{{group.groupDate}}</h4></div>
+                                <div class="col-md-4"><a class="link_card" href=""><i class="fas fa-plus animated heartBeat"></i></a>
                                 </div>
 
                             </div>
@@ -106,8 +107,8 @@
 
                     <div class="caption">
                         <div class="row">
-                            <div class="col-md-10"><h4>{{group.groupDate}}</h4></div>
-                            <div class="col-md-2"><a class="link_card" href=""><i class="far fa-heart"></i></a>
+                            <div class="col-md-8"><h4>{{group.groupDate}}</h4></div>
+                            <div class="col-md-4"><a class="link_card" href=""><i class="fas fa-plus animated heartBeat"></i></a>
                             </div>
 
                         </div>
@@ -150,17 +151,6 @@
     <!--------------------------------------------------->
 
 
-    <div class="Wrapper">
-        <div class="unauthenticated">
-            <a class="btn" href="/login">Login</a>
-        </div>
-        <div class="authenticated" style="display: none">
-            Logged in as: <span id="user"></span>
-            <div>
-                <button @click="logout()" class="btn">Logout</button>
-            </div>
-        </div>
-    </div>
 
 
     <!-- Button trigger modal -->
