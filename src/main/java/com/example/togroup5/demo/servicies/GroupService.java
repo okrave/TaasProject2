@@ -2,12 +2,14 @@ package com.example.togroup5.demo.servicies;
 
 import com.example.togroup5.demo.entities.*;
 import com.example.togroup5.demo.entities.payloadsResults.AppGroupNew;
+import com.example.togroup5.demo.entities.payloadsResults.GroupFullDetail;
 import com.example.togroup5.demo.entities.payloadsResults.GroupSearchAdvPayload;
 import com.example.togroup5.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,6 +38,10 @@ public class GroupService {
 
     public List<AppGroup> listAllGroup() {
         return appGroupRepository.findAll();
+    }
+
+    public List<GroupFullDetail> listGroupFullDetail() {
+        return groupFullDetailFromGroups(this.listAllGroup());
     }
 
     public AppGroup findGroupById(Long id) {
@@ -233,12 +239,51 @@ public class GroupService {
         groupUserRepository.delete(groupUserId);
     }
 
-    public List<AppGroup> searchGroupAdvanced(GroupSearchAdvPayload groupSearchFilters) {
-        return appGroupRepository.advancedSearch(groupSearchFilters);
+    public List<GroupFullDetail> searchGroupAdvanced(GroupSearchAdvPayload groupSearchFilters) {
+        return groupFullDetailFromGroups(appGroupRepository.advancedSearch(groupSearchFilters));
+    }
+
+    public List<GroupFullDetail> listGroupByUserId(Long userId) {
+        return groupFullDetailFromGroups(appGroupRepository.listGroupsByUserId(userId));
+    }
+
+    // refactoring after 24-07-2019
+
+    public GroupFullDetail infoGroup(String groupId) {
+        AppGroup newGroup;
+        GroupFullDetail gfd;
+        System.out.println("groupId:" + groupId);
+        newGroup = findGroupById(Long.valueOf(groupId));
+        if (newGroup == null)
+            return null;
+
+        System.out.println("Il gruppo:" + newGroup.getGroupName());
+        gfd = fetchGroupDetails(newGroup);
+        System.out.println(gfd.toString());
+        return gfd;
     }
 
 
-    public List<AppGroup> listGroupByUserId(Long userId) {
-        return appGroupRepository.listGroupsByUserId(userId);
+    //utils
+
+    protected List<GroupFullDetail> groupFullDetailFromGroups(List<AppGroup> groups) {
+        List<GroupFullDetail> gts;
+        GroupFullDetail gfd;
+        if (groups == null) return null;
+        gts = new ArrayList<>(groups.size());
+        for (AppGroup g : groups) {
+            gfd = fetchGroupDetails(g);
+            gfd.setLocation(findLocationById(g.getLocation()));
+            gts.add(gfd);
+        }
+        return gts;
+    }
+
+    protected GroupFullDetail fetchGroupDetails(AppGroup g) {
+        return new GroupFullDetail(g,//
+                listTagsByAppGroupId(g.getGroupId()),//
+                listUsersByAppGroupId(g.getGroupId()), //
+                findLocationById(g.getLocation())
+        );
     }
 }

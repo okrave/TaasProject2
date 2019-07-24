@@ -36,6 +36,7 @@ public class RestGroupController {
         return allGroup;
     }
 
+
     @GetMapping(value = "/listTagRest")
     public List<AppTag> listTagRest() {
         List<AppTag> allTag = groupService.listAllTag();
@@ -50,11 +51,7 @@ public class RestGroupController {
 
     @GetMapping(value = "/listGroupRest")
     public List<GroupFullDetail> listGroupFullDetail() {
-        List<AppGroup> groups;
-        List<GroupFullDetail> gfd;
-        groups = this.listGroup();
-        gfd = groupFullDetailFromGroups(groups);
-        return gfd;
+        return groupService.listGroupFullDetail();
     }
 
 
@@ -79,17 +76,7 @@ public class RestGroupController {
 
     @GetMapping(value = "/info/{groupId}")
     public GroupFullDetail infoGroup(@PathVariable String groupId) {
-        AppGroup newGroup;
-        GroupFullDetail gfd;
-        System.out.println("groupId:" + groupId);
-        newGroup = groupService.findGroupById(Long.valueOf(groupId));
-        if (newGroup == null)
-            return null;
-
-        System.out.println("Il gruppo:" + newGroup.getGroupName());
-        gfd = fetchGroupDetails(newGroup);
-        System.out.println(gfd.toString());
-        return gfd;
+        return groupService.infoGroup(groupId);
     }
 
     @RequestMapping(value = "deleteGroup/{groupId}", method = RequestMethod.DELETE)
@@ -100,13 +87,12 @@ public class RestGroupController {
 
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.PATCH)
     public List<GroupFullDetail> searchGroupAdvanced(@RequestBody GroupSearchAdvPayload groupSearchFilters) {
-        List<AppGroup> groups;
-        //groupService.saveGroup(appGroupNew.toAppGrou());
+        List<GroupFullDetail> groups;
         System.out.println("search filters: ");
         System.out.println(groupSearchFilters);
         groups = groupService.searchGroupAdvanced(groupSearchFilters);
-        System.out.println("found " + groups.size() + " groups, now add tags");
-        return groupFullDetailFromGroups(groups);
+        System.out.println("found " + groups.size() + " groups");
+        return groups;
     }
 
     @RequestMapping(value = "/advGroupSearch", method = RequestMethod.POST)
@@ -166,7 +152,7 @@ public class RestGroupController {
 
     @GetMapping(value = "/userGroups/{id}")
     public List<GroupFullDetail> listGroupsByUserId(@PathVariable Long id) {
-        return groupFullDetailFromGroups(groupService.listGroupByUserId(id));
+        return groupService.listGroupByUserId(id);
     }
 
     @GetMapping(value = "/createTag/{name}")
@@ -285,6 +271,7 @@ public class RestGroupController {
     }
 
     //utils
+    /*
     protected List<GroupFullDetail> groupFullDetailFromGroups(List<AppGroup> groups) {
         List<GroupFullDetail> gts;
         GroupFullDetail gfd;
@@ -305,7 +292,7 @@ public class RestGroupController {
                 groupService.listUsersByAppGroupId(g.getGroupId()), //
                 groupService.findLocationById(g.getLocation())
         );
-    }
+    }*/
 
 
     // crea i default
