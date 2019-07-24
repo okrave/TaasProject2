@@ -209,7 +209,10 @@ window.onload = _ => {
                     .then(response => {
                         this.groupFind = response;
                         // this.viewGroupFind();
-                    }).catch(this.createErrorHandler("adv search group"));
+                    }).catch(function (err) {
+                        this.createErrorHandler("adv search group")(err);
+                        this.groupFind = [];
+                    });
             }
 
 
@@ -256,12 +259,16 @@ window.onload = _ => {
             }
 
             , dateSearch() {
+                var startDate, endDate;
                 document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "date";
+                console.log("this.inputDateStart: " + this.inputDateStart + ", this.inputDateEnd: " + this.inputDateEnd);
                 if (this.inputDateStart != null && this.inputDateStart != "" && this.inputDateEnd != "" && this.inputDateEnd != null) {
                     this.filters.resetFields();
-                    this.filters.setDateStart(this.inputDateStart);
-                    this.filters.setDateEnd(this.inputDateEnd);
+                    startDate = this.inputDateStart;
+                    endDate = this.inputDateEnd;
+                    this.filters.setDateStart(startDate);
+                    this.filters.setDateEnd(endDate);
                     this.searchAdvanced();
                 }
             }

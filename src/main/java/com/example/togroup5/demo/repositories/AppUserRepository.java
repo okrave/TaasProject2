@@ -1,7 +1,6 @@
 package com.example.togroup5.demo.repositories;
 
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -17,8 +16,7 @@ import java.util.List;
 
 /**
  * E' la repository custom quindi qui dobbiamo mettere tutti i metodi che sfrutteranno query
- *
- * */
+ */
 @Repository("AppUserRepository")
 @Transactional
 
@@ -42,19 +40,19 @@ public class AppUserRepository {
      * Role = 1 -> ROLE_ADMIN , Role = 2 -> ROLE_USER
      */
     public void save(AppUser user) {
-        //AppUser supportUser =
-        appUserJpa.save(user);
+        if (findAppUserByUserName(user.getUserName()) == null)
+            appUserJpa.save(user);
     }
 
-    public boolean delete(Long userId){
+    public boolean delete(Long userId) {
         appUserJpa.deleteById(userId);
         return true;
     }
 
-    public boolean delete(String username){
+    public boolean delete(String username) {
         AppUser user;
         user = findAppUserByUserName(username);
-        if(user == null) return false;
+        if (user == null) return false;
         appUserJpa.delete(user);
         return true;
     }
@@ -75,15 +73,15 @@ public class AppUserRepository {
         }
     }
 
-    public AppUser findAppUserByUserName(String userName){
+    public AppUser findAppUserByUserName(String userName) {
         return appUserJpa.findAppUserByUserName(userName);
     }
 
-    public AppUser findAppUserByID(Long userID){
+    public AppUser findAppUserByID(Long userID) {
         return appUserJpa.getOne(userID);
     }
 
-    public List<AppUser> findAll(){
+    public List<AppUser> findAll() {
         return appUserJpa.findAll();
     }
 
@@ -101,7 +99,7 @@ public class AppUserRepository {
         }
     }
 
-    public AppUser findByEmailPassword(UserLoginPayload userEnailPassword){
+    public AppUser findByEmailPassword(UserLoginPayload userEnailPassword) {
         //return appUserJpa.findAppUserByUserName()
         try {
             String sql = "Select u from " + AppUser.class.getName() + //
@@ -111,41 +109,40 @@ public class AppUserRepository {
             Query query = entityManager.createQuery(sql, AppUser.class);
             query.setParameter("email", userEnailPassword.getEmail());
             //query.setParameter("pwd", userEnailPassword.getPassword());
-            return  (AppUser) query.getSingleResult();
+            return (AppUser) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
-    public AppUser findByEmailOrUsernameAndPassword(UserLoginPayload userEnailPassword){
+
+    public AppUser findByEmailOrUsernameAndPassword(UserLoginPayload userEnailPassword) {
         try {
             String sql = "Select u from " + AppUser.class.getName() + //
                     " u WHERE (u.userEmail = :email OR u.userName = :email) ";// AND u.encrytedPassword = :pwd";
 
             Query query = entityManager.createQuery(sql, AppUser.class);
             query.setParameter("email", userEnailPassword.getEmail());
-            return  (AppUser) query.getSingleResult();
+            return (AppUser) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
 
-    public AppUser findByUserNameAndPassword(String userName, String password){
+    public AppUser findByUserNameAndPassword(String userName, String password) {
         try {
-            String sql= "Select u from " + AppUser.class.getName() + //
+            String sql = "Select u from " + AppUser.class.getName() + //
                     " u WHERE (u.userName = :username AND ";// u.encrytedPassword = :pwd)";
 
             System.out.println("Query: " + sql);
             Query query = entityManager.createQuery(sql, AppUser.class);
             query.setParameter("username", userName);
             //query.setParameter("pwd", password);
-            return  (AppUser) query.getSingleResult();
+            return (AppUser) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
-
-
 
 
 }

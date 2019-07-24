@@ -158,7 +158,25 @@ window.onload = _ => {
                 //this.$router.push('/group_page/' + groupId);
             }
 
-            ,createErrorHandler(methodName){
+            , addMembership(groupId){
+                if(! this.isLogged){
+                    this.messages.setErrorMessage("Per partecipare ad un gruppo devi aver effettuato il login");
+                    this.messages.clearMessagesAfter(5000);
+                }
+                this.toGroupAPI
+                    .getGroupEndpoint()
+                    .addGroupMember(new MemberGroupPayload(this.userLogged.id,this.userLogged.username,groupId))
+                    .then(resp => {
+                        this.messages.setInfoMessage("Iscrizione avvenuta.");
+                        this.messages.clearMessagesAfter(3000);
+                    })
+                    .catch(err => {
+                        this.messages.setErrorMessage(err);
+                        this.messages.clearMessagesAfter(5000);
+                    })
+            }
+
+            , createErrorHandler(methodName){
                 let thisVue = this;
                 return function (err) {
                     console.log("Error on method: " + methodName);

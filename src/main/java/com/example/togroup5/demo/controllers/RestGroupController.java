@@ -333,7 +333,7 @@ public class RestGroupController {
         long id;
         String[][][] groupsDatas;
         String[] groupInfo, locationInfo, tagsInfo;
-
+        AppUser u;
         AppGroupNew newGroup;
         /*
         AppTag tag;
@@ -420,9 +420,13 @@ public class RestGroupController {
             for (String t : tagsInfo)
                 tags.add(t);
 
-
+            u = userService.findAppUserByUserName(groupInfo[0]);
+            if(u == null) {
+                restHomeController.register(new AppUserRegistration(groupInfo[0], groupInfo[0], groupInfo[0], groupInfo[0]));
+                u = userService.findAppUserByUserName(groupInfo[0]);
+            }
             newGroup = new AppGroupNew(
-                    userService.findAppUserByUserName(groupInfo[0]).getUserId(), //
+                    u.getUserId(), //
                     groupInfo[0], groupInfo[1], //
                     new AppGroupNew.LocationReceived(locationInfo[0]),//
                     tags, groupInfo[2], Date.valueOf(groupInfo[3]));
