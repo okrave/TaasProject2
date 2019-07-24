@@ -97,6 +97,7 @@ public class GroupService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        if(location == null) return;
 
         g = appGroupRepository.findDistinctByGroupName(newGroup.getGroupName()); // to load the ID
         if (g == null) {
@@ -104,14 +105,14 @@ public class GroupService {
             g.setLocation(location.getLocationId());
             appGroupRepository.save(g);
             g = appGroupRepository.findDistinctByGroupName(newGroup.getGroupName()); // to load the ID
-        }
+        } else
+            g.setLocation(location.getLocationId());
 
 
         addMembership(g.getGroupId(),
                 //appUserRepository.findAppUserByUserName(g.getCreator()).getUserId()
                 g.getCreatorId());
 
-        System.out.println(Arrays.toString(newGroup.getTags().toArray()));
         for (String ts : newGroup.getTags()) {
             try {
                 t = findTagByName(ts);

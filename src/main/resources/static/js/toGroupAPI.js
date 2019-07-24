@@ -553,7 +553,7 @@ class GroupBasic {
         }
     }
 
-    removeTag(tag, index) {
+    removeTag(tag) {
         /*var i, elem, newTag, len;
         var t = this.tags;
         if(t == null){
@@ -579,10 +579,23 @@ class GroupBasic {
             return true;
         }
         return false;*/
-        if (this.tags == null || index < 0 || index >= this.tags.length || this.tags[index] !== tag) {
+        var i, elem, len, newTag, t = this.tags;
+        if (this.tags == null || tag == null || tag === undefined) {
             return false;
         }
-        this.tags.splice(index, 1);
+        if(tag == "")
+            return false;
+        tag = tag.trim();
+        len = t.length;
+        newTag = [];
+        i = -1;
+        while ( ++i < len) {
+            elem = t[i];
+            if(tag !== elem)
+                newTag.push(elem);
+        }
+        //this.tags.splice(i, 1);
+        this.tags = newTag;
         if (this.tags.length <= 0) {
             this.tags = null;
         }
