@@ -206,13 +206,19 @@ window.onload = _ =>{
             }
 
             , sendMessage(){
+                this.stopMsgUpdater();
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .sendMessage(this.newMessage)
                     .then(resp => {
                         if(resp) this.newMessage.testo = "";
+                        this.reloadMessageList();
+                        this.restartMsgUpdater();
                     })
-                    .catch(err => console.log(err))
+                    .catch(err => {
+                        this.restartMsgUpdater();
+                        console.log(err);
+                    });
             }
 
             , splitTextToLines(text){

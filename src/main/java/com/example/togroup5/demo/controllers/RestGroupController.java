@@ -232,7 +232,8 @@ public class RestGroupController {
         msgs = new ArrayList<>(fetchedMsgs.size());
         fetchedMsgs.forEach(m -> {
                     AppUser user;
-                    user = restHomeController.infoUser(m.getUserId());
+                    user = userService.findUserById(m.getUserId());
+                            //restHomeController.infoUser(m.getUserId());
                     if (user != null)
                         msgs.add(new MessageSent(m, user.getUserName()));
                     else

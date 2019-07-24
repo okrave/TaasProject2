@@ -100,24 +100,18 @@ public class AppGroupRepository {
 
         if (filters == null) return null;
         try {
-            //other stuffs, like joins and clauses
             groupByNeeded = false;
             orderTagMatchAmountClause = tagMatchJoin = locationJoin = null;
-            //then, go
             andConnector = " AND ";
             appliedFields = new LinkedList<>();
 
-            // TODO: add location and, if exists, add optionally maxDistance
             if (filters.getLocation() != null) {
                 boolean hasDist;
                 double lat, lng;
                 String calc;
                 hasDist = false;
-                calc = null;
                 lat = Math.toRadians(filters.getLocation().getLat());
                 lng = Math.toRadians(filters.getLocation().getLng());
-                //lat = filters.getLocation().getLat();
-                //lng = filters.getLocation().getLng();
                 groupByNeeded = true;
                 locationJoin = " JOIN " + GoogleLocation.class.getName() + " loc ON g.locationId = loc.locationId ";
                 //exact location
