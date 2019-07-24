@@ -68,14 +68,17 @@ public class AppMessageRepository {
 
     public List<AppMessage> fetchMessages(MessageQueryPayload msgQuery) {
         try {
-            String sql;
+            StringBuilder sb;
             Query query;
-            sql = "SELECT m FROM " + AppMessage.class.getName() //
-                    + " m WHERE m.groupId = :groupId";
+            sb = new StringBuilder(128);
+            sb.append("SELECT DISTINCT m FROM " ).append(AppMessage.class.getName() ).append(
+                     " m WHERE m.groupId = :groupId");
             if (msgQuery.getDateStart() != null)
-                sql = sql + " AND m.dateCreation >= :dateStart";
+                sb.append( " AND m.dateCreation >= :dateStart");
+            sb.append(" GROUP BY m ORDER BY m.dateCreation, m.messId DESC ");
 
-            query = entityManager.createQuery(sql, AppMessage.class);
+            query = entityManager.createQuery(sb.toString(), AppMessage.class);
+            sb = null;
             query.setParameter("groupId", msgQuery.getGroupId());
             if (msgQuery.getDateStart() != null)
                 query.setParameter("dateStart", msgQuery.getDateStart());

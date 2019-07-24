@@ -1,6 +1,7 @@
 var app;
 
 const RELOAD_MSG_INTERVAL = 5000;
+const J2EE_URL = "localhost:8081/J2EEToGroup-web/NewServlet/";
 
 window.onload = _ =>{
 
@@ -10,6 +11,7 @@ window.onload = _ =>{
         el:"#appGroupPage",
         data: {
             toGroupAPI : new ToGroup()
+            , j2eeUrl: J2EE_URL
             ,groupInfo: new GroupFullDetail()
             ,listElement: 0
             ,listUser : []
@@ -204,13 +206,19 @@ window.onload = _ =>{
             }
 
             , sendMessage(){
+                this.stopMsgUpdater();
                 this.toGroupAPI
                     .getGroupEndpoint()
                     .sendMessage(this.newMessage)
                     .then(resp => {
                         if(resp) this.newMessage.testo = "";
+                        this.reloadMessageList();
+                        this.restartMsgUpdater();
                     })
-                    .catch(err => console.log(err))
+                    .catch(err => {
+                        this.restartMsgUpdater();
+                        console.log(err);
+                    });
             }
 
             , splitTextToLines(text){

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "groupuser", uniqueConstraints={@UniqueConstraint(columnNames ={"group_id","user_id"})})
 public class GroupUser implements Serializable {
 
     @Id

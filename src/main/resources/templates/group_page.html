@@ -29,7 +29,10 @@
                     <div class="groupHomeHeader-groupData"><i class="far fa-calendar-alt"></i> {{this.groupInfo.data}}</div>
                     <div  ><i class="fas fa-map-marker-alt"></i> {{this.groupInfo.location == null ? '' : this.groupInfo.location.name}}</div>
                     <div><i class="fas fa-users"></i> {{this.groupInfo.members.length}} membri</div>
-                    <div class="groupHomeHeader-groupCreator"><i class="far fa-user"></i> Organizzato da <a v-bind:href="'/userPage/'+getCreatorId" >{{this.groupInfo.creator}}</a></div>
+                    <div class="groupHomeHeader-groupCreator"><i class="far fa-user"></i> Organizzato da
+                        <!--<a v-bind:href="'/userPage/'+getCreatorId" >-->
+                        <a v-bind:href="j2eeUrl + getCreatorId">
+                            {{this.groupInfo.creator}}</a></div>
                     <hr style="margin-top: 10px;margin-bottom: 10px">
                 </div>
                 <div class="groupHomeHeader-groupDescription">{{this.groupInfo.description}}</div>
@@ -62,7 +65,10 @@
                 <h2>Gli utenti che parteciperanno all'evento</h2>
                 <ul class = "ulMember" v-if = "groupInfo.members.length > 0">
                     <li  v-for="user in groupInfo.members">
-                        <a v-bind:href="'/userPage/'+user.userId"><img src="https://source.unsplash.com/random/40x40" class="profile-image img-circle"> &nbsp;{{user.userName}}</a>
+                        <!--<a v-bind:href="'/userPage/'+user.userId">-->
+                        <a v-bind:href="j2eeUrl + user.userId">
+
+                            <img src="https://source.unsplash.com/random/40x40" class="profile-image img-circle">{{user.userName}}</a>
 
                         <hr>
                     </li>

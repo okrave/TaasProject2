@@ -96,7 +96,7 @@
                                       value="2020-01-01"
                                       data-date-inline-picker="true">
                 </label>
-                <button @click="dateSearchGroup()" type="submit" class="btn button__search"><span
+                <button @click="dateSearch()" type="submit" class="btn button__search"><span
                         class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 
             </div>
@@ -215,7 +215,7 @@
         <!-- ------------------------------ VISUALIZZAZIONE RISULTATI ------------------------------------ -->
 
 
-        <div v-if="groupFind != null && groupFind.length > 0 && getTypeSearch != 'maps' " class="borderNice risultati">
+        <div v-if="groupFind != null && groupFind.length > 0 && getTypeSearch != 'maps' && (getTypeSearch == 'results' || getTypeSearch == 'adv' || getTypeSearch == 'date')" class="borderNice">
             <ul>
                 <li class="container_risultati" v-for="group in groupFind">
                     <div v-if="group !== undefined && group != undefined"
