@@ -248,6 +248,8 @@ function initAll() {
                 if (!this.selectedTag.includes(tagName)) {
                     this.selectedTag.push(tagName);
                 }
+
+
             } else {
                 this.term = true;
                 if (this.selectedTag.includes(tagName)) {

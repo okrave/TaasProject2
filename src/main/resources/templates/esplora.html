@@ -78,13 +78,7 @@
                 </div>
             </div>
         </div>
-        <!-- ------------------------------ MAPS ------------------------------------ -->
-        <div class="body" v-if="getTypeSearch == 'maps'">
 
-            <div id="map">
-
-            </div>
-        </div>
         <!-- ------------------------------ DATA ------------------------------------ -->
         <div class="body" v-if="getTypeSearch == 'date'">
             <div class="container">
@@ -244,7 +238,7 @@
         <!-- ------------------------------ VISUALIZZAZIONE RISULTATI ------------------------------------ -->
 
 
-        <div v-if="groupFind != null && groupFind.length > 0 " class="borderNice">
+        <div v-if="groupFind != null && groupFind.length > 0 && getTypeSearch != 'maps' " class="borderNice">
             <ul>
                 <li v-for="group in groupFind">
                     <div v-if="group !== undefined && group != undefined"
@@ -300,6 +294,13 @@
 
     </div>
 </div>
+
+<!-- ------------------------------ MAPS ------------------------------------ -->
+<div id="map" class="body">
+
+</div>
+
+
 
 <!--
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

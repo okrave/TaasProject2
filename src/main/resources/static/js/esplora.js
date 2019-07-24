@@ -124,6 +124,7 @@ window.onload = _ => {
             removeLoader() {
                 document.getElementById('loaderCustom').style.visibility = 'hidden';
                 document.getElementById('appGroupEsplora').style.visibility = 'visible';
+
             }
 
             , createErrorHandler(methodName) {
@@ -217,12 +218,14 @@ window.onload = _ => {
             * */
 
             , findGroupByTag(tagName) {
+                document.getElementById('map').style.visibility = 'hidden';
                 this.filters.resetFields().addTag(tagName);
                 this.searchAdvanced();
             }
 
 
             , advSearch() {
+                document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "adv";
             }
             , mapsSearch() {
@@ -243,6 +246,7 @@ window.onload = _ => {
             }
 
             , tagsSearch() {
+                document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "tags";
                 var tags = this.filters.tags;
                 this.filters.resetFields();
@@ -251,6 +255,7 @@ window.onload = _ => {
             }
 
             , dateSearch() {
+                document.getElementById('map').style.visibility = 'hidden';
                 this.typeSearch = "date";
                 if (this.inputDateStart != null && this.inputDateStart != "" && this.inputDateEnd != "" && this.inputDateEnd != null) {
                     this.filters.resetFields();
