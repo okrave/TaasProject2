@@ -216,6 +216,7 @@ function initAll() {
                 let buttonTag = document.getElementById(tagName);
                 if ((this.newGroupInfo.tags == null) || (!this.newGroupInfo.tags.includes(tagName))) {
                     buttonTag.className = "btn activate-tag";
+                    selected
                     this.newGroupInfo.addTag(tagName);
                 } else {
                     buttonTag.className = "btn deactivate-tag";
