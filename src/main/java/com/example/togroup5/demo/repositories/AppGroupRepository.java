@@ -131,7 +131,7 @@ public class AppGroupRepository {
                 //solo uno delle due= cerchiamo la data esatta
                 Date exactDate;
                 exactDate = hasStartDate ? filters.getDateStartRange() : filters.getDateEndRange();
-                appliedFields.add(new SingleFilter("g.groupDate = :date", "date", exactDate));
+                appliedFields.add(new SingleFilter("g.groupDate >= :date", "date", exactDate));
             } // else: no date filters setted
 
             if (filters.getTags() != null && filters.getTags().size() > 0) {

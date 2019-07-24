@@ -221,6 +221,7 @@ window.onload = _ => {
                 document.getElementById('map').style.visibility = 'hidden';
                 this.filters.resetFields().addTag(tagName);
                 this.searchAdvanced();
+                this.typeSearch= "results";
             }
 
 
