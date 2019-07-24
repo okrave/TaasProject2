@@ -89,8 +89,10 @@ public class AppGroupRepository {
     }
 
     public List<AppGroup> advancedSearch(GroupSearchAdvPayload filters) {
+        boolean groupByNeeded;
         boolean isNotFirstFilter, hasStartDate, hasEndDate;
-        String orderTagMatchAmountClause, tagMatchJoin;
+        String orderTagMatchAmountClause, tagMatchJoin//
+                , locationJoin;
         List<SingleFilter> appliedFields;
         StringBuilder sb;
         String andConnector;
@@ -98,12 +100,37 @@ public class AppGroupRepository {
 
         if (filters == null) return null;
         try {
-            orderTagMatchAmountClause = tagMatchJoin = null;
+            groupByNeeded = false;
+            orderTagMatchAmountClause = tagMatchJoin = locationJoin = null;
             andConnector = " AND ";
             appliedFields = new LinkedList<>();
 
-            // TODO: add location and, if exists, add optionally maxDistance
-            //if(filters.getLocation() != null) {}
+            if (filters.getLocation() != null) {
+                boolean hasDist;
+                double lat, lng;
+                String calc;
+                hasDist = false;
+                lat = Math.toRadians(filters.getLocation().getLat());
+                lng = Math.toRadians(filters.getLocation().getLng());
+                groupByNeeded = true;
+                locationJoin = " JOIN " + GoogleLocation.class.getName() + " loc ON g.locationId = loc.locationId ";
+                //exact location
+                calc = " radians(loc.lat) = :lat AND radians(loc.lng) = :lng ";
+                if (filters.getMaxDistance() != null && filters.getMaxDistance() > 0.0) {
+                    hasDist = true;
+                    /*
+                     * (Math.toDegrees(Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2)))
+                     * 60 * 1.1515 * 1.609344)
+                     * */
+                    calc = " ((" + calc + ") OR ( :dist >= abs(degrees( acos(sin( :lat) * sin(radians(loc.lat)) + cos( :lat) * cos(radians(loc.lat)) * cos( :lng - radians(loc.lng)) ) ) * 60 * 1.1515 * 1.609344)) ) ";
+                }
+                appliedFields.add(new SingleFilter(calc, "lat", lat));
+                appliedFields.add(new SingleFilter("", "lng", lng));
+                if (hasDist)
+                    appliedFields.add(new SingleFilter("", "dist", filters.getMaxDistance()));
+
+//                radians
+            }
 
             if (filters.getGroupName() != null && (!filters.getGroupName().equals(""))) {
                 appliedFields.add(new SingleFilter("g.groupName = :groupName", "groupName", filters.getGroupName()));
@@ -116,7 +143,7 @@ public class AppGroupRepository {
                     appliedFields.add(new SingleFilter("g.creator = :creator", "creator", creatorMember));
                 else
                     appliedFields.add(new SingleFilter( // test se creatorMember e' membro del gruppo dato
-                            " 0 < (SELECT count(*) FROM "+ AppUser.class.getName() //
+                            " 0 < (SELECT count(*) FROM " + AppUser.class.getName() //
                                     + " u JOIN " + GroupUser.class.getName() + //
                                     " gu ON u.userId = gu.userId WHERE u.userName = :member )", //
                             "member", creatorMember));
@@ -135,6 +162,7 @@ public class AppGroupRepository {
             } // else: no date filters setted
 
             if (filters.getTags() != null && filters.getTags().size() > 0) {
+                groupByNeeded = true;
                 /*
                     Si filtrano quei gruppi il cui insieme di tag associati forma una intersezione non vuota con
                     l'insieme di tag fornito come filtro di ricerca, ordinando poi tali gruppi in senso decrescente.
@@ -163,17 +191,23 @@ public class AppGroupRepository {
             sb.append(" g ");
             if (tagMatchJoin != null)
                 sb.append(tagMatchJoin);
+            if (locationJoin != null)
+                sb.append(locationJoin);
             sb.append(" WHERE ");
 
             isNotFirstFilter = false;
             for (SingleFilter filter : appliedFields) {
-                if (isNotFirstFilter) sb.append(andConnector);
-                sb.append(filter.clause);
+                if (!"".equals(filter.clause.trim())) {
+                    if (isNotFirstFilter) sb.append(andConnector);
+                    sb.append(filter.clause);
+                }
                 isNotFirstFilter = true;
             }
 
-            if (orderTagMatchAmountClause != null) {
+            if (groupByNeeded)
                 sb.append(" GROUP BY g.groupId");
+
+            if (orderTagMatchAmountClause != null) {
                 // dovrebbe essere DESC ma stranamente li ordina in senso contrario
                 //sb.append(" ORDER BY count(tag.name) ASC");
                 sb.append(" ORDER BY count(g) DESC");
@@ -181,7 +215,7 @@ public class AppGroupRepository {
 
             }
             String sql;
-            query = entityManager.createQuery(sql=sb.toString(), AppGroup.class);
+            query = entityManager.createQuery(sql = sb.toString(), AppGroup.class);
             System.out.println("QUERY ADV:\n\t" + sql);
             sb = null;
 
@@ -190,7 +224,8 @@ public class AppGroupRepository {
             });
 
             return query.getResultList();
-        } catch (NoResultException e) {
+        } catch (
+                NoResultException e) {
             return null;
         }
     }

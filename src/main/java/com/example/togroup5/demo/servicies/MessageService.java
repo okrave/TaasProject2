@@ -48,6 +48,9 @@ public class MessageService {
 
 
     public boolean saveMessage(AppMessage m) {
+        String msgText;
+        msgText = m.getTesto();
+        if(msgText == null || "".equals(msgText = msgText.trim()))return false;
         appMessageRepository.save(m);
         return true;
     }
