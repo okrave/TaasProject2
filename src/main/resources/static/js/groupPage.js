@@ -1,7 +1,7 @@
 var app;
 
 const RELOAD_MSG_INTERVAL = 5000;
-const J2EE_URL = "localhost:8081/J2EEToGroup-web/NewServlet/";
+const J2EE_URL = "localhost:8081/J2EEToGroup-web/NewServlet?id=";
 
 window.onload = _ =>{
 
