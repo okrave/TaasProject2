@@ -1,42 +1,63 @@
 package com.example.togroup5.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
-
-public class AppGroup {
+public class AppGroup implements Serializable {
 
     @Id
     @GeneratedValue
-    private long groupId;
+    private Long groupId;
+
+    private Long creatorId;
+
+    private String creator;
 
     @Column(unique = true)
     private String groupName;
 
+    private java.sql.Date groupDate;
+
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //private GoogleLocation location; // use GOOGLE MAPS's documentation
+    private Long locationId;
 
     private String description;
 
 
-    private java.sql.Date groupDate;
-
-    private String creator;
+    //
 
     public AppGroup() {}
 
-    public AppGroup(String groupName, String description, Date groupDate, String creator) {
+    public AppGroup(Long creatorId, String creator, String groupName, String description, Date groupDate) {
+        this.creatorId = creatorId;
         this.groupName = groupName;
         this.description = description;
         this.groupDate = groupDate;
         this.creator = creator;
+        this.locationId = null;
     }
 
-    public long getGroupId() {
+    //
+
+    public Long getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(long groupId) {
+    public void setGroupId(Long groupId) {
         this.groupId = groupId;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 
     public String getDescription() {
@@ -71,8 +92,26 @@ public class AppGroup {
         this.groupName = groupName;
     }
 
-    public String toString(){
-        return " "+ this.groupName+" "+ this.description+" " + this.groupDate.toString();
+    public Long getLocation() {
+        return locationId;
     }
 
+    public void setLocation(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    //
+
+    @Override
+    public String toString() {
+        return "AppGroup{" +
+                "groupId='" + groupId +
+                ", creator='" + creator + '\'' +
+                ", creatorId='" + creatorId + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", groupDate='" + groupDate +
+                ", locationId='" + locationId + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

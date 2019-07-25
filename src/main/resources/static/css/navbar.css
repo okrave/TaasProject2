@@ -1,0 +1,17 @@
+
+.dropdown-menu{
+    min-width: 132px;
+}
+
+.navbar-nav>li>a.creaNuovoGruppo{
+    color:white;
+    opacity: 5%;
+}
+.navbar-nav>li>a.creaNuovoGruppo:hover{
+    color:dodgerblue;
+    opacity: 5%;
+
+
+}
+.navbar-inverse{
+    margin: 0;}

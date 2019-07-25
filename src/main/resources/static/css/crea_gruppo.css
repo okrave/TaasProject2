@@ -1,0 +1,166 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+.navbar-inverse{margin-bottom: 0;}
+
+.gruppo-body{
+    padding-left: 20%;
+    padding-right: 20%;
+    margin-top: 5%;
+
+}
+.gruppo-body__testo{padding-top: 122px}
+
+.gruppo-header>h5{padding-left: 47%;}
+
+
+
+.gruppo-buttons>button:hover{
+    background-color: #337ab7;
+    color: white;
+}
+.buttonAvanti{
+    margin-top: 5%;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.activate-tag{
+    margin: 10px;
+    border-radius: 20px;
+    border-color: #337ab7;
+    background-color: #337ab7;
+    color: white;
+}
+
+.deactivate-tag{
+    margin: 10px;
+    border-radius: 20px;
+    border-color: blue;
+    background-color: transparent;
+    color: #337ab7;
+}
+
+
+.gruppo-buttons>deactivate-tag>button:focus-within{
+    color: #337ab7;
+}
+
+.gruppo-buttons>activate-tag>button:focus-within{
+    color: white;
+}
+
+.gruppo-footer>a{margin-left: 47%;margin-top: 20px;}
+
+/**/
+
+.tagList {
+    display: flex;
+    flex-flow: column;
+    max-height: 200px;
+    height: 25vh;
+    overflow-y: scroll;
+    max-width: 25vw;
+    border: 1px solid lightcoral;
+}
+
+.flexInline {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+}
+
+.pager li>a:hover{
+    background-color: #337ab7;
+    color: white;
+}
+
+.navbar-nav>li>a.creaNuovoGruppo{
+    color:brown;
+    opacity: 5%;
+}
+.dropdown-menu{
+    min-width: 132px;
+}
+
+.pager li>a{
+    padding: 6px 60px;
+}
+
+.navbar-nav>li>a.profile-image {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.button_search{margin:5px;background-color: transparent;border: solid black 2px;margin-left:40%;color: black;}
+.button_search:hover{color: white;background-color: black;}
+
+.text_search{text-align: left;}
+
+.yetExistingTags{
+    max-width: 25vh;
+    /*
+    overflow-x: hidden;
+     */
+    overflow-y: scroll;
+}
+
+.descriptionGroup{
+    min-width: 20vh;
+    min-height: 10vh;
+}
+.calendarGroup{
+    border: InactiveBorder;
+    margin-bottom: 10px;
+
+    margin-top:20px;
+}
+
+.locationText{
+    border: InactiveBorder;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 14px;
+    background: linear-gradient(to right,#616161, #616161) 5px calc(100% - 5px)/calc(100% - 10px) 2px no-repeat;
+
+}
+
+.disattivateMap{
+    display:none;
+}
+
+#appNewGroup{
+    visibility: hidden;
+}
+
+.navbar-nav>li>a.creaNuovoGruppo{
+    color:white;
+    opacity: 5%;
+}
+#map {
+    height: 350px;
+    width: 350px;
+    border-radius: 175px;
+
+    margin-top: 18%;
+    margin-right: 12%;
+
+    box-shadow: 0 2px 10px #424242;
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.titolo-luogo{
+    font-family: 'Fjalla One', sans-serif;
+    margin-bottom: 5%;
+}
+.flexInline>h3{font-family: 'Fjalla One', sans-serif;}

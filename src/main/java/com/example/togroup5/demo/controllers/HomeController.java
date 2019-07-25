@@ -1,7 +1,7 @@
 package com.example.togroup5.demo.controllers;
 
 import com.example.togroup5.demo.entities.AppUser;
-import com.example.togroup5.demo.entities.AppUserRegistration;
+import com.example.togroup5.demo.entities.payloadsResults.AppUserRegistration;
 import com.example.togroup5.demo.servicies.UserService;
 import com.example.togroup5.demo.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +11,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class HomeController {
+
 
     @Autowired
     UserService userService;
@@ -30,41 +30,27 @@ public class HomeController {
     public String index(Model model){
         model.addAttribute("title","Welcome");
         model.addAttribute("message","This is welcome page!");
-        return "index";
+        return "Home";
     }
 
-    @GetMapping(value="/home")
+    @GetMapping(value="/userPage/{id}")
+    public String user_page(@PathVariable(required = false) String id){
+        System.out.println(id);
+        return "user_page";
+    }
+
+    @GetMapping(value="/Home")
     public String home(){
-        return "home";
+        return "Home";
     }
 
-    @GetMapping(value="/client_home")
-    public String client_home(){
-        return "client_home";
-    }
 
     @GetMapping(value="/login")
     public String login(){
         return "login";
     }
 
-    @GetMapping("/admin")
-    public String admin(Model model, Principal principal) {
-        User loginedUser = (User)  ((Authentication) principal).getPrincipal();
-        String userInfo = WebUtils.toString(loginedUser);
-        model.addAttribute("userInfo",userInfo);
-        return "admin";
-    }
 
-    @GetMapping("/user")
-    public String user() {
-        return "user/index";
-    }
-
-    @GetMapping("/about")
-    public String about() {
-        return "about";
-    }
 
     @GetMapping("/login-error")
     public String loginError(Model model){
@@ -73,27 +59,17 @@ public class HomeController {
 
     }
 
-    /*@GetMapping(value = "/logout")
-    public String logoutSuccessfulPage(Model model) {
-        model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
-    }*/
 
-    @GetMapping(value = "/userInfo")
-    public String userInfo(Model model, Principal principal) {
-
-        // After user login successfully.
-        String userName = principal.getName();
-
-        System.out.println("User Name: " + userName);
-
-        User loginedUser = (User) ((Authentication) principal).getPrincipal();
-        System.out.println("loginUser:"+ loginedUser);
-        String userInfo = WebUtils.toString(loginedUser);
-        model.addAttribute("userInfo", userInfo);
-
-        return "userInfoPage";
+    @GetMapping(value="userPageJ2ee")
+    public String userPageJ2ee(){
+        return "user_page_j2ee";
     }
+
+    @GetMapping(value = "/esplora")
+    public String esplora(){
+        return "esplora";
+    }
+
 
     //Funzione get registration
     @GetMapping(value = "/registration")
@@ -101,6 +77,11 @@ public class HomeController {
         modelAndView.addObject("userRegistration",user);
         modelAndView.setViewName("registration");
         return modelAndView;
+    }
+
+    @PostMapping(value="/custom_login")
+    public String customLogin(ModelAndView modelAndView,BindingResult bindingResult, HttpServletRequest request){
+        return "asd";
     }
 
     @PostMapping (value = "/registration")
@@ -119,23 +100,7 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping(value= "/userList")
-    public String userList(Model model){
-        List<AppUser> allUser = userService.findAll();
-        model.addAttribute("members",allUser);
-        return "listaUsers";
-    }
 
-    @PostMapping(value= "/deleteUser")
-    public String deleteUser(){
-        return "listaUsers";
-    }
-
-
-    @GetMapping(value="/searchGroup")
-    public String searchGroup(){
-        return "searchGroup";
-    }
 
     @GetMapping(value = "/403")
     public String accessDenied(Model model, Principal principal) {
@@ -156,6 +121,22 @@ public class HomeController {
         return "403Page";
     }
 
+// --------------------------------   Metodi non utilizzati che possono esserci utili ---------------------------------------------
 
+    @GetMapping(value = "/userInfo")
+    public String userInfo(Model model, Principal principal) {
+
+        // After user login successfully.
+        String userName = principal.getName();
+
+        System.out.println("User Name: " + userName);
+
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        System.out.println("loginUser:"+ loginedUser);
+        String userInfo = WebUtils.toString(loginedUser);
+        model.addAttribute("userInfo", userInfo);
+
+        return "userInfoPage";
+    }
 
 }

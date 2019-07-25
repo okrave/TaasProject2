@@ -2,8 +2,11 @@ package com.example.togroup5.demo.config;
 
 import com.example.togroup5.demo.servicies.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,9 +20,11 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
 
+@EnableOAuth2Sso
 @Configuration
 @EnableWebSecurity
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -82,31 +87,53 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessHandler(logoutSuccessHandler());*/
         http
+                //  -------------IMPOSTAZIONI PER FB LOGIN------------------
+                .csrf().disable()
+                .antMatcher("/**")
                 .authorizeRequests()
+                .antMatchers("/", "/login**", "/webjars/**")
+                .permitAll()
+                .anyRequest().permitAll()
+                .and()
+//  ------------------------------------------------------
                     /*.antMatchers(
                         "/js/**",
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()
-                    .antMatchers("/registration","/resthome","/userList","/listGroup","/listGroupByCreator","/listGroupRest","/searchGroup").permitAll()
+                    .antMatchers("/registration","/resthome","/userList","/listGroup").permitAll()
                     .antMatchers("/", "/home","/login","/logout").permitAll()
                     .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
                     .antMatchers("/user/**").hasAnyRole("USER")
                     .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
                     .anyRequest().authenticated()*/
-                    .anyRequest().permitAll()
-                    .and()
-                    //.oauth2Login()
 
 
                 .formLogin()
-                    .loginProcessingUrl("/j_spring_security_check")
-                    .loginPage("/login")
-                    .failureUrl("/login?error=true")
-                    .usernameParameter("username")//
-                    .passwordParameter("password")
-                    .and()
+                .loginProcessingUrl("/j_spring_security_check")
+                .loginPage("/login")
+                .failureUrl("/login?error=true")
+                .usernameParameter("username")//
+                .passwordParameter("password")
 
+//  ------------------------IMPOSTAZIONI PER FB LOGIN ------------------------------
+
+                .and().logout().logoutSuccessUrl("/").permitAll();
+//  ---------------------------------------------------------------------------------
+//                    .and()
+//                    .oauth2Login()
+//                    .and()
+//
+//
+//                .formLogin()
+//                    .loginProcessingUrl("/auth/login_check")
+//                    .loginPage("/login")
+//                    .failureUrl("/login?error=true")
+//                    .usernameParameter("username")//
+//                    .passwordParameter("password")
+//                    .and()
+//                    .logout().logoutSuccessUrl("/home");
+//
 
 
 
@@ -117,12 +144,12 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 * The deleteCookies method is simple as well:
                 * */
 
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+                /*.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/home")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()
-                .rememberMe().tokenRepository(this.persistentTokenRepository()) // Config Remember me
-                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
+                .rememberMe().tokenRepository(this.persistentTokenRepository()) // Config Remember m
+                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h*/
         /*
         * An user accesses a website and logs in. Then he/she turns off the browser and accesses the website at some time (for example, on the next day),
         * and he/she has to log in again, which causes unnecessary trouble.
@@ -136,8 +163,10 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .maximumSessions(1);
+        http.csrf().disable();
 
-
+        // make me do REST-Post
+        http.csrf().disable();
     }
 
 
@@ -149,16 +178,22 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
         return db;
     }
 
-    /*Authentificazione per capire se un utente è nel db o no*/
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        //Setting service to find User in database, and setting passwordEncoder
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth)throws Exception{
+            auth.userDetailsService(userDetailsService);
     }
 
+
+    @Bean("authenticationManager")
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
+

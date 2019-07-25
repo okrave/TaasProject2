@@ -6,29 +6,37 @@ import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.io.Serializable;
+import java.sql.Date;
+import java.util.Calendar;
 
 @Entity
-public class AppUser {
+public class AppUser implements Serializable {
 
     @Id
     @GeneratedValue
     private Long userId;
 
+    @Column(unique = true)
     private String userName;
 
-    private String encrytedPassword;
+    private String encryptedPassword;
 
-    private String UserEmail;
+    private String userEmail;
 
     private Integer enabled;
 
-    public AppUser (){};
+    private Date dateCreated;
 
-    public AppUser(String userName, String encrytedPassword, String userEmail, boolean enabled) {
+    public AppUser() {
+    }
+
+    public AppUser(String userName, String encryptedPassword, String userEmail, boolean enabled) {
         this.userName = userName;
-        this.encrytedPassword = encrytedPassword;
-        this.UserEmail  = userEmail;
-        this.enabled = enabled?1:0;
+        this.encryptedPassword = encryptedPassword;
+        this.userEmail = userEmail;
+        this.enabled = enabled ? 1 : 0;
+        this.dateCreated = new java.sql.Date(Calendar.getInstance().getTime().getTime());
     }
 
     public Long getUserId() {
@@ -47,12 +55,12 @@ public class AppUser {
         this.userName = userName;
     }
 
-    public String getEncrytedPassword() {
-        return encrytedPassword;
+    public String getEncryptedPassword() {
+        return encryptedPassword;
     }
 
-    public void setEncrytedPassword(String encrytedPassword) {
-        this.encrytedPassword = encrytedPassword;
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 
     public Integer isEnabled() {
@@ -63,19 +71,19 @@ public class AppUser {
         this.enabled = enabled;
     }
 
-    public String getUserEmail() {
-        return UserEmail;
+    public String getuserEmail() {
+        return userEmail;
     }
 
-    public void setUserEmail(String userEmail) {
-        UserEmail = userEmail;
+    public void setuserEmail(String userEmail) {
+        userEmail = userEmail;
     }
 
     public Integer getEnabled() {
         return enabled;
     }
 
-    public String toString(){
-        return "{userName:"+ this.UserEmail+ ", password: "+ this.encrytedPassword  +"}";
+    public String toString() {
+        return "{id:" + userId + "userName:" + this.userEmail + ", password: " + this.encryptedPassword + "}";
     }
 }

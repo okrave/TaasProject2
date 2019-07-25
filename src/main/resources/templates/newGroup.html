@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      xmlns:v-if="http://www.w3.org/1999/xhtml">
+<head>
+    <title>New Group</title>
+
+    <!--
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    -->
+
+    <th:block th:insert="fragments/header.html :: headerInclusions"/>
+
+    <!--
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA9IXjU1ldyz9V8bkr0-0DiwQLQrXfQusQ&libraries=places"></script>
+    -->
+
+    <script src="js/createGroup.js" th:src="@{/js/createGroup.js}"></script>
+
+    <link rel="stylesheet" href="../static/css/crea_gruppo.css" th:href="@{/css/crea_gruppo.css}">
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="loaderCustom">
+
+    </div>
+
+    <div id="appNewGroup">
+
+        <th:block th:replace="fragments/navbar :: navbar" />
+
+        <th:block th:insert="fragments/header.html :: notificationMessages"/>
+
+        <div id="formNewGroup" v-if="userLogged.isLogged">
+
+            <div id="newGroupSection">
+                <div class="progress">
+                    <div id="progBarCreateGroup" class="progress-bar progress-bar-striped active" role="progressbar"
+                         aria-valuemin="0" aria-valuemax="100" v-bind:style="{width:100 - (25*(creationProgression.maxSteps - creationProgression.actualStep))+'%'}">
+                        STEP {{creationProgression.actualStep + 1}} DI {{creationProgression.maxSteps + 1}}
+                    </div>
+                </div>
+
+
+                <div id="newGroupSections">
+                    <div v-if="creationProgression.actualStep == 0" class=" gruppo-body d-flex flex-column flex-nowrap">
+                        <h1 class="titolo-luogo">Per prima cosa impostiamo data e luogo del tuo Gruppo</h1>
+                        <div class="gruppo-body">
+
+                            <div class="row">
+                                <div class="col-md-6 text_search">
+
+                                        <h3>Scegli Data</h3>
+
+                                        <input class="calendarGroup"
+                                               type="date"
+                                               v-model="newGroupInfo.groupDate"
+                                               name="groupDate"
+                                               value="2020-01-01">
+
+
+                                        <h3>{{locationSearch}} |     Cambia luogo</h3>
+                                        <input class="locationText"
+                                               id="locationQuery"
+                                               type="text"
+                                               name="location"
+                                               v-model="locationSearch"
+                                               placeholder="Please Enter Location">
+                                    <button class="button_search" onclick="changeLocation()"> Search</button>
+
+
+
+                                        <!--
+                        <button @click="getLocationFromAddress()">Cerca con Google</button>
+                    -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div v-if="creationProgression.actualStep == 1">
+
+
+                        <div class="gruppo-body">
+                            <h1 class="gruppo-titolo">Scegli qualche argomento che descriva gli interessi del tuo gruppo</h1>
+                            <p>Cerca di essere specifico! In questo modo ci aiuterai a proporre il tuo gruppo alle persone giuste </p>
+                            <input type="text"
+                                   :value = "selectedTags"
+                                   class="form-control"
+                                   placeholder="Inserisci Tag"
+                                   readonly >
+                            <br />
+                            <div class="gruppo-buttons" id="class-buttons-tag">
+                                <button :disabled='isDisabled' v-for="tag in allTags" class="btn deactivate-tag"  @click="selectTag(tag.name)" v-bind:id="tag.name">{{tag.name}}</button>
+                            </div>
+
+
+                            <input type="text"
+                                   v-model="newTag"
+                                   class="form-control"
+                                   placeholder="Crea nuovo Tag">
+                            <br />
+                            <button type="button" class="btn btn-primary btn-lg btn-block" @click="createNewTag()" style="margin-top: 10px">Crea tag</button>
+                        </div>
+
+
+                    </div>
+
+                    <div v-if="creationProgression.actualStep == 2">
+                        <div class="gruppo-body">
+                            <h1 class="gruppo-titolo">Come si chiamerà il tuo gruppo?</h1>
+                            <p>Scegli un nome che trasmetta chiaramente la natura del tuo gruppo. Cerca di essere creativo! Se cambi idea, puoi sempre modificarlo in un secondo momento. </p>
+                            <input
+                                    type="text"
+                                    v-model="newGroupInfo.groupName"
+                                    class="form-control"
+                                    placeholder="Title of your group/event">
+                        </div>
+                    </div>
+
+                    <div v-if="creationProgression.actualStep == 3">
+                        <div class="gruppo-body">
+                            <h1 class="gruppo-titolo">Ora descrivi di cosa si occuperà il tuo gruppo</h1>
+                            <h4>Qual è lo scopo del gruppo?</h4>
+                            <h4>  Chi dovrebbe unirsi?</h4>
+                            <h4> Cosa farete agli eventi?</h4>
+
+                            <textarea
+                                    rows="4" cols="20"
+                                    class="descriptionGroup form-control"
+                                    wrap="soft"
+                                    v-model="newGroupInfo.description"
+                                    name="description"
+                                    placeholder="Description of the group">
+                            </textarea>
+                        </div>
+
+
+                    </div>
+                    <div class="buttonAvanti">
+                        <button type="button" class="btn btn-primary btn-lg btn-block" @click="createGroup()"  v-if="creationProgression.actualStep > 2">Create Group</button>
+                    </div>
+                </div>
+
+                <div class ="buttonAvanti">
+                    <ul class="pager">
+                        <li v-if="creationProgression.actualStep > 0" ><a @click="toPreviousStep()">Prev</a></li>
+                        <li v-if="creationProgression.actualStep < 3"><a @click="toNextStep()" >Next</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!--
+            <div>
+                <input
+                        type="text"
+                        v-model="newGroupInfo.genre"
+                        name="genre"
+                        placeholder="Genre: 'study', 'sport', 'music', 'street art', ...">
+            </div>
+            -->
+        </div>
+    </div>
+
+
+<div  id="map"></div>
+
+<script>
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+    var map;
+    var service;
+    var infowindow;
+    var myLocation = 'Torino';
+
+
+    function changeLocation(){
+        myLocation = document.getElementById("locationQuery").value;
+        console.log(document.getElementById("locationQuery").value);
+        console.log(myLocation);
+        var request = {
+            query: myLocation,
+            fields: ['name', 'geometry'],
+        };
+
+        service = new google.maps.places.PlacesService(map);
+
+        service.findPlaceFromQuery(request, function(results, status) {
+            console.log("Maps results: " );
+            console.log(JSON.stringify(results[0]));
+            console.log(results[0]);
+            //app.setLocation(results[0]);
+
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                app.setLocation({
+                    "lng": results[0].geometry.location.lng() ,
+                    "lat" : results[0].geometry.location.lat(),
+                    "name" : myLocation
+                });
+                console.log(results[0]);
+                for (var i = 0; i < results.length; i++) {
+                    console.log("google location latitude: "+ results[i].geometry.location.lat());
+                    console.log("google location latitude: "+ results[i].geometry.location.lng());
+                    setMarker(results[i]);
+                }
+
+                map.setCenter(results[0].geometry.location);
+            }
+        });
+
+        function setMarker(place){
+            var marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.setContent(place.name);
+                infowindow.open(map, this);
+            });
+
+        }
+    }
+
+    function initMap() {
+        var sydney = new google.maps.LatLng(-33.867, 151.195);
+
+        infowindow = new google.maps.InfoWindow();
+
+        map = new google.maps.Map(document.getElementById('map'),{
+            center: sydney,
+            zoom: 14,
+            disableDefaultUI: true
+        });
+    }
+
+
+
+    function createMarker(place) {
+        var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.setContent(place.name);
+            infowindow.open(map, this);
+        });
+    }
+
+
+</script>
+
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZe4Q05ZstWsIRoUCpT14vSALyDjEWXIc&libraries=places&callback=initMap"
+        async defer></script>
+
+</body>
+</html>

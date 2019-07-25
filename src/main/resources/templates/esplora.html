@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:https="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-model="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:replace="fragments/header.html :: headerInclusions"/>
+    <link rel="stylesheet" href="../static/css/esplora.css" th:href="@{/css/esplora.css}">
+
+    <script src="js/esplora.js" th:src="@{/js/esplora.js}"></script>
+</head>
+<body>
+
+<div id="loaderCustom"></div>
+
+<div id="appGroupEsplora">
+    <div>
+
+        <th:block th:replace="fragments/navbar :: navbar"/>
+
+
+        <section class="cover">
+            <div class="cover__caption">
+                <div class="title">
+                    Esplora
+                </div>
+
+            </div>
+        </section>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top search">
+            <div class="container" id="searchBar">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+
+                    <div class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Search by group's title"
+                                   v-model="inputGroupName">
+
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Search by creator's name"
+                                   v-model="inputCreator">
+
+                            <button @click="userOrGroupSearch()" type="submit" class="btn button__search"><span
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+
+                        </div>
+                    </div>
+                    <div class="navbar-right buttons">
+                        <button class="btn" @click="mapsSearch()">Maps</button>
+                        <button class="btn" @click="tagsSearch()">Tags</button>
+                        <button class="btn" @click="dateSearch()">Date</button>
+                        <button class="btn" @click="advSearch()">Avanzata</button>
+                    </div>
+
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <!-- ------------------------------ TAGS ------------------------------------ -->
+        <div class="body" v-if="getTypeSearch == 'tags'">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-2" v-for="tag in allTags">
+                        <div class="thumbnail" @click="findGroupByTag(tag.name)">
+                            <img src="https://source.unsplash.com/random/171x180">
+
+                            <div class="caption">
+                                <h5>{{tag.name}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ------------------------------ DATA ------------------------------------ -->
+        <div class="body" v-if="getTypeSearch == 'date'">
+            <div class="container">
+                <label>Start date<input class="calendarGroup"
+                                        type="date"
+                                        name="groupDateStart"
+                                        v-model="inputDateStart"
+                                        value="2020-01-01"
+                                        data-date-inline-picker="true">
+                </label>
+                <label>End date<input class="calendarGroup"
+                                      type="date"
+                                      name="groupDateEnd"
+                                      v-model="inputDateEnd"
+                                      value="2020-01-01"
+                                      data-date-inline-picker="true">
+                </label>
+                <button @click="dateSearch()" type="submit" class="btn button__search"><span
+                        class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+
+            </div>
+
+        </div>
+
+        <!-- ------------------------------ USER OR GROUPNAME ------------------------------------ -->
+
+
+        <!--
+        rifatta da Marco 22-07-2019
+        -->
+
+        <!-- ------------------------------ RICERCA AVANZATA ------------------------------------ -->
+
+
+        <div  id="advSearch"
+             class="containerFlex flexFlowCol body"
+             v-if="getTypeSearch == 'adv'"
+        >
+
+
+            <div id="sectionOthers"
+                 class="row"
+            >
+                <div id="subSectionUserCreatorTitleDate" >
+
+                        <div class="col-md-6">
+                        <div id="fieldTitle" >
+                            <div class="w25"><h3>Title</h3></div>
+                            <div class="w75"><input class="input" type="text" v-model="filters.groupName"></div>
+                        </div>
+
+
+                        <div id="fieldCreatorOrMember" >
+                            <button class="w25 button btn_member" @click="switchFilterCreatorOrMember()">{{filters.isSearchingByCreator ?
+                                "Creator->Member" : "Member->Creator"}}
+                            </button>
+                            <div class="w75"><input class="input" type="text" v-model="filters.creatorMember"></div>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                        <div id="fieldDateStartRange" >
+                            <div class="w25"><h3>Date Start</h3></div>
+                            <div class="w75"><input class="input" type="date" v-model="filters.dateStartRange"></div>
+                        </div>
+
+
+                        <div id="fieldDateEndRange" >
+                            <div class="w25"><h3>Date End</h3></div>
+                            <div class="w75"><input class="input" type="date" v-model="filters.dateEndRange"></div>
+                        </div>
+
+                        </div>
+
+
+                </div>
+
+            </div>
+            <div id="sectionBtnSearch"
+                 class="button_search"
+            >
+                <button @click="searchAdvanced()" type="submit" class="button_search_material"><span
+                        class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="clearfix"></div>
+            <div id="sectionTags"
+                 class="container containerFlex flexFlowCol"
+            >
+                <h3 class="bold_text">Tags</h3>
+                <div id="subSectionSelectedTags"
+                     class="w100 containerFlex flexFlowRow flexAlignLeft"
+                >
+                    <div class="bold_text tags">Tag scelti:</div>
+
+                    <div v-if="filters.tags != null && filters.tags.length > 0"
+                         class="choosenTags containerFlex flexFlowRow"
+                    ><!--inserire un bordo -->
+                        <button
+                                class="primary-btn btnTag "
+                                v-for="(tag, index) in filters.tags"
+                                @click="removeTag(tag, index)"
+                        >{{tag}}
+                        </button>
+                    </div>
+                </div>
+                <div id="subSectionNewTag"
+                     class="w100 containerFlex flexFlowRow"
+                >
+                    <div class="w35">Inventa un Tag o<br>Cerca qui sotto</div>
+                    <input type="text"
+                           class="w50 input"
+                           v-model="tagNewAndFilter"
+                           placeholder="Type the new Tag or the filter for existing ones"
+                           @input="applyFilter"
+                    >
+                    <button class="w15 button" @click="addTag()">Aggiungi tag</button>
+                </div>
+
+                <div id="subSectionYetExistingTags"
+                     class="containerFlex flexFlowRow containerExistingTags w100"
+                     v-if="filteredTags != null && filteredTags.length > 0"
+                >
+
+                    <button class="primary-btn btnTag"
+                            v-for="(tag, index) in filteredTags"
+                            @click="addTagFromExisting(tag.name)">
+                        {{tag.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ------------------------------ VISUALIZZAZIONE RISULTATI ------------------------------------ -->
+
+
+        <div v-if="groupFind != null && groupFind.length > 0 && getTypeSearch !== 'maps' && (getTypeSearch === 'results' || getTypeSearch === 'adv' || getTypeSearch === 'date')" class="borderNice">
+            <ul>
+                <li class="container_risultati" v-for="group in groupFind">
+                    <div v-if="group !== undefined && group != undefined"
+                         class="container containerFlex flexFlowCol">
+                        <div class="w100 containerFlex flexFlowRow">
+                            <div class="containerFlex flexFlowCol w25">
+                                <a v-bind:href="'/group_page/' + group.groupId"><img class="risultati_img"
+                                        src="https://source.unsplash.com/random/40x40">
+                                    {{group.groupName}}
+                                </a>
+                                <div class="bold_text">Creatore: <h5>{{group.creator}}</h5></div>
+                                <div class="bold_text">Data: <h5>{{group.groupDate}}</h5></div>
+                                <div class="bold_text">Location: <h5>{{group.location.name}}</h5></div>
+                            </div>
+                            <div class="w50">
+                                <p class="bold_text">Descrizione:</p>
+                                <div class="containerFlex flexFlowCol overFlowY mh200">
+                                    <div
+                                            v-for="part in splitTextToLines(group.description)"
+                                    >{{part}}
+                                        <br v-if='part == ""'>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--
+                            <textarea class="w50" rows="8" cols="256" readonly>
+                                {{group.description}}
+                            </textarea>
+                            -->
+                            <div class="w25">
+                                <p class="bold_text">Membri: {{group.members.length}}</p>
+                                <div class="containerFlex flexFlowCol overFlowY mh200">
+                                    <div class="member">
+                                        <div class="borderNice membersList"
+                                             v-for="member in group.members"
+                                        >
+                                            {{member.userName}}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w100 containerFlex flexFlowRow overFlowY">
+                            <button class="primary-btn btnTag borderNice" v-for="tag in group.tags">{{tag.name}}</button>
+                        </div>
+                    </div>
+                    <div v-else>group undefined</div>
+                    <hr>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- ------------------------------ MAPS ------------------------------------ -->
+<div id="map" class="body">
+
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZe4Q05ZstWsIRoUCpT14vSALyDjEWXIc&libraries=places&callback=initMap"
+        async defer></script>
+
+<script>
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+    var map;
+    var service;
+    var infowindow;
+    var myLocation = 'Torino';
+
+
+    function changeLocation() {
+        myLocation = document.getElementById("locationQuery").value;
+        console.log(document.getElementById("locationQuery").value);
+        console.log(myLocation);
+        var request = {
+            query: myLocation,
+            fields: ['name', 'geometry'],
+        };
+
+        service = new google.maps.places.PlacesService(map);
+
+        service.findPlaceFromQuery(request, function (results, status) {
+            console.log("Maps results: ");
+            console.log(JSON.stringify(results[0]));
+            console.log(results[0]);
+            //app.setLocation(results[0]);
+
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                app.setLocation({
+                    "lng": results[0].geometry.location.lng(),
+                    "lat": results[0].geometry.location.lat(),
+                    "name": myLocation
+                });
+                console.log(results[0]);
+                for (var i = 0; i < results.length; i++) {
+                    console.log("google location latitude: " + results[i].geometry.location.lat());
+                    console.log("google location latitude: " + results[i].geometry.location.lng());
+                    setMarker(results[i]);
+                }
+
+                map.setCenter(results[0].geometry.location);
+            }
+        });
+
+        function setMarker(place) {
+            var marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(place.name);
+                infowindow.open(map, this);
+            });
+
+        }
+    }
+
+
+    function createMarker(place) {
+        var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.setContent(place.name);
+            infowindow.open(map, this);
+        });
+    }
+
+</script>
+</body>
+</html>

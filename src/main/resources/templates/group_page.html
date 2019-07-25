@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:https="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:replace="fragments/header.html :: headerInclusions" />
+    <link rel="stylesheet" href="../static/css/groupHome.css" th:href="@{/css/groupHome.css}">
+
+    <script src="js/groupPage.js"   th:src="@{/js/groupPage.js}"></script>
+
+</head>
+<body>
+
+<div id="loaderCustom">
+
+</div>
+<div id="appGroupPage">
+    <th:block th:replace="fragments/navbar :: navbar" />
+    <div class="container">
+        <div class = "flex-container">
+            <div class="groupHomeHeader-banner">
+                <img src="https://source.unsplash.com/category/nature/400x260" alt="">
+            </div>
+            <div class = flex-column>
+                <div class="groupHomeHeader-groupName"><h1>{{this.groupInfo.groupName}}</h1></div>
+                <div class="groupHomeHeader-info">
+                    <div class="groupHomeHeader-groupData"><i class="far fa-calendar-alt"></i> {{this.groupInfo.data}}</div>
+                    <div  ><i class="fas fa-map-marker-alt"></i> {{this.groupInfo.location == null ? '' : this.groupInfo.location.name}}</div>
+                    <div><i class="fas fa-users"></i> {{this.groupInfo.members.length}} membri</div>
+                    <div class="groupHomeHeader-groupCreator"><i class="far fa-user"></i> Organizzato da
+                        <!--<a v-bind:href="'/userPage/'+getCreatorId" >-->
+                        <a v-bind:href="j2eeUrl + getCreatorId">
+                            {{this.groupInfo.creator}}</a></div>
+                    <hr style="margin-top: 10px;margin-bottom: 10px">
+                </div>
+                <div class="groupHomeHeader-groupDescription">{{this.groupInfo.description}}</div>
+
+            </div>
+
+        </div>
+        <hr>
+        <div class="group-bar">
+            <ul class="nav nav-pills" role="tablist">
+                <li id="li2" role="presentation" @click="setListElement(1)"><a >Membri<span class="badge">{{this.groupInfo.members.length}}</span></a></li>
+                <li id="li3" role="presentation" @click="setListElement(2)"><a >Messages <span class="badge">3</span></a></li>
+                <li id="li4" role="presentation" @click="setListElement(3)"><a >Foto <span class="badge">5</span></a></li>
+                <li id="li5" role="presentation" @click="setListElement(4)"><a >Tags <span class="badge"> {{(groupInfo != null && groupInfo.tags != null) ? groupInfo.tags.length : 0}}</span></a></li>
+                <li class = "navbar-right" role="presentation">
+                    <div v-if="isUserLogged">
+                        <button class="btn btn-primary btn-lg" role="button" v-if = "isUserMember" @click="removeGroupMember()">Esci</button>
+                        <button class="btn btn-primary btn-lg" role="button" v-else @click="addGroupMember()">Unisciti</button>
+                    </div>
+                    <div v-else><a href="/Home">Fai il login per partecipare</a></div>
+                </li>
+
+
+
+            </ul>
+        </div>
+        <hr>
+        <div class="section-list">
+            <div class="membersGroup" v-if = "listElement == 1">
+                <h2>Gli utenti che parteciperanno all'evento</h2>
+                <ul class = "ulMember" v-if = "groupInfo.members.length > 0">
+                    <li  v-for="user in groupInfo.members">
+                        <!--<a v-bind:href="'/userPage/'+user.userId">-->
+                        <a v-bind:href="'http://localhost:8081/J2EEToGroup-web/NewServlet?id=' + user.userId">
+
+                            <img src="https://source.unsplash.com/random/40x40" class="profile-image img-circle">{{user.userName}}</a>
+
+                        <hr>
+                    </li>
+
+                </ul>
+                <div v-else>
+                    Non ci sono membri in questo gruppo.
+                </div>
+            </div>
+            <div v-if = "listElement == 2"
+                 class="containerFlex flexFlowCol"
+                >
+                <div class="w100">
+                    <div class="w100"
+                            v-if="groupMessages.length > 0">
+                       <div class="msgListContainer w100">
+                            <ul class="containerFlex flexFlowCol msgListPanel w100">
+                                <li class="containerFlex flexFlowRow msgDetail w100"
+                                    v-for="(msg, index) in groupMessages"
+                                    v-bind:key="index"
+                                    >
+                                    <div class="w5">{{index}}</div>
+                                    <div class="containerFlex flexFlowCol dateSender w25">
+                                        <p>{{msg.userName}}</p>
+                                        <p>{{msg.dateCreation}}</p>
+                                    </div>
+                                    <div class="msgTextContainer w70 h100">
+                                        <div> <!-- questo div serve per fare da pannello ed avere come altezza la somma delle altezze di tutti i messaggi, divenendo enorme -->
+                                            <!-- textarea cols="50" readonly wrap="soft" -->
+                                            <div class="msgText"
+                                                v-for="part in splitTextToLines(msg.testo)"
+                                                >{{part}}
+                                                <br v-if='part == ""'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                       </div>
+                    </div>
+                    <p v-else>Nessun commento ancora e' stato lasciato</p>
+                </div>
+                <div class="containerFlex flexFlowRow">
+                    <textarea
+                            v-model="newMessage.testo"
+                            name="msgText" cols="50" rows="5"
+                    ></textarea>
+                    <button @click="sendMessage()" >Send</button>
+                </div>
+
+            </div>
+            <div v-if = "listElement == 3">
+                <div class="Foto">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/random/400x260" alt="">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/category/food/200x260 " alt="">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/category/people/420x260" alt="">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/random/616x260" alt="">
+                    <img class="img-thumbnail " src="https://source.unsplash.com/user/erondu/420x260 " alt="">
+
+                </div>
+
+            </div>
+
+            <div class="tagListContainer" v-if = "listElement == 4">
+                <div class="containerFlex flexFlowCol"
+                     v-if="groupInfo != null && groupInfo.tags != null && groupInfo.tags.length > 0"
+                >
+                    <div class="tagElement"
+                         v-for="tag in groupInfo.tags"
+                    >
+                        <p> {{tag.name}} </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+</body>
+</html>
