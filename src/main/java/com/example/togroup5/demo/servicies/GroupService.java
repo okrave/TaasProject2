@@ -249,11 +249,11 @@ public class GroupService {
 
     // refactoring after 24-07-2019
 
-    public GroupFullDetail infoGroup(String groupId) {
+    public GroupFullDetail infoGroup(Long groupId) {
         AppGroup newGroup;
         GroupFullDetail gfd;
         System.out.println("groupId:" + groupId);
-        newGroup = findGroupById(Long.valueOf(groupId));
+        newGroup = findGroupById(groupId);
         if (newGroup == null)
             return null;
 

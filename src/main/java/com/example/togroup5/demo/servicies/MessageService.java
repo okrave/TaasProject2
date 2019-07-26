@@ -51,6 +51,7 @@ public class MessageService {
         String msgText;
         msgText = m.getTesto();
         if(msgText == null || "".equals(msgText = msgText.trim()))return false;
+        m.setTesto(msgText);
         appMessageRepository.save(m);
         return true;
     }

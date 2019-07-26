@@ -75,7 +75,7 @@ public class RestGroupController {
 
 
     @GetMapping(value = "/info/{groupId}")
-    public GroupFullDetail infoGroup(@PathVariable String groupId) {
+    public GroupFullDetail infoGroup(@PathVariable Long groupId) {
         return groupService.infoGroup(groupId);
     }
 
